@@ -187,7 +187,10 @@ jobs:
       - name: install dev python
         run: |
           sudo apt-get update
-          sudo apt install -y python3.7-dev
+          sudo apt-get install -yq software-properties-common
+          sudo add-apt-repository ppa:deadsnakes/ppa 
+          sudo apt-get update
+          sudo apt-get install python3.7-dev
       - name: Build Dxapi
         run: |
           make -C .
@@ -203,3 +206,32 @@ jobs:
             ./bin/release/__init__.py
             ./bin/release/linux/x64/py37/_dxapi.so
             ./bin/release/linux/x64/py37/libDecimalNative.so
+
+#   Build-Dxapi-Python38-Windows:
+#     runs-on: windows-latest
+#     needs: [Build-Dxapi-Windows]
+#     steps:
+#     - name: Check out repository code
+#       uses: actions/checkout@v2
+#       with:
+#         submodules: 'recursive'
+#     - name: Download dxapi-windows artifacts
+#       uses: actions/download-artifact@v2
+#       with:
+#         name: dxapi-windows
+#         path: dxapi/bin
+#     - name: Use MSBuild
+#       uses: microsoft/setup-msbuild@v1.0.2
+#     - name: Build Solution
+#       run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
+#     - name: Build Debug Solution
+#       run: msbuild ./dxapi/dxapi.sln /p:configuration=debug /p:platform=x64 /t:rebuild
+#     - name: Archive artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: dxapi-windows
+#         path: |
+#           ./dxapi/iclude/native/**/*.h
+#           ./dxapi/bin/dxapi-x64.lib
+#           ./dxapi/bin/dxapi-x64d.lib
+#           ./dxapi/bin/dxapi-x64d.pdb
