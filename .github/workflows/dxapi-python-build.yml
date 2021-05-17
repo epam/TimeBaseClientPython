@@ -81,11 +81,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-linux
+          path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
           python-version: '3.8'
       - name: Build Dxapi
         run: |
+          cp 
           make -C .
           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
         env: 
