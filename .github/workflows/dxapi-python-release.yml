@@ -1,0 +1,158 @@
+name: Release dxapi
+
+on:
+  push:
+    branches: [release-*]
+    
+jobs:
+  Prepare-Release:
+    name: Prepare
+    if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Prepare branch
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b workflow-$GITHUB_RUN_ID
+          versionSnapshot=`grep 'version=' project.properties | sed 's/version=\([^-]*\)/\1/'`
+          versionRelease=`echo $versionSnapshot | sed 's/\([^-]*\)-SNAPSHOT/\1/'`
+          versionSnapshotNext=`echo $versionSnapshot | perl -pe 's/^((\d+\.)*)(\d+)(.*)$/$1.($3+1).$4/e'`
+          echo "$versionSnapshot -> $versionRelease  -> $versionSnapshotNext"
+          sed -i "s/version=$versionSnapshot/version=$versionRelease/" project.properties
+          git commit -am "[skip-ci] Generate release version"
+          sed -i "s/version=$versionRelease/version=$versionSnapshotNext/" project.properties
+          git commit -am "[skip-ci] Generate next snapshot version"
+          git push origin HEAD
+
+#   Build-Dxapi-Linux:
+#     runs-on: ubuntu-latest
+#     needs: [Prepare-Release]
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#       - name: Build Dxapi
+#         run: make -C .
+#         env: 
+#           CC: clang
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-linux
+#           path: |
+#             include/native/dxapi/*.h
+#             bin/libdxapi-x64.a
+            
+#   Build-Dxapi-MacOS:
+#     runs-on: macos-latest
+#     needs: [Prepare-Release]
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#       - name: Build Dxapi
+#         run: make -C .
+#         env:
+#           CC: clang
+#           OS: MACOS
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-macos
+#           path: |
+#             include/native/dxapi/*.h
+#             bin/libdxapi-x64.a
+            
+  Build-Dxapi-Windows:
+    runs-on: windows-latest
+    needs: [Prepare-Release]
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - name: Use MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Build Solution
+      run: msbuild dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
+    - name: Build Debug Solution
+      run: msbuild dxapi.sln /p:configuration=debug /p:platform=x64 /t:rebuild
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dxapi-windows
+        path: |
+          include/native/dxapi/*.h
+          bin/dxapi-x64.lib
+          bin/dxapi-x64d.lib
+          bin/dxapi-x64d.pdb
+          
+  Release-Dxapi:
+    name: Release
+    if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
+    needs: [Build-Dxapi-Windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Release branch
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git fetch
+          git checkout -b workflow-$GITHUB_RUN_ID origin/workflow-$GITHUB_RUN_ID~1
+          versionRelease=`grep 'version=' project.properties | sed 's/version=\([^-]*\)/\1/'`
+          echo $versionRelease
+          echo $versionRelease >> ./version.txt
+          git push origin origin/workflow-$GITHUB_RUN_ID:$GITHUB_REF
+      - name: Version artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: version-file
+          path: ./version.txt
+          
+  Publish-Dxapi-Windows:
+    needs: [Release-Dxapi]
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Download dxapi-windows artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-windows
+      - name: Download version-file artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: version-file
+      - name: Using Nuget
+        uses: nuget/setup-nuget@v1
+        with:
+          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+      - name: Build Nuget package
+        run: |
+          $Version = get-content .\version.txt
+          echo $Version
+          nuget pack dxapi.nuspec -properties version=$Version
+          nuget push Deltix.Timebase.Api.Native.$Version.nupkg -Source $Env:NUGET_URL
+        env:
+          NUGET_URL: MY_NUGET_URL_CHANGE_IT
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-nuget-package
+          path:
+            Deltix.Timebase.Api.Native.*.nupkg
+
+  Cleanup-Release:
+    name: Cleanup
+    if: ${{ always() && !contains(github.event.head_commit.message, '[skip-ci]') }}
+    needs: [Publish-Dxapi-Windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cleanup
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git push origin --delete workflow-$GITHUB_RUN_ID || true
