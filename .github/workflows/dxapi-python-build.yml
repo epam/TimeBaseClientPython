@@ -85,6 +85,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+          architecture: x64
       - name: Build Dxapi
         run: |
           make -C .
@@ -117,6 +118,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '2.7'
+          architecture: x64
       - name: Build Dxapi
         run: |
           make -C .
@@ -149,6 +151,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.6'
+          architecture: x64
       - name: Build Dxapi
         run: |
           make -C .
@@ -181,6 +184,7 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '3.7'
+          architecture: x64
       - name: Build Dxapi
         run: |
           make -C .
