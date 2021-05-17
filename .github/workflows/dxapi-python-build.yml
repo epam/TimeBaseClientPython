@@ -69,40 +69,38 @@ jobs:
 #           ./dxapi/bin/dxapi-x64d.lib
 #           ./dxapi/bin/dxapi-x64d.pdb
 
-#   Build-Dxapi-Python38-Linux:
-#     runs-on: ubuntu-latest
-#     needs: [Build-Dxapi-Linux]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: |
-#            - "3.8"
-#            - "3.8-dev"
-#           architecture: x64
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: 38
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python38-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py38/_dxapi.so
-#             ./bin/release/linux/x64/py38/libDecimalNative.so
+  Build-Dxapi-Python38-Linux:
+    runs-on: ubuntu-latest
+    needs: [Build-Dxapi-Linux]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-linux
+          path: dxapi/bin
+      - name: install dev python
+        run: |
+          sudo apt-get update
+          sudo apt install -y python3.8-dev
+      - name: Build Dxapi
+        run: |
+          make -C .
+          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
+        env: 
+          CC: clang
+          PYTHON_VERSION: 38
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-python38-linux
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/linux/x64/py38/_dxapi.so
+            ./bin/release/linux/x64/py38/libDecimalNative.so
 
   Build-Dxapi-Python27-Linux:
     runs-on: ubuntu-latest
@@ -137,72 +135,68 @@ jobs:
             ./bin/release/linux/x64/py27/_dxapi.so
             ./bin/release/linux/x64/py27/libDecimalNative.so
     
-#   Build-Dxapi-Python36-Linux:
-#     runs-on: ubuntu-latest
-#     needs: [Build-Dxapi-Linux]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: |
-#            - "3.6"
-#            - "3.6-dev"
-#           architecture: x64
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py36/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: 36
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python36-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py36/_dxapi.so
-#             ./bin/release/linux/x64/py36/libDecimalNative.so
+  Build-Dxapi-Python36-Linux:
+    runs-on: ubuntu-latest
+    needs: [Build-Dxapi-Linux]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-linux
+          path: dxapi/bin
+      - name: install dev python
+        run: |
+          sudo apt-get update
+          sudo apt install -y python3.6-dev
+      - name: Build Dxapi
+        run: |
+          make -C .
+          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py36/
+        env: 
+          CC: clang
+          PYTHON_VERSION: 36
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-python36-linux
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/linux/x64/py36/_dxapi.so
+            ./bin/release/linux/x64/py36/libDecimalNative.so
 
-#   Build-Dxapi-Python37-Linux:
-#     runs-on: ubuntu-latest
-#     needs: [Build-Dxapi-Linux]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: |
-#            - "3.7"
-#            - "3.7-dev"
-#           architecture: x64
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py37/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: 37
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python37-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py37/_dxapi.so
-#             ./bin/release/linux/x64/py37/libDecimalNative.so
+  Build-Dxapi-Python37-Linux:
+    runs-on: ubuntu-latest
+    needs: [Build-Dxapi-Linux]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-linux
+          path: dxapi/bin
+      - name: install dev python
+        run: |
+          sudo apt-get update
+          sudo apt install -y python3.7-dev
+      - name: Build Dxapi
+        run: |
+          make -C .
+          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py37/
+        env: 
+          CC: clang
+          PYTHON_VERSION: 37
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-python37-linux
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/linux/x64/py37/_dxapi.so
+            ./bin/release/linux/x64/py37/libDecimalNative.so
