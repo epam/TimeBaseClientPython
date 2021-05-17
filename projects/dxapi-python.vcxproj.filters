@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="swig">
+      <UniqueIdentifier>{19c4af7f-5faf-4399-bc91-1bca460c9e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="swig\wrappers">
+      <UniqueIdentifier>{29ba136b-f6d1-4e04-96b9-8ed726ec5d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{02c2774c-da5a-4f20-95b0-0f73bd0fe113}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\codecs">
+      <UniqueIdentifier>{13eb2b42-5b4e-4b77-b71c-c5901f56dd9b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\swig\common.i">
+      <Filter>swig</Filter>
+    </None>
+    <None Include="..\src\swig\tick_db.i">
+      <Filter>swig</Filter>
+    </None>
+    <None Include="..\src\swig\tick_loader.i">
+      <Filter>swig</Filter>
+    </None>
+    <None Include="..\src\swig\tick_stream.i">
+      <Filter>swig</Filter>
+    </None>
+    <None Include="..\src\swig\tick_cursor.i">
+      <Filter>swig</Filter>
+    </None>
+    <None Include="..\src\swig\tick_utils.i">
+      <Filter>swig</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\src\swig\dxapi.i">
+      <Filter>swig</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\swig\wrappers\dxapi_wrap.cxx">
+      <Filter>swig\wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tick_loader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tick_cursor.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\python_common.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\codecs\message_codec.cpp">
+      <Filter>src\codecs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\common.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\tick_loader.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\tick_cursor.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\python_common.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\codecs\message_codec.h">
+      <Filter>src\codecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\codecs\field_codecs.h">
+      <Filter>src\codecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\common.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
