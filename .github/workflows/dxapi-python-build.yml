@@ -87,7 +87,6 @@ jobs:
           python-version: '3.8'
       - name: Build Dxapi
         run: |
-          cp 
           make -C .
           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
         env: 
