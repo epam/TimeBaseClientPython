@@ -69,37 +69,37 @@ jobs:
 #           ./dxapi/bin/dxapi-x64d.lib
 #           ./dxapi/bin/dxapi-x64d.pdb
 
-#   Build-Dxapi-Python38-Linux:
-#     runs-on: ubuntu-latest
-#     needs: [Build-Dxapi-Linux]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.8'
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: 38
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python38-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py38/_dxapi.so
-#             ./bin/release/linux/x64/py38/libDecimalNative.so
+  Build-Dxapi-Python38-Linux:
+    runs-on: ubuntu-latest
+    needs: [Build-Dxapi-Linux]
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-linux
+          path: dxapi/bin
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Build Dxapi
+        run: |
+          make -C .
+          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
+        env: 
+          CC: clang
+          PYTHON_VERSION: 38
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-python38-linux
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/linux/x64/py38/_dxapi.so
+            ./bin/release/linux/x64/py38/libDecimalNative.so
 
   Build-Dxapi-Python27-Linux:
     runs-on: ubuntu-latest
