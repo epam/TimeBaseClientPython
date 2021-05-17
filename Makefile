@@ -2,7 +2,7 @@
 
 OS?=LINUX
 
-DXAPI_BIN=../dxapi/bin
+DXAPI_BIN=./dxapi/bin
 PYTHONAPI_INTERFACE=dxapi.py
 PYHTONAPI_LIB=_dxapi.so
 
@@ -58,7 +58,7 @@ SRCDIR=src
 SRCDIRS=codecs swig swig/wrappers
 
 # Include directories
-INCLUDES= $(PYTHON_INCLUDES) ../dxapi/include/native ../dxapi/include/native/dxapi ../dxapi/src/dxapi ../dxapi/src/dxapi/native $(SRCDIR)
+INCLUDES= $(PYTHON_INCLUDES) ./dxapi/include/native ./dxapi/include/native/dxapi $(SRCDIR)
 
 OBJ=$(OBJ_LIB)
 
@@ -160,7 +160,7 @@ $(OUTDIRS):
     
 # python wrapper
 $(WRAPPER_OBJDIR)/$(WRAPPER_OBJ).o: dxapi.i
-	swig -c++ -python -I../dxapi/include/native/dxapi -o $(WRAPDIR)/$(WRAPPER_OBJ).cxx -outdir $(INIT_PY_DIR) src/swig/dxapi.i
+	swig -c++ -python -I./dxapi/include/native/dxapi -o $(WRAPDIR)/$(WRAPPER_OBJ).cxx -outdir $(INIT_PY_DIR) src/swig/dxapi.i
 	cp $(INIT_PY_DIR)/dxapi.py $(INIT_PY_DIR)/__init__.py
 	$(CXX) -c $(CXXFLAGS) -o $@ $(WRAPDIR)/$(WRAPPER_OBJ).cxx
 
