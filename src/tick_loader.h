@@ -3,10 +3,13 @@
 
 #include "Python.h"
 
-#include "native/tickdb/http/xml/tickdb_class_descriptor.h"
 #include "python_common.h"
+#include "dxapi.h"
+#include "schema.h"
 
 #include <mutex>
+#include <unordered_map>
+#include <memory>
 
 namespace DxApiImpl {
 namespace Python {

@@ -4,7 +4,7 @@
 #include "Python.h"
 
 #include "python_common.h"
-#include "native/tickdb/http/xml/tickdb_class_descriptor.h"
+#include "dxapi.h"
 
 namespace DxApiImpl {
 namespace Python {
