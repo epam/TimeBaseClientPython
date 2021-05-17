@@ -84,7 +84,9 @@ jobs:
           path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: |
+           - "3.8"
+           - "3.8-dev"
           architecture: x64
       - name: Build Dxapi
         run: |
@@ -117,7 +119,9 @@ jobs:
           path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
-          python-version: '2.7'
+          python-version: |
+           - "2.7"
+           - "2.7-dev"
           architecture: x64
       - name: Build Dxapi
         run: |
@@ -150,7 +154,9 @@ jobs:
           path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.6'
+          python-version: |
+           - "3.6"
+           - "3.6-dev"
           architecture: x64
       - name: Build Dxapi
         run: |
@@ -183,7 +189,9 @@ jobs:
           path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.7'
+          python-version: |
+           - "3.7"
+           - "3.7-dev"
           architecture: x64
       - name: Build Dxapi
         run: |
