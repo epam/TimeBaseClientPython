@@ -301,9 +301,9 @@ jobs:
         $Env:SWIG_HOME
         python --version
         python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON27_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON27_HOME
-        msbuild ./dxapi-python.sln /p:configuration=Release36 /p:platform=x64 /t:rebuild
+        $Env:PYTHON36_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON36_HOME
+        msbuild ./dxapi-python.sln /p:configuration=Release /p:platform=x64 /t:rebuild
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -337,8 +337,8 @@ jobs:
         $Env:SWIG_HOME
         python --version
         python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON27_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON27_HOME
+        $Env:PYTHON37_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON37_HOME
         msbuild ./dxapi-python.sln /p:configuration=Release37 /p:platform=x64 /t:rebuild
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
