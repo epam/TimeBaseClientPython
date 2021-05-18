@@ -145,7 +145,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F06CE5AA-B67E-4E38-8473-283FEBE7AE33}</ProjectGuid>
     <RootNamespace>dxapipython</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -203,55 +203,55 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug27|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release37|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release38|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release27|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -412,7 +412,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON36_HOME)\include;$(ProjectDir)..\src;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON36_HOME)\include;$(ProjectDir)..\src;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -561,7 +561,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON36_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON36_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CallingConvention>FastCall</CallingConvention>
     </ClCompile>
@@ -569,7 +569,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>python36.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON36_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON36_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -588,7 +588,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON37_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON37_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CallingConvention>FastCall</CallingConvention>
     </ClCompile>
@@ -596,7 +596,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>python37.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON37_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON37_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -615,7 +615,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON38_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON38_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CallingConvention>FastCall</CallingConvention>
     </ClCompile>
@@ -623,7 +623,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>python38.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON38_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON38_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -642,7 +642,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON27_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON27_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CallingConvention>FastCall</CallingConvention>
     </ClCompile>
@@ -650,7 +650,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>python27.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON27_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON27_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
