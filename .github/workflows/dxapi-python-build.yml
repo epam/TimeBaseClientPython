@@ -224,7 +224,8 @@ jobs:
     - name: Build Solution
       run: |
         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-        $Env:SWIG_HOME="${{ working-directory }}/swigwin/swigwin-3.0.12"
+        $pwd = pwd
+        $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
         $Env:SWIG_HOME
         python --version
         python -c "import os, sys; print(os.path.dirname(sys.executable))"
