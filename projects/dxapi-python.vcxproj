@@ -71,19 +71,19 @@
     <CustomBuild Include="..\src\swig\dxapi.i">
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
 ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release37|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
 ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release38|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
 ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release27|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
 ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
