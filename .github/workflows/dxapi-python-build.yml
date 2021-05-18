@@ -224,10 +224,12 @@ jobs:
     - name: Build Solution
       run: |
         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-        $Env:SWIG_HOME="./swigwin/swigwin-3.0.12"
+        $Env:SWIG_HOME="${{ working-directory }}/swigwin/swigwin-3.0.12"
+        $Env:SWIG_HOME
         python --version
         python -c "import os, sys; print(os.path.dirname(sys.executable))"
         $Env:PYTHON38_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON38_HOME
         msbuild ./dxapi-python.sln /p:configuration=Release38 /p:platform=x64 /t:rebuild
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
