@@ -33,8 +33,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-      - name: Check Python Location
-        run: ls -al /Library/Frameworks/Python.framework/Versions/
       - name: Build Dxapi
         run: make -C ./dxapi/.
         env:
@@ -364,7 +362,7 @@ jobs:
           path: dxapi/bin
       - name: check artifacts
         run: |
-          ls dxapi/bin
+          ls dxapi/bin/bin
 #       - uses: actions/setup-python@v2
 #         with:
 #           python-version: '2.7'
