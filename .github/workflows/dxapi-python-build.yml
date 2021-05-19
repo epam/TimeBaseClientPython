@@ -26,27 +26,27 @@ jobs:
 #           name: dxapi-linux
 #           path: ./dxapi/bin/libdxapi-x64.a
             
-#   Build-Dxapi-MacOS:
-#     runs-on: macos-latest
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Check Python Location
-#         run: ls -al /Library/Frameworks/Python.framework/Versions/
-#       - name: Build Dxapi
-#         run: make -C ./dxapi/.
-#         env:
-#           CC: clang
-#           OS: MACOS
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: |
-#             ./dxapi/iclude/native/**/*.h
-#             ./dxapi/bin/libdxapi-x64.a
+  Build-Dxapi-MacOS:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Check Python Location
+        run: ls -al /Library/Frameworks/Python.framework/Versions/
+      - name: Build Dxapi
+        run: make -C ./dxapi/.
+        env:
+          CC: clang
+          OS: MACOS
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-macos
+          path: |
+            ./dxapi/iclude/native/**/*.h
+            ./dxapi/bin/libdxapi-x64.a
             
 #   Build-Dxapi-Windows:
 #     runs-on: windows-latest
@@ -351,43 +351,40 @@ jobs:
 
   Build-Dxapi-Python27-MacOS:
     runs-on: macos-latest
-#     needs: [Build-Dxapi-MacOS]
+    needs: [Build-Dxapi-MacOS]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-#       - name: Download dxapi-windows artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '2.7'
-#       - name: Install SWIG
-#         run: |
-#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
-#           tar -xzvf swig-3.0.12.tar.gz
-#           cd swig-3.0.12
-#           ./configure
-#           make
-#           make install
-      - name: check libs
+      - name: Download dxapi-windows artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-macos
+          path: dxapi/bin
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+      - name: Install SWIG
         run: |
-          ls /Library/Frameworks/Python.framework/Versions/2.7/lib
-#       - name: Build Dxapi
-#         run: |
-#            make -C .
-#            cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py27/
-#         env:
-#           CC: clang
-#           OS: MACOS
-#           PYTHON_VERSION: 27
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: |
-#             ./dxapi/iclude/native/**/*.h
-#             ./dxapi/bin/libdxapi-x64.a
+          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+          tar -xzvf swig-3.0.12.tar.gz
+          cd swig-3.0.12
+          ./configure
+          make
+          make install
+      - name: Build Dxapi
+        run: |
+           make -C .
+           cp ./dfp/lib/osx/64/libDecimalNative.so ./bin/release/osx/x64/py27/
+        env:
+          CC: clang
+          OS: MACOS
+          PYTHON_VERSION: 27
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-macos
+          path: |
+            ./dxapi/iclude/native/**/*.h
+            ./dxapi/bin/libdxapi-x64.a
