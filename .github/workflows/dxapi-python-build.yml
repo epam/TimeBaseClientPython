@@ -351,6 +351,7 @@ jobs:
 
   Build-Dxapi-Python27-MacOS:
     runs-on: macos-latest
+    needs: [Build-Dxapi-MacOS]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
