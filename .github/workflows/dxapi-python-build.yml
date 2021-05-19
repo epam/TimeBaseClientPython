@@ -357,29 +357,34 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-      - name: Download dxapi-windows artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-macos
-          path: dxapi/bin
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '2.7'
-#       - name: Install SWIG
-#         run: |
-#           tar -xzvf swig-3.0.12.tar.gz
-      - name: Build Dxapi
+#       - name: Download dxapi-windows artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-macos
+#           path: dxapi/bin
+#       - uses: actions/setup-python@v2
+#         with:
+#           python-version: '2.7'
+      - name: Install SWIG
         run: |
-           make -C .
-           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py27/
-        env:
-          CC: clang
-          OS: MACOS
-          PYTHON_VERSION: 27
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-macos
-          path: |
-            ./dxapi/iclude/native/**/*.h
-            ./dxapi/bin/libdxapi-x64.a
+          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+          tar -xzvf swig-3.0.12.tar.gz
+          cd swig-3.0.12
+          ./configure
+          make
+          make install
+#       - name: Build Dxapi
+#         run: |
+#            make -C .
+#            cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py27/
+#         env:
+#           CC: clang
+#           OS: MACOS
+#           PYTHON_VERSION: 27
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-macos
+#           path: |
+#             ./dxapi/iclude/native/**/*.h
+#             ./dxapi/bin/libdxapi-x64.a
