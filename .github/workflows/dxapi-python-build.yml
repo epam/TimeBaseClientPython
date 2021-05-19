@@ -205,14 +205,14 @@ jobs:
 #             ./bin/release/linux/x64/py37/_dxapi.so
 #             ./bin/release/linux/x64/py37/libDecimalNative.so
 
-#   Build-Dxapi-Python38-Windows:
-#     runs-on: windows-latest
+  Build-Dxapi-Python38-Windows:
+    runs-on: windows-latest
 #     needs: [Build-Dxapi-Windows]
-#     steps:
-#     - name: Check out repository code
-#       uses: actions/checkout@v2
-#       with:
-#         submodules: 'recursive'
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
 #     - name: Download dxapi-windows artifacts
 #       uses: actions/download-artifact@v2
 #       with:
@@ -223,12 +223,12 @@ jobs:
 #         python-version: '3.8'
 #     - name: Use MSBuild
 #       uses: microsoft/setup-msbuild@v1.0.2
+    - name: Install SwigWin
+      run: |
+        Invoke-WebRequest https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip -PassThru -OutFile swigwin-3.0.12.zip
+        Expand-Archive -Path swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
 #     - name: Build Solution
 #       run: |
-#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-#         $pwd = pwd
-#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-#         $Env:SWIG_HOME
 #         python --version
 #         python -c "import os, sys; print(os.path.dirname(sys.executable))"
 #         $Env:PYTHON38_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
@@ -349,30 +349,30 @@ jobs:
 #         path: |
 #           ./bin/release/**/*
 
-  Build-Dxapi-Python27-MacOS:
-    runs-on: macos-latest
-#     needs: [Build-Dxapi-MacOS]
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-#       - name: Download dxapi-windows artifacts
-#         uses: actions/download-artifact@v2
+#   Build-Dxapi-Python27-MacOS:
+#     runs-on: macos-latest
+# #     needs: [Build-Dxapi-MacOS]
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
 #         with:
-#           name: dxapi-macos
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '2.7'
-      - name: Install SWIG
-        run: |
-          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
-          tar -xzvf swig-3.0.12.tar.gz
-          cd swig-3.0.12
-          ./configure
-          make
-          make install
+#           submodules: 'recursive'
+# #       - name: Download dxapi-windows artifacts
+# #         uses: actions/download-artifact@v2
+# #         with:
+# #           name: dxapi-macos
+# #           path: dxapi/bin
+# #       - uses: actions/setup-python@v2
+# #         with:
+# #           python-version: '2.7'
+#       - name: Install SWIG
+#         run: |
+#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+#           tar -xzvf swig-3.0.12.tar.gz
+#           cd swig-3.0.12
+#           ./configure
+#           make
+#           make install
 #       - name: Build Dxapi
 #         run: |
 #            make -C .
