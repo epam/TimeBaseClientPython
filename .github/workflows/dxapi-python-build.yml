@@ -226,6 +226,7 @@ jobs:
     - name: Install SwigWin
       run: |
         Invoke-WebRequest https://sourceforge.net/projects/swig/files/swigwin/swigwin-3.0.12/swigwin-3.0.12.zip -PassThru -OutFile swigwin-3.0.12.zip
+        ls
         Expand-Archive -Path swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
 #     - name: Build Solution
 #       run: |
