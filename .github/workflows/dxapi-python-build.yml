@@ -362,9 +362,10 @@ jobs:
         with:
           name: dxapi-macos
           path: dxapi/bin
-          run: |
-            ls
-            ls dxapi/bin
+      - name: check artifacts
+        run: |
+          ls
+          ls dxapi/bin
 #       - uses: actions/setup-python@v2
 #         with:
 #           python-version: '2.7'
