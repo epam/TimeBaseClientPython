@@ -359,10 +359,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-macos
-          path: dxapi/bin
+          path: dxapi
       - name: check artifacts
         run: |
-          ls dxapi/bin/bin
+          ls dxapi/bin
 #       - uses: actions/setup-python@v2
 #         with:
 #           python-version: '2.7'
