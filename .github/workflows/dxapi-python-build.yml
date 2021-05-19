@@ -27,7 +27,7 @@ jobs:
 #           path: ./dxapi/bin/libdxapi-x64.a
             
   Build-Dxapi-MacOS:
-    runs-on: macos-11.0
+    runs-on: macos-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -348,3 +348,37 @@ jobs:
 #         name: dxapi-windows
 #         path: |
 #           ./bin/release/**/*
+
+  Build-Dxapi-Python27-MacOS:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-windows artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-macos
+          path: dxapi/bin
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '2.7'
+#       - name: Install SWIG
+#         run: |
+#           tar -xzvf swig-3.0.12.tar.gz
+      - name: Build Dxapi
+        run: |
+           make -C .
+           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py27/
+        env:
+          CC: clang
+          OS: MACOS
+          PYTHON_VERSION: 27
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-macos
+          path: |
+            ./dxapi/iclude/native/**/*.h
+            ./dxapi/bin/libdxapi-x64.a
