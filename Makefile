@@ -26,17 +26,17 @@ else
 endif
 
 ifeq ($(OS),MACOS)
-	DFP_BIN=.
-	DFP_LIB=DecimalNative
-	RPATH_PARAM=
+    DFP_BIN=./dfp/lib/osx/64
+    DFP_LIB=DecimalNative
+    RPATH_PARAM=
     THIRD_PARTY_LIBS=
     PYTHON_INCLUDES=/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/Headers
     PYTHON_LIBS=-L/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/lib -lpython$(PYTHON_VERSION_FULL)
     BIN_SUBFOLDER=darwin
 else
-	DFP_BIN=./dfp/lib/linux/64
-	DFP_LIB=DecimalNative
-	RPATH_PARAM=-Wl,-rpath,'$$ORIGIN'
+    DFP_BIN=./dfp/lib/linux/64
+    DFP_LIB=DecimalNative
+    RPATH_PARAM=-Wl,-rpath,'$$ORIGIN'
     PYTHON_INCLUDES=/usr/include/$(PYTHON)
     PYTHON_LIBS=
     BIN_SUBFOLDER=linux
