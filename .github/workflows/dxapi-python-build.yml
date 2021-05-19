@@ -376,7 +376,7 @@ jobs:
       - name: Build Dxapi
         run: |
            make -C .
-           cp ./dfp/lib/osx/64/libDecimalNative.so ./bin/release/osx/x64/py27/
+           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/osx/x64/py27/
         env:
           CC: clang
           OS: MACOS
