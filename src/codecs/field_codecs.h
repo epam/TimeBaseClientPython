@@ -11,6 +11,19 @@
 #include <algorithm>
 #include <memory>
 
+
+#if defined(__APPLE__)
+extern "C" double toFloat64(uint64_t value);
+extern "C" uint64_t fromFloat64(double value);
+
+double dfp_toDouble(uint64_t value) {
+    return toFloat64(value);
+}
+
+uint64_t dfp_fromDouble(double value) {
+    return fromFloat64(value);
+}
+#else
 extern "C" double decimal_native_toFloat64(uint64_t value);
 extern "C" uint64_t decimal_native_fromFloat64(double value);
 
@@ -21,6 +34,8 @@ double dfp_toDouble(uint64_t value) {
 uint64_t dfp_fromDouble(double value) {
     return decimal_native_fromFloat64(value);
 }
+#endif
+
 
 namespace DxApiImpl {
 namespace Python {
