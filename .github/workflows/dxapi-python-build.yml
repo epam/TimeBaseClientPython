@@ -364,7 +364,6 @@ jobs:
           path: dxapi/bin
       - name: check artifacts
         run: |
-          ls
           ls dxapi/bin
 #       - uses: actions/setup-python@v2
 #         with:
