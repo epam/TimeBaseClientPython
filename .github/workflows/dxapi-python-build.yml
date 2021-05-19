@@ -43,7 +43,6 @@ jobs:
         with:
           name: dxapi-macos
           path: |
-            ./dxapi/iclude/native/**/*.h
             ./dxapi/bin/libdxapi-x64.a
             
 #   Build-Dxapi-Windows:
@@ -385,5 +384,5 @@ jobs:
           name: dxapi-macos
           path: |
             ./bin/release/__init__.py
-            ./bin/release/linux/x64/py37/_dxapi.so
-            ./bin/release/linux/x64/py37/libDecimalNative.dylib
+            ./bin/release/osx/x64/py27/_dxapi.so
+            ./bin/release/osx/x64/py27/libDecimalNative.dylib
