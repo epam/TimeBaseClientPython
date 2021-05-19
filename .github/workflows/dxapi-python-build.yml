@@ -26,27 +26,27 @@ jobs:
 #           name: dxapi-linux
 #           path: ./dxapi/bin/libdxapi-x64.a
             
-  Build-Dxapi-MacOS:
-    runs-on: macos-latest
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Check Python Location
-        run: ls -al /Library/Frameworks/Python.framework/Versions/
-      - name: Build Dxapi
-        run: make -C ./dxapi/.
-        env:
-          CC: clang
-          OS: MACOS
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-macos
-          path: |
-            ./dxapi/iclude/native/**/*.h
-            ./dxapi/bin/libdxapi-x64.a
+#   Build-Dxapi-MacOS:
+#     runs-on: macos-latest
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#         with:
+#           submodules: 'recursive'
+#       - name: Check Python Location
+#         run: ls -al /Library/Frameworks/Python.framework/Versions/
+#       - name: Build Dxapi
+#         run: make -C ./dxapi/.
+#         env:
+#           CC: clang
+#           OS: MACOS
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-macos
+#           path: |
+#             ./dxapi/iclude/native/**/*.h
+#             ./dxapi/bin/libdxapi-x64.a
             
 #   Build-Dxapi-Windows:
 #     runs-on: windows-latest
@@ -351,7 +351,7 @@ jobs:
 
   Build-Dxapi-Python27-MacOS:
     runs-on: macos-latest
-    needs: [Build-Dxapi-MacOS]
+#     needs: [Build-Dxapi-MacOS]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
