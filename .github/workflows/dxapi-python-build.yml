@@ -387,7 +387,53 @@ jobs:
 #             ./bin/release/osx/x64/py27/_dxapi.so
 #             ./bin/release/osx/x64/py27/libDecimalNative.dylib
 
-  Build-Dxapi-Python36-MacOS:
+#   Build-Dxapi-Python36-MacOS:
+#     runs-on: macos-latest
+#     needs: [Build-Dxapi-MacOS]
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#         with:
+#           submodules: 'recursive'
+#       - name: Setup Python 36
+#         run: |
+#           curl -O https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg
+#           sudo installer -pkg ./python-3.6.8-macosx10.9.pkg -target /
+#           ls -al /Library/Frameworks/Python.framework/Versions/
+#       - name: Download dxapi-macos artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-macos
+#           path: dxapi/bin
+#       - uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.6'
+#       - name: Install SWIG
+#         run: |
+#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+#           tar -xzvf swig-3.0.12.tar.gz
+#           cd swig-3.0.12
+#           ./configure
+#           make
+#           make install
+#       - name: Build Dxapi
+#         run: |
+#            make -C .
+#            cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py36/
+#         env:
+#           CC: clang
+#           OS: MACOS
+#           PYTHON_VERSION: 36
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-macos
+#           path: |
+#             ./bin/release/__init__.py
+#             ./bin/release/osx/x64/py36/_dxapi.so
+#             ./bin/release/osx/x64/py36/libDecimalNative.dylib
+
+  Build-Dxapi-Python37-MacOS:
     runs-on: macos-latest
     needs: [Build-Dxapi-MacOS]
     steps:
@@ -395,10 +441,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-      - name: Setup Python 36
+      - name: Setup Python 37
         run: |
-          curl -O https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg
-          sudo installer -pkg ./python-3.6.8-macosx10.9.pkg -target /
+          curl -O https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg
+          sudo installer -pkg ./python-3.7.9-macosx10.9.pkg -target /
           ls -al /Library/Frameworks/Python.framework/Versions/
       - name: Download dxapi-macos artifacts
         uses: actions/download-artifact@v2
@@ -407,7 +453,7 @@ jobs:
           path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.6'
+          python-version: '3.7'
       - name: Install SWIG
         run: |
           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
@@ -419,16 +465,16 @@ jobs:
       - name: Build Dxapi
         run: |
            make -C .
-           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py36/
+           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py37/
         env:
           CC: clang
           OS: MACOS
-          PYTHON_VERSION: 36
+          PYTHON_VERSION: 37
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dxapi-macos
           path: |
             ./bin/release/__init__.py
-            ./bin/release/osx/x64/py36/_dxapi.so
-            ./bin/release/osx/x64/py36/libDecimalNative.dylib
+            ./bin/release/osx/x64/py37/_dxapi.so
+            ./bin/release/osx/x64/py37/libDecimalNative.dylib
