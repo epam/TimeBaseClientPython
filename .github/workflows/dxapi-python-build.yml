@@ -398,7 +398,7 @@ jobs:
       - name: Setup Python 36
         run: |
           curl -O https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg
-          installer -pkg ./python-3.6.8-macosx10.9.pkg -target /
+          sudo installer -pkg ./python-3.6.8-macosx10.9.pkg -target /
           ls -al /Library/Frameworks/Python.framework/Versions/
 #           brew install zlib
 #           export LDFLAGS="-L/usr/local/opt/zlib/lib"
