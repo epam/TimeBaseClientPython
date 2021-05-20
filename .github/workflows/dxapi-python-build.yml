@@ -399,6 +399,7 @@ jobs:
         run: |
           curl -O https://www.python.org/ftp/python/3.6.13/Python-3.6.13.tgz
           tar -xvf Python-3.6.13.tgz
+          cd Python-3.6.13
           ./configure
           make
           make install
