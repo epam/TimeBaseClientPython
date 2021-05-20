@@ -398,6 +398,9 @@ jobs:
       - name: Setup Python 36
         run: |
           brew install zlib
+          export LDFLAGS="-L/usr/local/opt/zlib/lib"
+          export CPPFLAGS="-I/usr/local/opt/zlib/include"
+          export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
           curl -O https://www.python.org/ftp/python/3.6.13/Python-3.6.13.tgz
           tar -xvf Python-3.6.13.tgz
           cd Python-3.6.13
