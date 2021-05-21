@@ -562,8 +562,7 @@ jobs:
         with:
           name: dxapi
           path: |
-            ./dxapi/linux/x64/py27/_dxapi.so
-            ./dxapi/linux/x64/py27/libDecimalNative.so
+            ./dxapi/linux/x64/py27/*
 
 #   Release-Dxapi-Python:
 #     name: Release
