@@ -556,7 +556,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-python27-linux
-          path: ./dxapi/linux/x64/py27
+          path: ./dxapi/
 #       - name: Download dxapi-linux-python36 artifacts
 #         uses: actions/download-artifact@v2
 #         with:
@@ -571,13 +571,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-python38-linux
-          path: ./dxapi/linux/x64/py38
+          path: ./dxapi/
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dxapi
           path: |
-            ./dxapi/linux/x64/*/
+            ./dxapi
 
 #   Release-Dxapi-Python:
 #     name: Release
