@@ -1,8 +1,12 @@
 name: Release dxapi
 
 on:
+  workflow_dispatch:
   push:
     branches: [release-*, wip*]
+  pull_request:
+    types: [opened, synchronize]
+    branches:  [release-*, wip*]
     
 jobs:
 #   Prepare-Release-Python:
