@@ -556,7 +556,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-python27-linux
-          path: ./dxapi/linux
+          path: ./dxapi/
 #       - name: Download dxapi-linux-python36 artifacts
 #         uses: actions/download-artifact@v2
 #         with:
@@ -576,7 +576,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-python27-macos
-          path: ./dxapi/darwin
+          path: ./dxapi/
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
