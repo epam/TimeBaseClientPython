@@ -547,7 +547,7 @@ jobs:
   
   Gather-Artifacts-Python:
     runs-on: ubuntu-latest
-    needs: [Build-Dxapi-Linux]
+    needs: [Build-Dxapi-Python27-Linux]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
