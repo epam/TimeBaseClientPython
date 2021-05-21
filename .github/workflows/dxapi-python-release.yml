@@ -1,12 +1,8 @@
 name: Release dxapi
 
 on:
-  workflow_dispatch:
   push:
     branches: [release-*, wip*]
-  pull_request:
-    types: [opened, synchronize]
-    branches:  [release-*, wip*]
     
 jobs:
 #   Prepare-Release-Python:
@@ -47,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dxapi-linux
-          path: bin/libdxapi-x64.a
+          path: ./dxapi/bin/libdxapi-x64.a
             
 #   Build-Dxapi-Python27-Linux:
 #     runs-on: ubuntu-latest
