@@ -201,7 +201,7 @@ jobs:
         with:
           name: dxapi-macos
           path: |
-            bin/libdxapi-x64.a
+            ./dxapi/bin/libdxapi-x64.a
 
   Build-Dxapi-Python27-MacOS:
     runs-on: macos-latest
