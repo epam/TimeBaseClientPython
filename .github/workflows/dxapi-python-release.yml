@@ -545,7 +545,7 @@ jobs:
         path: |
           ./bin/release/**/*
 
-  Release-Dxapi:
+  Release-Dxapi-Python:
     name: Release
     if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
     needs: [Build-Dxapi-Linux, Build-Dxapi-Windows, Build-Dxapi-MacOS]
@@ -569,49 +569,49 @@ jobs:
           name: version-file
           path: ./version.txt
           
-  Publish-Dxapi-Windows:
-    needs: [Release-Dxapi]
-    runs-on: windows-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Download dxapi-windows artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-windows
-      - name: Download version-file artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: version-file
-      - name: Using Nuget
-        uses: nuget/setup-nuget@v1
-        with:
-          nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-      - name: Build Nuget package
-        run: |
-          $Version = get-content .\version.txt
-          echo $Version
-          nuget pack dxapi.nuspec -properties version=$Version
-          nuget push Deltix.Timebase.Api.Native.$Version.nupkg -Source $Env:NUGET_URL
-        env:
-          NUGET_URL: MY_NUGET_URL_CHANGE_IT
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-nuget-package
-          path:
-            Deltix.Timebase.Api.Native.*.nupkg
+#   Publish-Dxapi-Windows: -> for Python
+#     needs: [Release-Dxapi]
+#     runs-on: windows-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#       - name: Download dxapi-windows artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-windows
+#       - name: Download version-file artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: version-file
+#       - name: Using Nuget
+#         uses: nuget/setup-nuget@v1
+#         with:
+#           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
+#       - name: Build Nuget package
+#         run: |
+#           $Version = get-content .\version.txt
+#           echo $Version
+#           nuget pack dxapi.nuspec -properties version=$Version
+#           nuget push Deltix.Timebase.Api.Native.$Version.nupkg -Source $Env:NUGET_URL
+#         env:
+#           NUGET_URL: MY_NUGET_URL_CHANGE_IT
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-nuget-package
+#           path:
+#             Deltix.Timebase.Api.Native.*.nupkg
 
-  Cleanup-Release:
-    name: Cleanup
-    if: ${{ always() && !contains(github.event.head_commit.message, '[skip-ci]') }}
-    needs: [Publish-Dxapi-Windows]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Cleanup
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git push origin --delete workflow-$GITHUB_RUN_ID || true
+#   Cleanup-Release:
+#     name: Cleanup
+#     if: ${{ always() && !contains(github.event.head_commit.message, '[skip-ci]') }}
+#     needs: [Publish-Dxapi-Windows]
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+#       - name: Cleanup
+#         run: |
+#           git config user.name github-actions
+#           git config user.email github-actions@github.com
+#           git push origin --delete workflow-$GITHUB_RUN_ID || true
