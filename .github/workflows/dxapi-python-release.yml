@@ -577,7 +577,7 @@ jobs:
         with:
           name: dxapi
           path: |
-            ./dxapi/
+            ./dxapi/linux/x64/
 
 #   Release-Dxapi-Python:
 #     name: Release
