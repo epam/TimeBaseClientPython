@@ -612,6 +612,7 @@ jobs:
             ./dxapi/linux
             ./dxapi/darwin
             ./dxapi/windows
+            ./dxapi/__init__.py
 
 #   Release-Dxapi-Python:
 #     name: Release
