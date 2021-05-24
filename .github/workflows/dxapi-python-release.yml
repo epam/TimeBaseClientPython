@@ -607,7 +607,7 @@ jobs:
             ./dxapi/linux
             ./dxapi/darwin
             ./dxapi/windows
-            !./dxapi/windows/x64/*/_dxapi.*
+            !./dxapi/windows/x64/**/_dxapi.*
 
 #   Release-Dxapi-Python:
 #     name: Release
