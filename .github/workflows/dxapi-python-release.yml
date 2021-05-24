@@ -74,7 +74,6 @@ jobs:
         with:
           name: dxapi-python27-linux
           path: |
-            ./bin/release/__init__.py
             ./bin/release/linux/x64/py27/_dxapi.so
             ./bin/release/linux/x64/py27/libDecimalNative.so
 
@@ -110,78 +109,75 @@ jobs:
         with:
           name: dxapi-python36-linux
           path: |
-            ./bin/release/__init__.py
             ./bin/release/linux/x64/py36/_dxapi.so
             ./bin/release/linux/x64/py36/libDecimalNative.so
 
-  Build-Dxapi-Python37-Linux:
-    runs-on: ubuntu-latest
-    needs: [Build-Dxapi-Linux]
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download dxapi-linux artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-linux
-          path: dxapi/bin
-      - name: install dev python
-        run: |
-          sudo apt-get update
-          sudo apt-get install -yq software-properties-common
-          sudo add-apt-repository ppa:deadsnakes/ppa 
-          sudo apt-get update
-          sudo apt-get install python3.7-dev
-      - name: Build Dxapi
-        run: |
-          make -C .
-          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py37/
-        env: 
-          CC: clang
-          PYTHON_VERSION: 37
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-python37-linux
-          path: |
-            ./bin/release/__init__.py
-            ./bin/release/linux/x64/py37/_dxapi.so
-            ./bin/release/linux/x64/py37/libDecimalNative.so
+#   Build-Dxapi-Python37-Linux:
+#     runs-on: ubuntu-latest
+#     needs: [Build-Dxapi-Linux]
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#         with:
+#           submodules: 'recursive'
+#       - name: Download dxapi-linux artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-linux
+#           path: dxapi/bin
+#       - name: install dev python
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -yq software-properties-common
+#           sudo add-apt-repository ppa:deadsnakes/ppa 
+#           sudo apt-get update
+#           sudo apt-get install python3.7-dev
+#       - name: Build Dxapi
+#         run: |
+#           make -C .
+#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py37/
+#         env: 
+#           CC: clang
+#           PYTHON_VERSION: 37
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-python37-linux
+#           path: |
+#             ./bin/release/linux/x64/py37/_dxapi.so
+#             ./bin/release/linux/x64/py37/libDecimalNative.so
 
-  Build-Dxapi-Python38-Linux:
-    runs-on: ubuntu-latest
-    needs: [Build-Dxapi-Linux]
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download dxapi-linux artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-linux
-          path: dxapi/bin
-      - name: install dev python
-        run: |
-          sudo apt-get update
-          sudo apt install -y python3.8-dev
-      - name: Build Dxapi
-        run: |
-          make -C .
-          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
-        env: 
-          CC: clang
-          PYTHON_VERSION: 38
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-python38-linux
-          path: |
-            ./bin/release/__init__.py
-            ./bin/release/linux/x64/py38/_dxapi.so
-            ./bin/release/linux/x64/py38/libDecimalNative.so
+#   Build-Dxapi-Python38-Linux:
+#     runs-on: ubuntu-latest
+#     needs: [Build-Dxapi-Linux]
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#         with:
+#           submodules: 'recursive'
+#       - name: Download dxapi-linux artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-linux
+#           path: dxapi/bin
+#       - name: install dev python
+#         run: |
+#           sudo apt-get update
+#           sudo apt install -y python3.8-dev
+#       - name: Build Dxapi
+#         run: |
+#           make -C .
+#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
+#         env: 
+#           CC: clang
+#           PYTHON_VERSION: 38
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-python38-linux
+#           path: |
+#             ./bin/release/linux/x64/py38/_dxapi.so
+#             ./bin/release/linux/x64/py38/libDecimalNative.so
             
   Build-Dxapi-MacOS:
     runs-on: macos-latest
@@ -240,7 +236,6 @@ jobs:
         with:
           name: dxapi-python27-macos
           path: |
-            ./bin/release/__init__.py
             ./bin/release/darwin/x64/py27/_dxapi.so
             ./bin/release/darwin/x64/py27/libDecimalNative.dylib
 
@@ -285,99 +280,96 @@ jobs:
         with:
           name: dxapi-python36-macos
           path: |
-            ./bin/release/__init__.py
             ./bin/release/darwin/x64/py36/_dxapi.so
             ./bin/release/darwin/x64/py36/libDecimalNative.dylib
 
-  Build-Dxapi-Python37-MacOS:
-    runs-on: macos-latest
-    needs: [Build-Dxapi-MacOS]
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download dxapi-macos artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-macos
-          path: dxapi/bin
-      - name: Setup Python 37
-        run: |
-          curl -O https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg
-          sudo installer -pkg ./python-3.7.9-macosx10.9.pkg -target /
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.7'
-      - name: Install SWIG
-        run: |
-          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
-          tar -xzvf swig-3.0.12.tar.gz
-          cd swig-3.0.12
-          ./configure
-          make
-          make install
-      - name: Build Dxapi
-        run: |
-           make -C .
-           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py37/
-        env:
-          CC: clang
-          OS: MACOS
-          PYTHON_VERSION: 37
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-python37-macos
-          path: |
-            ./bin/release/__init__.py
-            ./bin/release/darwin/x64/py37/_dxapi.so
-            ./bin/release/darwin/x64/py37/libDecimalNative.dylib
+#   Build-Dxapi-Python37-MacOS:
+#     runs-on: macos-latest
+#     needs: [Build-Dxapi-MacOS]
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#         with:
+#           submodules: 'recursive'
+#       - name: Download dxapi-macos artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-macos
+#           path: dxapi/bin
+#       - name: Setup Python 37
+#         run: |
+#           curl -O https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg
+#           sudo installer -pkg ./python-3.7.9-macosx10.9.pkg -target /
+#       - uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.7'
+#       - name: Install SWIG
+#         run: |
+#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+#           tar -xzvf swig-3.0.12.tar.gz
+#           cd swig-3.0.12
+#           ./configure
+#           make
+#           make install
+#       - name: Build Dxapi
+#         run: |
+#            make -C .
+#            cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py37/
+#         env:
+#           CC: clang
+#           OS: MACOS
+#           PYTHON_VERSION: 37
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-python37-macos
+#           path: |
+#             ./bin/release/darwin/x64/py37/_dxapi.so
+#             ./bin/release/darwin/x64/py37/libDecimalNative.dylib
 
-  Build-Dxapi-Python38-MacOS:
-    runs-on: macos-latest
-    needs: [Build-Dxapi-MacOS]
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download dxapi-macos artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-macos
-          path: dxapi/bin
-      - name: Setup Python 38
-        run: |
-          curl -O https://www.python.org/ftp/python/3.8.10/python-3.8.10-macosx10.9.pkg
-          sudo installer -pkg ./python-3.8.10-macosx10.9.pkg -target /
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - name: Install SWIG
-        run: |
-          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
-          tar -xzvf swig-3.0.12.tar.gz
-          cd swig-3.0.12
-          ./configure
-          make
-          make install
-      - name: Build Dxapi
-        run: |
-           make -C .
-           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py38/
-        env:
-          CC: clang
-          OS: MACOS
-          PYTHON_VERSION: 38
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-python38-macos
-          path: |
-            ./bin/release/__init__.py
-            ./bin/release/darwin/x64/py38/_dxapi.so
-            ./bin/release/darwin/x64/py38/libDecimalNative.dylib
+#   Build-Dxapi-Python38-MacOS:
+#     runs-on: macos-latest
+#     needs: [Build-Dxapi-MacOS]
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#         with:
+#           submodules: 'recursive'
+#       - name: Download dxapi-macos artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-macos
+#           path: dxapi/bin
+#       - name: Setup Python 38
+#         run: |
+#           curl -O https://www.python.org/ftp/python/3.8.10/python-3.8.10-macosx10.9.pkg
+#           sudo installer -pkg ./python-3.8.10-macosx10.9.pkg -target /
+#       - uses: actions/setup-python@v2
+#         with:
+#           python-version: '3.8'
+#       - name: Install SWIG
+#         run: |
+#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+#           tar -xzvf swig-3.0.12.tar.gz
+#           cd swig-3.0.12
+#           ./configure
+#           make
+#           make install
+#       - name: Build Dxapi
+#         run: |
+#            make -C .
+#            cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py38/
+#         env:
+#           CC: clang
+#           OS: MACOS
+#           PYTHON_VERSION: 38
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-python38-macos
+#           path: |
+#             ./bin/release/darwin/x64/py38/_dxapi.so
+#             ./bin/release/darwin/x64/py38/libDecimalNative.dylib
             
   Build-Dxapi-Windows:
     runs-on: windows-latest
@@ -469,79 +461,79 @@ jobs:
         name: dxapi-windows-python36
         path: ./bin/release/**/*
 
-  Build-Dxapi-Python37-Windows:
-    runs-on: windows-latest
-    needs: [Build-Dxapi-Windows]
-    steps:
-    - name: Check out repository code
-      uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-    - name: Download dxapi-windows artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: dxapi-windows
-        path: dxapi/bin
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.7'
-    - name: Use MSBuild
-      uses: microsoft/setup-msbuild@v1.0.2
-    - name: Build Solution
-      run: |
-        Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-        $pwd = pwd
-        $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-        $Env:SWIG_HOME
-        python --version
-        python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON37_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON37_HOME
-        msbuild ./dxapi-python.sln /p:configuration=Release37 /p:platform=x64 /t:rebuild
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: dxapi-windows-python37
-        path: ./bin/release/**/*
+#   Build-Dxapi-Python37-Windows:
+#     runs-on: windows-latest
+#     needs: [Build-Dxapi-Windows]
+#     steps:
+#     - name: Check out repository code
+#       uses: actions/checkout@v2
+#       with:
+#         submodules: 'recursive'
+#     - name: Download dxapi-windows artifacts
+#       uses: actions/download-artifact@v2
+#       with:
+#         name: dxapi-windows
+#         path: dxapi/bin
+#     - uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.7'
+#     - name: Use MSBuild
+#       uses: microsoft/setup-msbuild@v1.0.2
+#     - name: Build Solution
+#       run: |
+#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
+#         $pwd = pwd
+#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
+#         $Env:SWIG_HOME
+#         python --version
+#         python -c "import os, sys; print(os.path.dirname(sys.executable))"
+#         $Env:PYTHON37_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+#         $Env:PYTHON37_HOME
+#         msbuild ./dxapi-python.sln /p:configuration=Release37 /p:platform=x64 /t:rebuild
+#     - name: Archive artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: dxapi-windows-python37
+#         path: ./bin/release/**/*
 
-  Build-Dxapi-Python38-Windows:
-    runs-on: windows-latest
-    needs: [Build-Dxapi-Windows]
-    steps:
-    - name: Check out repository code
-      uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-    - name: Download dxapi-windows artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: dxapi-windows
-        path: dxapi/bin
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-    - name: Use MSBuild
-      uses: microsoft/setup-msbuild@v1.0.2
-    - name: Build Solution
-      run: |
-        Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-        $pwd = pwd
-        $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-        $Env:SWIG_HOME
-        python --version
-        python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON38_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON38_HOME
-        msbuild ./dxapi-python.sln /p:configuration=Release38 /p:platform=x64 /t:rebuild
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: dxapi-windows-python38
-        path: ./bin/release/**/*
+#   Build-Dxapi-Python38-Windows:
+#     runs-on: windows-latest
+#     needs: [Build-Dxapi-Windows]
+#     steps:
+#     - name: Check out repository code
+#       uses: actions/checkout@v2
+#       with:
+#         submodules: 'recursive'
+#     - name: Download dxapi-windows artifacts
+#       uses: actions/download-artifact@v2
+#       with:
+#         name: dxapi-windows
+#         path: dxapi/bin
+#     - uses: actions/setup-python@v2
+#       with:
+#         python-version: '3.8'
+#     - name: Use MSBuild
+#       uses: microsoft/setup-msbuild@v1.0.2
+#     - name: Build Solution
+#       run: |
+#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
+#         $pwd = pwd
+#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
+#         $Env:SWIG_HOME
+#         python --version
+#         python -c "import os, sys; print(os.path.dirname(sys.executable))"
+#         $Env:PYTHON38_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+#         $Env:PYTHON38_HOME
+#         msbuild ./dxapi-python.sln /p:configuration=Release38 /p:platform=x64 /t:rebuild
+#     - name: Archive artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: dxapi-windows-python38
+#         path: ./bin/release/**/*
   
   Gather-Artifacts-Python:
     runs-on: ubuntu-latest
-    needs: [Build-Dxapi-Python27-Linux, Build-Dxapi-Python36-Linux, Build-Dxapi-Python37-Linux, Build-Dxapi-Python38-Linux, Build-Dxapi-Python27-MacOS, Build-Dxapi-Python36-MacOS, Build-Dxapi-Python37-MacOS, Build-Dxapi-Python38-MacOS, Build-Dxapi-Python27-Windows, Build-Dxapi-Python36-Windows, Build-Dxapi-Python37-Windows, Build-Dxapi-Python38-Windows]
+    needs: [Build-Dxapi-Python27-Linux, Build-Dxapi-Python36-Linux, Build-Dxapi-Python27-MacOS, Build-Dxapi-Python36-MacOS, Build-Dxapi-Python27-Windows, Build-Dxapi-Python36-Windows]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -557,16 +549,16 @@ jobs:
         with:
           name: dxapi-python36-linux
           path: ./dxapi/
-      - name: Download dxapi-linux-python37 artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-python37-linux
-          path: ./dxapi/
-      - name: Download dxapi-linux-python38 artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-python38-linux
-          path: ./dxapi/
+#       - name: Download dxapi-linux-python37 artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-python37-linux
+#           path: ./dxapi/
+#       - name: Download dxapi-linux-python38 artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-python38-linux
+#           path: ./dxapi/
       - name: Download dxapi-macos-python27 artifacts
         uses: actions/download-artifact@v2
         with:
@@ -577,16 +569,16 @@ jobs:
         with:
           name: dxapi-python36-macos
           path: ./dxapi/
-      - name: Download dxapi-macos-python37 artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-python37-macos
-          path: ./dxapi/
-      - name: Download dxapi-macos-python38 artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-python38-macos
-          path: ./dxapi/
+#       - name: Download dxapi-macos-python37 artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-python37-macos
+#           path: ./dxapi/
+#       - name: Download dxapi-macos-python38 artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-python38-macos
+#           path: ./dxapi/
       - name: Download dxapi-windows-python27 artifacts
         uses: actions/download-artifact@v2
         with:
@@ -597,16 +589,16 @@ jobs:
         with:
           name: dxapi-windows-python36
           path: ./dxapi/
-      - name: Download dxapi-windows-python37 artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-windows-python37
-          path: ./dxapi/
-      - name: Download dxapi-windows-python38 artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-windows-python38
-          path: ./dxapi/
+#       - name: Download dxapi-windows-python37 artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-windows-python37
+#           path: ./dxapi/
+#       - name: Download dxapi-windows-python38 artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-windows-python38
+#           path: ./dxapi/
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -615,6 +607,7 @@ jobs:
             ./dxapi/linux
             ./dxapi/darwin
             ./dxapi/windows
+            !./dxapi/windows/x64/*/_dxapi.*
 
 #   Release-Dxapi-Python:
 #     name: Release
