@@ -397,8 +397,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows
-        path: |
-          ./dxapi/bin/dxapi-x64.lib
+        path: ./dxapi/bin/dxapi-x64.lib
 
   Build-Dxapi-Python27-Windows:
     runs-on: windows-latest
@@ -433,8 +432,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows-python27
-        path: |
-          ./bin/release/**/*
+        path: ./bin/release/**/*
 
   Build-Dxapi-Python36-Windows:
     runs-on: windows-latest
@@ -469,8 +467,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows-python36
-        path: |
-          ./bin/release/**/*
+        path: ./bin/release/**/*
 
   Build-Dxapi-Python37-Windows:
     runs-on: windows-latest
@@ -505,8 +502,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows-python37
-        path: |
-          ./bin/release/**/*
+        path: ./bin/release/**/*
 
   Build-Dxapi-Python38-Windows:
     runs-on: windows-latest
@@ -541,8 +537,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows-python38
-        path: |
-          ./bin/release/**/*
+        path: ./bin/release/**/*
   
   Gather-Artifacts-Python:
     runs-on: ubuntu-latest
