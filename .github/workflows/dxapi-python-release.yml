@@ -424,7 +424,10 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows-python27
-        path: ./bin/release/**/*
+        path: |
+          ./bin/release/__init__.py
+          ./bin/release/**/*.pyd
+          ./bin/release/**/*.dll
 
   Build-Dxapi-Python36-Windows:
     runs-on: windows-latest
@@ -459,7 +462,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows-python36
-        path: ./bin/release/**/*
+        path: |
+          ./bin/release/**/*.pyd
+          ./bin/release/**/*.dll
 
 #   Build-Dxapi-Python37-Windows:
 #     runs-on: windows-latest
@@ -607,7 +612,6 @@ jobs:
             ./dxapi/linux
             ./dxapi/darwin
             ./dxapi/windows
-            !./dxapi/windows/**/_dxapi.*
 
 #   Release-Dxapi-Python:
 #     name: Release
