@@ -608,13 +608,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dxapi
-          path: |
-            ./dxapi/linux/**/*.so
-            ./dxapi/darwin/**/*.so
-            ./dxapi/darwin/**/*.dylib
-            ./dxapi/windows/**/*.pyd
-            ./dxapi/windows/**/*.dll
-            ./dxapi/__init__.py
+          path: ./dxapi/
 
 #   Release-Dxapi-Python:
 #     name: Release
