@@ -588,12 +588,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-windows-python27
-          path: ./dxapi/windows/x64/py27/
+          path: ./dxapi/
       - name: Download dxapi-windows-python36 artifacts
         uses: actions/download-artifact@v2
         with:
           name: dxapi-windows-python36
-          path: ./dxapi/windows/x64/py36/
+          path: ./dxapi/
 #       - name: Download dxapi-windows-python37 artifacts
 #         uses: actions/download-artifact@v2
 #         with:
@@ -612,8 +612,8 @@ jobs:
             ./dxapi/__init__.py
             ./dxapi/linux/
             ./dxapi/darwin/
-            ./dxapi/windows/*.pyd
-            ./dxapi/windows/*.dll
+            ./dxapi/windows/**/*.pyd
+            ./dxapi/windows/**/*.dll
 
 #   Release-Dxapi-Python:
 #     name: Release
