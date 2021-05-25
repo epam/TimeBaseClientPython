@@ -609,8 +609,8 @@ jobs:
         with:
           name: dxapi
           path: |
-            ./dxapi/**/*.so
-            ./dxapi/**/*.dylib
+            ./dxapi/linux/**/*.so
+            ./dxapi/darwin/**/*
             ./dxapi/**/*.pyd
             ./dxapi/**/*.dll
             ./dxapi/__init__.py
