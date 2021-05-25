@@ -499,7 +499,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows-python37
-        path: ./bin/release/**/*
+        path: |
+          ./bin/release/**/*.pyd
+          ./bin/release/**/*.dll
 
   Build-Dxapi-Python38-Windows:
     runs-on: windows-latest
@@ -534,7 +536,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: dxapi-windows-python38
-        path: ./bin/release/**/*
+        path: |
+          ./bin/release/**/*.pyd
+          ./bin/release/**/*.dll
   
   Gather-Artifacts-Python:
     runs-on: ubuntu-latest
