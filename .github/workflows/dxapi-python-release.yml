@@ -609,9 +609,10 @@ jobs:
         with:
           name: dxapi
           path: |
-            ./dxapi/linux/**/*
-            ./dxapi/darwin/**/*
-            ./dxapi/windows/**/*
+            ./dxapi/**/*.so
+            ./dxapi/**/*.dylib
+            ./dxapi/**/*.pyd
+            ./dxapi/**/*.dll
             ./dxapi/__init__.py
 
 #   Release-Dxapi-Python:
