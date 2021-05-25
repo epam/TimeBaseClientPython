@@ -548,12 +548,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-python27-linux
-          path: ./dxapi/
+          path: ./dxapi/linux/x64/py27/
       - name: Download dxapi-linux-python36 artifacts
         uses: actions/download-artifact@v2
         with:
           name: dxapi-python36-linux
-          path: ./dxapi/
+          path: ./dxapi/linux/x64/py36/
 #       - name: Download dxapi-linux-python37 artifacts
 #         uses: actions/download-artifact@v2
 #         with:
@@ -568,12 +568,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dxapi-python27-macos
-          path: ./dxapi/
+          path: ./dxapi/darwin/x64/py27/
       - name: Download dxapi-macos-python36 artifacts
         uses: actions/download-artifact@v2
         with:
           name: dxapi-python36-macos
-          path: ./dxapi/
+          path: ./dxapi/darwin/x64/py36/
 #       - name: Download dxapi-macos-python37 artifacts
 #         uses: actions/download-artifact@v2
 #         with:
