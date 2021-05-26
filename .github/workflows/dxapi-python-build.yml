@@ -9,29 +9,29 @@ on:
     branches:  [main, wip-workflow]
     
 jobs:
-  build-dxapi:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        include:
-          - os: macos-latest
-            env_os: MACOS
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Build Dxapi
-        run: make -C ./dxapi/.
-        env: 
-          CC: clang
-          OS: ${{ matrix.env_os }}
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-${{ matrix.os }}
-          path: ./dxapi/bin/libdxapi-x64.a
+#   build-dxapi:
+#     runs-on: ${{ matrix.os }}
+#     strategy:
+#       matrix:
+#         os: [ubuntu-latest, macos-latest]
+#         include:
+#           - os: macos-latest
+#             env_os: MACOS
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#         with:
+#           submodules: 'recursive'
+#       - name: Build Dxapi
+#         run: make -C ./dxapi/.
+#         env: 
+#           CC: clang
+#           OS: ${{ matrix.env_os }}
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-${{ matrix.os }}
+#           path: ./dxapi/bin/libdxapi-x64.a
           
   build-windows-dxapi:
     runs-on: windows-latest
@@ -50,197 +50,113 @@ jobs:
         name: dxapi-windows
         path: ./dxapi/bin/dxapi-x64.lib
         
-  build-dxapi-python-linux:
-    runs-on: ubuntu-latest
-    needs: [build-dxapi]
+#   build-dxapi-python-linux:
+#     runs-on: ubuntu-latest
+#     needs: [build-dxapi]
+#     strategy:
+#       matrix:
+#         py: ['2.7', '3.6', '3.7', '3.8']
+#         include:
+#           - py: '2.7'
+#             py_env: '27'
+#           - py: '3.6'
+#             py_env: '36'
+#           - py: '3.7'
+#             py_env: '37'
+#           - py: '3.8'
+#             py_env: '38'
+#     steps:
+#       - name: Check out repository code
+#         uses: actions/checkout@v2
+#         with:
+#           submodules: 'recursive'
+#       - name: Download dxapi-linux artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-ubuntu-latest
+#           path: dxapi/bin
+#       - name: install dev python 2.7 & 3.8
+#         if: ${{ matrix.py == '2.7' || matrix.py == '3.8' }}
+#         run: |
+#           sudo apt-get update
+#           sudo apt install -y python${{ matrix.py }}-dev
+#       - name: install dev python 3.6 & 3.7
+#         if: ${{ matrix.py == '3.6' || matrix.py == '3.7' }}
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -yq software-properties-common
+#           sudo add-apt-repository ppa:deadsnakes/ppa
+#           sudo apt-get update
+#           sudo apt-get install python${{ matrix.py }}-dev
+#       - name: Build Dxapi
+#         run: |
+#           make -C .
+#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
+#         env: 
+#           CC: clang
+#           PYTHON_VERSION: ${{ matrix.py_env }}
+#       - name: Archive artifacts
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: dxapi-python${{ matrix.py_env }}-linux
+#           path: |
+#             ./bin/release/__init__.py
+#             ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
+#             ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
+
+  build-dxapi-python-windows:
+    runs-on: windows-latest
+    needs: [build-windows-dxapi]
     strategy:
       matrix:
         py: ['2.7', '3.6', '3.7', '3.8']
         include:
           - py: '2.7'
             py_env: '27'
+            release: Release27
           - py: '3.6'
             py_env: '36'
+            release: Release
           - py: '3.7'
             py_env: '37'
+            release: Release37
           - py: '3.8'
             py_env: '38'
+            release: Release38
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download dxapi-linux artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-ubuntu-latest
-          path: dxapi/bin
-      - name: install dev python 2.7 & 3.8
-        if: ${{ matrix.py == '2.7' || matrix.py == '3.8' }}
-        run: |
-          sudo apt-get update
-          sudo apt install -y python${{ matrix.py }}-dev
-      - name: install dev python 3.6 & 3.7
-        if: ${{ matrix.py == '3.6' || matrix.py == '3.7' }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -yq software-properties-common
-          sudo add-apt-repository ppa:deadsnakes/ppa
-          sudo apt-get update
-          sudo apt-get install python${{ matrix.py }}-dev
-      - name: Build Dxapi
-        run: |
-          make -C .
-          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
-        env: 
-          CC: clang
-          PYTHON_VERSION: ${{ matrix.py_env }}
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-python${{ matrix.py_env }}-linux
-          path: |
-            ./bin/release/__init__.py
-            ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
-            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
-
-#   Build-Dxapi-Python38-Linux:
-#     runs-on: ubuntu-latest
-#     needs: [Build-Dxapi-Linux]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: dxapi/bin
-#       - name: install dev python
-#         run: |
-#           sudo apt-get update
-#           sudo apt install -y python3.8-dev
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py38/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: 38
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python38-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py38/_dxapi.so
-#             ./bin/release/linux/x64/py38/libDecimalNative.so
-
-#   Build-Dxapi-Python27-Linux:
-#     runs-on: ubuntu-latest
-#     needs: [Build-Dxapi-Linux]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: dxapi/bin
-#       - name: install dev python
-#         run: |
-#           sudo apt-get update
-#           sudo apt install -y python2.7-dev
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py27/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: 27
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python27-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py27/_dxapi.so
-#             ./bin/release/linux/x64/py27/libDecimalNative.so
-    
-#   Build-Dxapi-Python36-Linux:
-#     runs-on: ubuntu-latest
-#     needs: [Build-Dxapi-Linux]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: dxapi/bin
-#       - name: install dev python
-#         run: |
-#           sudo apt-get update
-#           sudo apt-get install -yq software-properties-common
-#           sudo add-apt-repository ppa:deadsnakes/ppa 
-#           sudo apt-get update
-#           sudo apt-get install python3.6-dev
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py36/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: 36
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python36-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py36/_dxapi.so
-#             ./bin/release/linux/x64/py36/libDecimalNative.so
-
-#   Build-Dxapi-Python37-Linux:
-#     runs-on: ubuntu-latest
-#     needs: [Build-Dxapi-Linux]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: dxapi/bin
-#       - name: install dev python
-#         run: |
-#           sudo apt-get update
-#           sudo apt-get install -yq software-properties-common
-#           sudo add-apt-repository ppa:deadsnakes/ppa 
-#           sudo apt-get update
-#           sudo apt-get install python3.7-dev
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py37/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: 37
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python37-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py37/_dxapi.so
-#             ./bin/release/linux/x64/py37/libDecimalNative.so
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: Download dxapi-windows artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: dxapi-windows
+        path: dxapi/bin
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '${{ matrix.py }}'
+    - name: Use MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Build Solution
+      run: |
+        Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
+        $pwd = pwd
+        $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
+        $Env:SWIG_HOME
+        python --version
+        python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON${{ matrix.py_env }}_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON${{ matrix.py_env }}_HOME
+        msbuild ./dxapi-python.sln /p:configuration=${{ matrix.release }} /p:platform=x64 /t:rebuild
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dxapi-windows
+        path: |
+          ./bin/release/__init__.py
+          ./bin/release/windows/x64/py${{ matrix.py_env }}/_dxapi.pyd
+          ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
 
 #   Build-Dxapi-Python38-Windows:
 #     runs-on: windows-latest
