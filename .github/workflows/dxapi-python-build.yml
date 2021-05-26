@@ -9,46 +9,46 @@ on:
     branches:  [main, wip-workflow]
     
 jobs:
-#   build-dxapi:
-#     runs-on: ${{ matrix.os }}
-#     strategy:
-#       matrix:
-#         os: [ubuntu-latest, macos-latest]
-#         include:
-#           - os: macos-latest
-#             env_os: MACOS
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Build Dxapi
-#         run: make -C ./dxapi/.
-#         env: 
-#           CC: clang
-#           OS: ${{ matrix.env_os }}
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-${{ matrix.os }}
-#           path: ./dxapi/bin/libdxapi-x64.a
-          
-  build-windows-dxapi:
-    runs-on: windows-latest
+  build-dxapi:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: macos-latest
+            env_os: MACOS
     steps:
-    - name: Check out repository code
-      uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-    - name: Use MSBuild
-      uses: microsoft/setup-msbuild@v1.0.2
-    - name: Build Solution
-      run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: dxapi-windows
-        path: ./dxapi/bin/dxapi-x64.lib
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Build Dxapi
+        run: make -C ./dxapi/.
+        env: 
+          CC: clang
+          OS: ${{ matrix.env_os }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-${{ matrix.os }}
+          path: ./dxapi/bin/libdxapi-x64.a
+          
+#   build-windows-dxapi:
+#     runs-on: windows-latest
+#     steps:
+#     - name: Check out repository code
+#       uses: actions/checkout@v2
+#       with:
+#         submodules: 'recursive'
+#     - name: Use MSBuild
+#       uses: microsoft/setup-msbuild@v1.0.2
+#     - name: Build Solution
+#       run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
+#     - name: Archive artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: dxapi-windows
+#         path: ./dxapi/bin/dxapi-x64.lib
         
 #   build-dxapi-python-linux:
 #     runs-on: ubuntu-latest
@@ -98,209 +98,126 @@ jobs:
 #       - name: Archive artifacts
 #         uses: actions/upload-artifact@v2
 #         with:
-#           name: dxapi-python${{ matrix.py_env }}-linux
+#           name: dxapi-python-linux
 #           path: |
 #             ./bin/release/__init__.py
 #             ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
 #             ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
 
-  build-dxapi-python-windows:
-    runs-on: windows-latest
-    needs: [build-windows-dxapi]
+#   build-dxapi-python-windows:
+#     runs-on: windows-latest
+#     needs: [build-windows-dxapi]
+#     strategy:
+#       matrix:
+#         py: ['2.7', '3.6', '3.7', '3.8']
+#         include:
+#           - py: '2.7'
+#             py_env: '27'
+#             release: Release27
+#           - py: '3.6'
+#             py_env: '36'
+#             release: Release
+#           - py: '3.7'
+#             py_env: '37'
+#             release: Release37
+#           - py: '3.8'
+#             py_env: '38'
+#             release: Release38
+#     steps:
+#     - name: Check out repository code
+#       uses: actions/checkout@v2
+#       with:
+#         submodules: 'recursive'
+#     - name: Download dxapi-windows artifacts
+#       uses: actions/download-artifact@v2
+#       with:
+#         name: dxapi-windows
+#         path: dxapi/bin
+#     - uses: actions/setup-python@v2
+#       with:
+#         python-version: '${{ matrix.py }}'
+#     - name: Use MSBuild
+#       uses: microsoft/setup-msbuild@v1.0.2
+#     - name: Build Solution
+#       run: |
+#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
+#         $pwd = pwd
+#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
+#         $Env:SWIG_HOME
+#         python --version
+#         python -c "import os, sys; print(os.path.dirname(sys.executable))"
+#         $Env:PYTHON${{ matrix.py_env }}_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+#         $Env:PYTHON${{ matrix.py_env }}_HOME
+#         msbuild ./dxapi-python.sln /p:configuration=${{ matrix.release }} /p:platform=x64 /t:rebuild
+#     - name: Archive artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: dxapi-python-windows
+#         path: |
+#           ./bin/release/__init__.py
+#           ./bin/release/windows/x64/py${{ matrix.py_env }}/_dxapi.pyd
+#           ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
+
+  build-dxapi-python-macos:
+    runs-on: macos-latest
+    needs: [build-dxapi]
     strategy:
       matrix:
         py: ['2.7', '3.6', '3.7', '3.8']
         include:
           - py: '2.7'
             py_env: '27'
-            release: Release27
           - py: '3.6'
             py_env: '36'
-            release: Release
+            py_v: '3.6.8'
           - py: '3.7'
             py_env: '37'
-            release: Release37
+            py_v: '3.7.9'
           - py: '3.8'
             py_env: '38'
-            release: Release38
+            py_v: '3.8.10'
     steps:
-    - name: Check out repository code
-      uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-    - name: Download dxapi-windows artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: dxapi-windows
-        path: dxapi/bin
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '${{ matrix.py }}'
-    - name: Use MSBuild
-      uses: microsoft/setup-msbuild@v1.0.2
-    - name: Build Solution
-      run: |
-        Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-        $pwd = pwd
-        $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-        $Env:SWIG_HOME
-        python --version
-        python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON${{ matrix.py_env }}_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-        $Env:PYTHON${{ matrix.py_env }}_HOME
-        msbuild ./dxapi-python.sln /p:configuration=${{ matrix.release }} /p:platform=x64 /t:rebuild
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: dxapi-windows
-        path: |
-          ./bin/release/__init__.py
-          ./bin/release/windows/x64/py${{ matrix.py_env }}/_dxapi.pyd
-          ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
-
-#   Build-Dxapi-Python38-Windows:
-#     runs-on: windows-latest
-#     needs: [Build-Dxapi-Windows]
-#     steps:
-#     - name: Check out repository code
-#       uses: actions/checkout@v2
-#       with:
-#         submodules: 'recursive'
-#     - name: Download dxapi-windows artifacts
-#       uses: actions/download-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: dxapi/bin
-#     - uses: actions/setup-python@v2
-#       with:
-#         python-version: '3.8'
-#     - name: Use MSBuild
-#       uses: microsoft/setup-msbuild@v1.0.2
-#     - name: Build Solution
-#       run: |
-#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-#         $pwd = pwd
-#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-#         $Env:SWIG_HOME
-#         python --version
-#         python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON38_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON38_HOME
-#         msbuild ./dxapi-python.sln /p:configuration=Release38 /p:platform=x64 /t:rebuild
-#     - name: Archive artifacts
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: |
-#           ./bin/release/**/*
-
-#   Build-Dxapi-Python27-Windows:
-#     runs-on: windows-latest
-#     needs: [Build-Dxapi-Windows]
-#     steps:
-#     - name: Check out repository code
-#       uses: actions/checkout@v2
-#       with:
-#         submodules: 'recursive'
-#     - name: Download dxapi-windows artifacts
-#       uses: actions/download-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: dxapi/bin
-#     - uses: actions/setup-python@v2
-#       with:
-#         python-version: '2.7'
-#     - name: Use MSBuild
-#       uses: microsoft/setup-msbuild@v1.0.2
-#     - name: Build Solution
-#       run: |
-#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-#         $pwd = pwd
-#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-#         $Env:SWIG_HOME
-#         python --version
-#         python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON27_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON27_HOME
-#         msbuild ./dxapi-python.sln /p:configuration=Release27 /p:platform=x64 /t:rebuild
-#     - name: Archive artifacts
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: |
-#           ./bin/release/**/*
-
-#   Build-Dxapi-Python36-Windows:
-#     runs-on: windows-latest
-#     needs: [Build-Dxapi-Windows]
-#     steps:
-#     - name: Check out repository code
-#       uses: actions/checkout@v2
-#       with:
-#         submodules: 'recursive'
-#     - name: Download dxapi-windows artifacts
-#       uses: actions/download-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: dxapi/bin
-#     - uses: actions/setup-python@v2
-#       with:
-#         python-version: '3.6'
-#     - name: Use MSBuild
-#       uses: microsoft/setup-msbuild@v1.0.2
-#     - name: Build Solution
-#       run: |
-#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-#         $pwd = pwd
-#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-#         $Env:SWIG_HOME
-#         python --version
-#         python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON36_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON36_HOME
-#         msbuild ./dxapi-python.sln /p:configuration=Release /p:platform=x64 /t:rebuild
-#     - name: Archive artifacts
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: |
-#           ./bin/release/**/*
-          
-#   Build-Dxapi-Python37-Windows:
-#     runs-on: windows-latest
-#     needs: [Build-Dxapi-Windows]
-#     steps:
-#     - name: Check out repository code
-#       uses: actions/checkout@v2
-#       with:
-#         submodules: 'recursive'
-#     - name: Download dxapi-windows artifacts
-#       uses: actions/download-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: dxapi/bin
-#     - uses: actions/setup-python@v2
-#       with:
-#         python-version: '3.7'
-#     - name: Use MSBuild
-#       uses: microsoft/setup-msbuild@v1.0.2
-#     - name: Build Solution
-#       run: |
-#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-#         $pwd = pwd
-#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-#         $Env:SWIG_HOME
-#         python --version
-#         python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON37_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON37_HOME
-#         msbuild ./dxapi-python.sln /p:configuration=Release37 /p:platform=x64 /t:rebuild
-#     - name: Archive artifacts
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: |
-#           ./bin/release/**/*
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-macos artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-macos
+          path: dxapi/bin
+      - name: Setup Python ${{ matrix.py_env }}
+        if: ${{ matrix.py != '2.7' }}
+        run: |
+          curl -O https://www.python.org/ftp/python/${{ matrix.py_v }}/python-${{ matrix.py_v }}-macosx10.9.pkg
+          sudo installer -pkg ./python-${{ matrix.py_v }}-macosx10.9.pkg -target /
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.py }}
+      - name: Install SWIG
+        run: |
+          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+          tar -xzvf swig-3.0.12.tar.gz
+          cd swig-3.0.12
+          ./configure
+          make
+          make install
+      - name: Build Dxapi
+        run: |
+           make -C .
+           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
+        env:
+          CC: clang
+          OS: MACOS
+          PYTHON_VERSION: ${{ matrix.py_env }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-python-macos
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/osx/x64/py${{ matrix.py_env }}/_dxapi.so
+            ./bin/release/osx/x64/py${{ matrix.py_env }}/libDecimalNative.dylib
 
 #   Build-Dxapi-Python27-MacOS:
 #     runs-on: macos-latest
@@ -355,7 +272,6 @@ jobs:
 #         run: |
 #           curl -O https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg
 #           sudo installer -pkg ./python-3.6.8-macosx10.9.pkg -target /
-#           ls -al /Library/Frameworks/Python.framework/Versions/
 #       - name: Download dxapi-macos artifacts
 #         uses: actions/download-artifact@v2
 #         with:
