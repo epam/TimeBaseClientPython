@@ -9,96 +9,96 @@ on:
     branches:  [main, wip-workflow]
     
 jobs:
-  build-lib:
+  build-dxapi:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
         include:
           - os: macos-latest
             env_os: MACOS
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Build
-        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
+      - name: Build Dxapi
         run: make -C ./dxapi/.
-        env:
+        env: 
           CC: clang
           OS: ${{ matrix.env_os }}
-      - name: Use MSBuild
-        if: ${{ matrix.os == 'windows-latest' }}
-        uses: microsoft/setup-msbuild@v1.0.2
-      - name: Build Solution
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: msbuild dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
-      - name: Archive artifacts linux-mac
-        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
+      - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
           name: dxapi-${{ matrix.os }}
           path: ./dxapi/bin/libdxapi-x64.a
-      - name: Archive artifacts win
-        if: ${{ matrix.os == 'windows-latest' }}
+          
+  build-windows-dxapi:
+    runs-on: windows-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - name: Use MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Build Solution
+      run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dxapi-windows
+        path: ./dxapi/bin/dxapi-x64.lib
+        
+  build-dxapi-python-linux:
+    runs-on: ubuntu-latest
+    needs: [build-dxapi]
+    strategy:
+      matrix:
+        py: ['2.7', '3.6', '3.7', '3.8']
+        include:
+          - py: '2.7'
+            py_env: '27'
+          - py: '3.6'
+            py_env: '36'
+          - py: '3.7'
+            py_env: '37'
+          - py: '3.8'
+            py_env: '38'
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-linux-ubuntu-latest
+          path: dxapi/bin
+      - name: install dev python 2.7 & 3.8
+        if: ${{ matrix.py == '2.7' || matrix.py == '3.8' }}
+        run: |
+          sudo apt-get update
+          sudo apt install -y python${{ matrix.py }}-dev
+      - name: install dev python 3.6 & 3.7
+        if: ${{ matrix.py == '3.6' || matrix.py == '3.7' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -yq software-properties-common
+          sudo add-apt-repository ppa:deadsnakes/ppa
+          sudo apt-get update
+          sudo apt-get install python${{ matrix.py }}-dev
+      - name: Build Dxapi
+        run: |
+          make -C .
+          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
+        env: 
+          CC: clang
+          PYTHON_VERSION: ${{ matrix.py_env }}
+      - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: dxapi-${{ matrix.os }}
-          path: bin/dxapi-x64.lib
-      
-#   Build-Dxapi-Linux:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Build Dxapi
-#         run: make -C ./dxapi/.
-#         env: 
-#           CC: clang
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-linux
-#           path: ./dxapi/bin/libdxapi-x64.a
-            
-#   Build-Dxapi-MacOS:
-#     runs-on: macos-latest
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Build Dxapi
-#         run: make -C ./dxapi/.
-#         env:
-#           CC: clang
-#           OS: MACOS
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: |
-#             ./dxapi/bin/libdxapi-x64.a
-            
-#   Build-Dxapi-Windows:
-#     runs-on: windows-latest
-#     steps:
-#     - name: Check out repository code
-#       uses: actions/checkout@v2
-#       with:
-#         submodules: 'recursive'
-#     - name: Use MSBuild
-#       uses: microsoft/setup-msbuild@v1.0.2
-#     - name: Build Solution
-#       run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
-#     - name: Build Debug Solution
-#       run: msbuild ./dxapi/dxapi.sln /p:configuration=debug /p:platform=x64 /t:rebuild
-#     - name: Archive artifacts
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: ./dxapi/bin/dxapi-x64.lib
+          name: dxapi-python${{ matrix.py_env }}-linux
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
+            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
 
 #   Build-Dxapi-Python38-Linux:
 #     runs-on: ubuntu-latest
