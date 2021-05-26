@@ -1,14 +1,50 @@
-# name: Build dxapi
+name: Build dxapi
 
-# on:
-#   workflow_dispatch:
-#   push:
-#     branches: [main, wip-workflow]
-#   pull_request:
-#     types: [opened, synchronize]
-#     branches:  [main, wip-workflow]
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, wip-workflow]
+  pull_request:
+    types: [opened, synchronize]
+    branches:  [main, wip-workflow]
     
-# jobs:
+jobs:
+  build-lib:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        include:
+          - os: macos-latest
+            env_os: MACOS
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Build
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
+        run: make -C ./dxapi/.
+        env:
+          CC: clang
+          OS: ${{ matrix.env_os }}
+      - name: Use MSBuild
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: microsoft/setup-msbuild@v1.0.2
+      - name: Build Solution
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: msbuild dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
+      - name: Archive artifacts linux-mac
+        if: ${{ matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-${{ matrix.os }}
+          path: ./dxapi/bin/libdxapi-x64.a
+      - name: Archive artifacts win
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-${{ matrix.os }}
+          path: bin/dxapi-x64.lib
+      
 #   Build-Dxapi-Linux:
 #     runs-on: ubuntu-latest
 #     steps:
