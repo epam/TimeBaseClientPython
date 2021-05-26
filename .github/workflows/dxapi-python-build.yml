@@ -73,7 +73,7 @@ jobs:
       - name: Download dxapi-linux artifacts
         uses: actions/download-artifact@v2
         with:
-          name: dxapi-linux-ubuntu-latest
+          name: dxapi-ubuntu-latest
           path: dxapi/bin
       - name: install dev python 2.7 & 3.8
         if: ${{ matrix.py == '2.7' || matrix.py == '3.8' }}
