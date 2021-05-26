@@ -216,8 +216,8 @@ jobs:
           name: dxapi-python-macos
           path: |
             ./bin/release/__init__.py
-            ./bin/release/osx/x64/py${{ matrix.py_env }}/_dxapi.so
-            ./bin/release/osx/x64/py${{ matrix.py_env }}/libDecimalNative.dylib
+            ./bin/release/darwin/x64/py${{ matrix.py_env }}/_dxapi.so
+            ./bin/release/darwin/x64/py${{ matrix.py_env }}/libDecimalNative.dylib
 
 #   Build-Dxapi-Python27-MacOS:
 #     runs-on: macos-latest
