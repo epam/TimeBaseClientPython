@@ -33,130 +33,130 @@ jobs:
           name: dxapi-${{ matrix.os }}
           path: ./dxapi/bin/libdxapi-x64.a
           
-#   build-windows-dxapi:
-#     runs-on: windows-latest
-#     steps:
-#     - name: Check out repository code
-#       uses: actions/checkout@v2
-#       with:
-#         submodules: 'recursive'
-#     - name: Use MSBuild
-#       uses: microsoft/setup-msbuild@v1.0.2
-#     - name: Build Solution
-#       run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
-#     - name: Archive artifacts
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: ./dxapi/bin/dxapi-x64.lib
+  build-windows-dxapi:
+    runs-on: windows-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: Use MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Build Solution
+      run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dxapi-windows
+        path: ./dxapi/bin/dxapi-x64.lib
         
-#   build-dxapi-python-linux:
-#     runs-on: ubuntu-latest
-#     needs: [build-dxapi]
-#     strategy:
-#       matrix:
-#         py: ['2.7', '3.6', '3.7', '3.8']
-#         include:
-#           - py: '2.7'
-#             py_env: '27'
-#           - py: '3.6'
-#             py_env: '36'
-#           - py: '3.7'
-#             py_env: '37'
-#           - py: '3.8'
-#             py_env: '38'
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-linux artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-ubuntu-latest
-#           path: dxapi/bin
-#       - name: install dev python 2.7 & 3.8
-#         if: ${{ matrix.py == '2.7' || matrix.py == '3.8' }}
-#         run: |
-#           sudo apt-get update
-#           sudo apt install -y python${{ matrix.py }}-dev
-#       - name: install dev python 3.6 & 3.7
-#         if: ${{ matrix.py == '3.6' || matrix.py == '3.7' }}
-#         run: |
-#           sudo apt-get update
-#           sudo apt-get install -yq software-properties-common
-#           sudo add-apt-repository ppa:deadsnakes/ppa
-#           sudo apt-get update
-#           sudo apt-get install python${{ matrix.py }}-dev
-#       - name: Build Dxapi
-#         run: |
-#           make -C .
-#           cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
-#         env: 
-#           CC: clang
-#           PYTHON_VERSION: ${{ matrix.py_env }}
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-python-linux
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
-#             ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
+  build-dxapi-python-linux:
+    runs-on: ubuntu-latest
+    needs: [build-dxapi]
+    strategy:
+      matrix:
+        py: ['2.7', '3.6', '3.7', '3.8']
+        include:
+          - py: '2.7'
+            py_env: '27'
+          - py: '3.6'
+            py_env: '36'
+          - py: '3.7'
+            py_env: '37'
+          - py: '3.8'
+            py_env: '38'
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-ubuntu-latest
+          path: dxapi/bin
+      - name: install dev python 2.7 & 3.8
+        if: ${{ matrix.py == '2.7' || matrix.py == '3.8' }}
+        run: |
+          sudo apt-get update
+          sudo apt install -y python${{ matrix.py }}-dev
+      - name: install dev python 3.6 & 3.7
+        if: ${{ matrix.py == '3.6' || matrix.py == '3.7' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -yq software-properties-common
+          sudo add-apt-repository ppa:deadsnakes/ppa
+          sudo apt-get update
+          sudo apt-get install python${{ matrix.py }}-dev
+      - name: Build Dxapi
+        run: |
+          make -C .
+          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
+        env: 
+          CC: clang
+          PYTHON_VERSION: ${{ matrix.py_env }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-python-linux
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
+            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
 
-#   build-dxapi-python-windows:
-#     runs-on: windows-latest
-#     needs: [build-windows-dxapi]
-#     strategy:
-#       matrix:
-#         py: ['2.7', '3.6', '3.7', '3.8']
-#         include:
-#           - py: '2.7'
-#             py_env: '27'
-#             release: Release27
-#           - py: '3.6'
-#             py_env: '36'
-#             release: Release
-#           - py: '3.7'
-#             py_env: '37'
-#             release: Release37
-#           - py: '3.8'
-#             py_env: '38'
-#             release: Release38
-#     steps:
-#     - name: Check out repository code
-#       uses: actions/checkout@v2
-#       with:
-#         submodules: 'recursive'
-#     - name: Download dxapi-windows artifacts
-#       uses: actions/download-artifact@v2
-#       with:
-#         name: dxapi-windows
-#         path: dxapi/bin
-#     - uses: actions/setup-python@v2
-#       with:
-#         python-version: '${{ matrix.py }}'
-#     - name: Use MSBuild
-#       uses: microsoft/setup-msbuild@v1.0.2
-#     - name: Build Solution
-#       run: |
-#         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-#         $pwd = pwd
-#         $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-#         $Env:SWIG_HOME
-#         python --version
-#         python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON${{ matrix.py_env }}_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#         $Env:PYTHON${{ matrix.py_env }}_HOME
-#         msbuild ./dxapi-python.sln /p:configuration=${{ matrix.release }} /p:platform=x64 /t:rebuild
-#     - name: Archive artifacts
-#       uses: actions/upload-artifact@v2
-#       with:
-#         name: dxapi-python-windows
-#         path: |
-#           ./bin/release/__init__.py
-#           ./bin/release/windows/x64/py${{ matrix.py_env }}/_dxapi.pyd
-#           ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
+  build-dxapi-python-windows:
+    runs-on: windows-latest
+    needs: [build-windows-dxapi]
+    strategy:
+      matrix:
+        py: ['2.7', '3.6', '3.7', '3.8']
+        include:
+          - py: '2.7'
+            py_env: '27'
+            release: Release27
+          - py: '3.6'
+            py_env: '36'
+            release: Release
+          - py: '3.7'
+            py_env: '37'
+            release: Release37
+          - py: '3.8'
+            py_env: '38'
+            release: Release38
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: Download dxapi-windows artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: dxapi-windows
+        path: dxapi/bin
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '${{ matrix.py }}'
+    - name: Use MSBuild
+      uses: microsoft/setup-msbuild@v1.0.2
+    - name: Build Solution
+      run: |
+        Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
+        $pwd = pwd
+        $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
+        $Env:SWIG_HOME
+        python --version
+        python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON${{ matrix.py_env }}_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON${{ matrix.py_env }}_HOME
+        msbuild ./dxapi-python.sln /p:configuration=${{ matrix.release }} /p:platform=x64 /t:rebuild
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dxapi-python-windows
+        path: |
+          ./bin/release/__init__.py
+          ./bin/release/windows/x64/py${{ matrix.py_env }}/_dxapi.pyd
+          ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
 
   build-dxapi-python-macos:
     runs-on: macos-latest
@@ -218,181 +218,3 @@ jobs:
             ./bin/release/__init__.py
             ./bin/release/darwin/x64/py${{ matrix.py_env }}/_dxapi.so
             ./bin/release/darwin/x64/py${{ matrix.py_env }}/libDecimalNative.dylib
-
-#   Build-Dxapi-Python27-MacOS:
-#     runs-on: macos-latest
-#     needs: [Build-Dxapi-MacOS]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Download dxapi-macos artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '2.7'
-#       - name: Install SWIG
-#         run: |
-#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
-#           tar -xzvf swig-3.0.12.tar.gz
-#           cd swig-3.0.12
-#           ./configure
-#           make
-#           make install
-#       - name: Build Dxapi
-#         run: |
-#            make -C .
-#            cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py27/
-#         env:
-#           CC: clang
-#           OS: MACOS
-#           PYTHON_VERSION: 27
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/osx/x64/py27/_dxapi.so
-#             ./bin/release/osx/x64/py27/libDecimalNative.dylib
-
-#   Build-Dxapi-Python36-MacOS:
-#     runs-on: macos-latest
-#     needs: [Build-Dxapi-MacOS]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Setup Python 36
-#         run: |
-#           curl -O https://www.python.org/ftp/python/3.6.8/python-3.6.8-macosx10.9.pkg
-#           sudo installer -pkg ./python-3.6.8-macosx10.9.pkg -target /
-#       - name: Download dxapi-macos artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.6'
-#       - name: Install SWIG
-#         run: |
-#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
-#           tar -xzvf swig-3.0.12.tar.gz
-#           cd swig-3.0.12
-#           ./configure
-#           make
-#           make install
-#       - name: Build Dxapi
-#         run: |
-#            make -C .
-#            cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py36/
-#         env:
-#           CC: clang
-#           OS: MACOS
-#           PYTHON_VERSION: 36
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/osx/x64/py36/_dxapi.so
-#             ./bin/release/osx/x64/py36/libDecimalNative.dylib
-
-#   Build-Dxapi-Python37-MacOS:
-#     runs-on: macos-latest
-#     needs: [Build-Dxapi-MacOS]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Setup Python 37
-#         run: |
-#           curl -O https://www.python.org/ftp/python/3.7.9/python-3.7.9-macosx10.9.pkg
-#           sudo installer -pkg ./python-3.7.9-macosx10.9.pkg -target /
-#           ls -al /Library/Frameworks/Python.framework/Versions/
-#       - name: Download dxapi-macos artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.7'
-#       - name: Install SWIG
-#         run: |
-#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
-#           tar -xzvf swig-3.0.12.tar.gz
-#           cd swig-3.0.12
-#           ./configure
-#           make
-#           make install
-#       - name: Build Dxapi
-#         run: |
-#            make -C .
-#            cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py37/
-#         env:
-#           CC: clang
-#           OS: MACOS
-#           PYTHON_VERSION: 37
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/osx/x64/py37/_dxapi.so
-#             ./bin/release/osx/x64/py37/libDecimalNative.dylib
-
-#   Build-Dxapi-Python38-MacOS:
-#     runs-on: macos-latest
-#     needs: [Build-Dxapi-MacOS]
-#     steps:
-#       - name: Check out repository code
-#         uses: actions/checkout@v2
-#         with:
-#           submodules: 'recursive'
-#       - name: Setup Python 38
-#         run: |
-#           curl -O https://www.python.org/ftp/python/3.8.10/python-3.8.10-macosx10.9.pkg
-#           sudo installer -pkg ./python-3.8.10-macosx10.9.pkg -target /
-#           ls -al /Library/Frameworks/Python.framework/Versions/
-#       - name: Download dxapi-macos artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: dxapi/bin
-#       - uses: actions/setup-python@v2
-#         with:
-#           python-version: '3.8'
-#       - name: Install SWIG
-#         run: |
-#           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
-#           tar -xzvf swig-3.0.12.tar.gz
-#           cd swig-3.0.12
-#           ./configure
-#           make
-#           make install
-#       - name: Build Dxapi
-#         run: |
-#            make -C .
-#            cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py38/
-#         env:
-#           CC: clang
-#           OS: MACOS
-#           PYTHON_VERSION: 38
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-macos
-#           path: |
-#             ./bin/release/__init__.py
-#             ./bin/release/osx/x64/py38/_dxapi.so
-#             ./bin/release/osx/x64/py38/libDecimalNative.dylib
