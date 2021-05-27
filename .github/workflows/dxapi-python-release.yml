@@ -5,30 +5,30 @@ on:
     branches: [release-*, wip*]
     
 jobs:
-#   prepare-release-python:
-#     name: Prepare
-#     if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-#       - name: Prepare branch
-#         run: |
-#           git config user.name github-actions
-#           git config user.email github-actions@github.com
-#           git checkout -b workflow-$GITHUB_RUN_ID
-#           versionSnapshot=`grep 'version=' project.properties | sed 's/version=\([^-]*\)/\1/'`
-#           versionRelease=`echo $versionSnapshot | sed 's/\([^-]*\)-SNAPSHOT/\1/'`
-#           versionSnapshotNext=`echo $versionSnapshot | perl -pe 's/^((\d+\.)*)(\d+)(.*)$/$1.($3+1).$4/e'`
-#           echo "$versionSnapshot -> $versionRelease  -> $versionSnapshotNext"
-#           sed -i "s/version=$versionSnapshot/version=$versionRelease/" project.properties
-#           git commit -am "[skip-ci] Generate release version"
-#           sed -i "s/version=$versionRelease/version=$versionSnapshotNext/" project.properties
-#           git commit -am "[skip-ci] Generate next snapshot version"
-#           git push origin HEAD
+
+  prepare:
+    if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Prepare branch
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b workflow-$GITHUB_RUN_ID
+          versionSnapshot=`grep 'version=' project.properties | sed 's/version=\([^-]*\)/\1/'`
+          versionRelease=`echo $versionSnapshot | sed 's/\([^-]*\)-SNAPSHOT/\1/'`
+          versionSnapshotNext=`echo $versionSnapshot | perl -pe 's/^((\d+\.)*)(\d+)(.*)$/$1.($3+1).$4/e'`
+          echo "$versionSnapshot -> $versionRelease  -> $versionSnapshotNext"
+          sed -i "s/version=$versionSnapshot/version=$versionRelease/" project.properties
+          git commit -am "[skip-ci] Generate release version"
+          sed -i "s/version=$versionRelease/version=$versionSnapshotNext/" project.properties
+          git commit -am "[skip-ci] Generate next snapshot version"
+          git push origin HEAD
 
   build-dxapi:
-#     needs: [prepare-release-python]
+    needs: [prepare]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -53,7 +53,7 @@ jobs:
           path: ./dxapi/bin/libdxapi-x64.a
           
   build-windows-dxapi:
-#   needs: [prepare-release-python]
+    needs: [prepare]
     runs-on: windows-latest
     steps:
     - name: Check out repository code
@@ -239,7 +239,7 @@ jobs:
             ./bin/release/darwin/x64/py${{ matrix.py_env }}/_dxapi.so
             ./bin/release/darwin/x64/py${{ matrix.py_env }}/libDecimalNative.dylib
             
-  Gather-Artifacts-Python:
+  gather-artifacts:
     runs-on: ubuntu-latest
     needs: [build-dxapi-python-linux, build-dxapi-python-windows, build-dxapi-python-macos]
     steps:
@@ -263,78 +263,73 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: dxapi
+          name: dxapi-python
           path: |
             ./dxapi/__init__.py
             ./dxapi/**/*
 
-#   Release-Dxapi-Python:
-#     name: Release
-#     if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
-#     needs: [Gather-Artifacts-Python]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-#       - name: Release branch
-#         run: |
-#           git config user.name github-actions
-#           git config user.email github-actions@github.com
-#           git fetch
-#           git checkout -b workflow-$GITHUB_RUN_ID origin/workflow-$GITHUB_RUN_ID~1
-#           versionRelease=`grep 'version=' project.properties | sed 's/version=\([^-]*\)/\1/'`
-#           echo $versionRelease
-#           echo $versionRelease >> ./version.txt
-#           git push origin origin/workflow-$GITHUB_RUN_ID:$GITHUB_REF
-#       - name: Version artifact
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: version-file
-#           path: ./version.txt
+  release:
+    if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
+    needs: [gather-artifacts]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Release branch
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git fetch
+          git checkout -b workflow-$GITHUB_RUN_ID origin/workflow-$GITHUB_RUN_ID~1
+          versionRelease=`grep 'version=' project.properties | sed 's/version=\([^-]*\)/\1/'`
+          echo $versionRelease
+          echo $versionRelease >> ./version.txt
+          git push origin origin/workflow-$GITHUB_RUN_ID:$GITHUB_REF
+      - name: Version artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: version-file
+          path: ./version.txt
           
-#   Publish-Dxapi-Windows: -> for Python
-#     needs: [Release-Dxapi]
-#     runs-on: windows-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-#       - name: Download dxapi-windows artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: dxapi-windows
-#       - name: Download version-file artifacts
-#         uses: actions/download-artifact@v2
-#         with:
-#           name: version-file
-#       - name: Using Nuget
-#         uses: nuget/setup-nuget@v1
-#         with:
-#           nuget-api-key: ${{ secrets.NUGET_API_KEY }}
-#       - name: Build Nuget package
-#         run: |
-#           $Version = get-content .\version.txt
-#           echo $Version
-#           nuget pack dxapi.nuspec -properties version=$Version
-#           nuget push Deltix.Timebase.Api.Native.$Version.nupkg -Source $Env:NUGET_URL
-#         env:
-#           NUGET_URL: MY_NUGET_URL_CHANGE_IT
-#       - name: Archive artifacts
-#         uses: actions/upload-artifact@v2
-#         with:
-#           name: dxapi-nuget-package
-#           path:
-#             Deltix.Timebase.Api.Native.*.nupkg
+  publish:
+    needs: [release]
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Download dxapi-python artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-python
+      - name: Download version-file artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: version-file
+      - name: Build PyPi package
+        run: |
+          $Version = get-content .\version.txt
+          echo $Version
+          python3 setup.py bdist_wheel --universal
+#          python3 -m twine upload --repository-url $Env:REPOSITORY_URL --username $Env:REPOSITORY_USER --password $Env:REPOSITORY_PASSWORD} dist/*
+        env:
+          REPOSITORY_URL: add repository url
+          REPOSITORY_USER: ${{ secrets.PYPI_USER }}
+          REPOSITORY_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-pypi-package
+          path: ./dist/
 
-#   Cleanup-Release:
-#     name: Cleanup
-#     if: ${{ always() && !contains(github.event.head_commit.message, '[skip-ci]') }}
-#     needs: [Publish-Dxapi-Windows]
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v2
-#       - name: Cleanup
-#         run: |
-#           git config user.name github-actions
-#           git config user.email github-actions@github.com
-#           git push origin --delete workflow-$GITHUB_RUN_ID || true
+  cleanup-release:
+    if: ${{ always() && !contains(github.event.head_commit.message, '[skip-ci]') }}
+    needs: [publish]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Cleanup
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git push origin --delete workflow-$GITHUB_RUN_ID || true
