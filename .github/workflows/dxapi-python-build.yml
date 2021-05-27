@@ -40,13 +40,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: 'recursive'
-    - name: Update VS
-      run: |
-        curl -O "vs_enterprise.exe" -uri https://download.visualstudio.microsoft.com/download/pr/cb1d5164-e767-4886-8955-2df3a7c816a8/1f7a0364da6c0921284fb89ba8418e243e617b7b39c0bd3f372e455118184dc5/vs_Enterprise.exe
-        vs_enterprise.exe update
     - name: Use MSBuild
-      with:
-        vs-version: '(16.9,16.10]'
       uses: microsoft/setup-msbuild@v1.0.2
     - name: Build Solution
       run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
@@ -111,7 +105,7 @@ jobs:
 #             ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
 
 #   build-dxapi-python-windows:
-#     runs-on: windows-2016
+#     runs-on: windows-latest
 #     needs: [build-windows-dxapi]
 #     strategy:
 #       matrix:
