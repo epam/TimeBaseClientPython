@@ -311,6 +311,7 @@ jobs:
         run: |
           $Version = get-content .\version.txt
           echo $Version
+          pip install wheel
           python3 setup.py bdist_wheel --universal
 #          python3 -m twine upload --repository-url $Env:REPOSITORY_URL --username $Env:REPOSITORY_USER --password $Env:REPOSITORY_PASSWORD} dist/*
         env:
