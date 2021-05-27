@@ -34,7 +34,7 @@ jobs:
 #           path: ./dxapi/bin/libdxapi-x64.a
           
   build-windows-dxapi:
-    runs-on: windows-2016
+    runs-on: windows-latest
     steps:
     - name: Check out repository code
       uses: actions/checkout@v2
