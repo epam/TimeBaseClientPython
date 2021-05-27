@@ -43,10 +43,11 @@ jobs:
     - name: Update VS
       run: |
         Invoke-WebRequest https://download.visualstudio.microsoft.com/download/pr/cb1d5164-e767-4886-8955-2df3a7c816a8/1f7a0364da6c0921284fb89ba8418e243e617b7b39c0bd3f372e455118184dc5/vs_Enterprise.exe -OutFile vs_enterprise.exe
-        ls
-#        vs_enterprise.exe update --wait --passive --norestart
+        ./vs_enterprise.exe update --wait --passive --norestart
     - name: Use MSBuild
       uses: microsoft/setup-msbuild@v1.0.2
+      with:
+        vs-version: '(16.9,16.10]'
     - name: Build Solution
       run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
     - name: Archive artifacts
