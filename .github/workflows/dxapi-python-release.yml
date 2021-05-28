@@ -255,11 +255,11 @@ jobs:
         with:
           name: dxapi-python-macos
           path: ./dxapi/
-      - name: Download dxapi-python-windows artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-python-windows
-          path: ./dxapi/
+#       - name: Download dxapi-python-windows artifacts
+#         uses: actions/download-artifact@v2
+#         with:
+#           name: dxapi-python-windows
+#           path: ./dxapi/
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
