@@ -65,8 +65,6 @@ jobs:
             py_env: '38'
           - py: '3.9'
             py_env: '39'
-          - py: '3.10'
-            py_env: '310'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -177,9 +175,6 @@ jobs:
           - py: '3.9'
             py_env: '39'
             py_v: '3.9.11'
-          - py: '3.10'
-            py_env: '310'
-            py_v: '3.10.3'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
