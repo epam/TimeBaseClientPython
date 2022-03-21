@@ -10,18 +10,23 @@ PYTHON_VERSION?=36
 ifeq ($(PYTHON_VERSION),37)
 	PYTHON=python3.7
 	PYTHON_VERSION_FULL=3.7
+	PYTHON_LIB_SUFFIX=3.7m
 else ifeq ($(PYTHON_VERSION),38)
 	PYTHON=python3.8
 	PYTHON_VERSION_FULL=3.8
+	PYTHON_LIB_SUFFIX=3.8
 else ifeq ($(PYTHON_VERSION),39)
 	PYTHON=python3.9
 	PYTHON_VERSION_FULL=3.9
+	PYTHON_LIB_SUFFIX=3.9
 else ifeq ($(PYTHON_VERSION),310)
 	PYTHON=python3.10
 	PYTHON_VERSION_FULL=3.10
+	PYTHON_LIB_SUFFIX=3.10
 else
 	PYTHON=python3.6
 	PYTHON_VERSION_FULL=3.6
+	PYTHON_LIB_SUFFIX=3.6m
 endif
 
 ifeq ($(OS),MACOS)
@@ -30,7 +35,7 @@ ifeq ($(OS),MACOS)
     RPATH_PARAM=
     THIRD_PARTY_LIBS=
     PYTHON_INCLUDES=/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/Headers
-    PYTHON_LIBS=-L/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/lib -lpython$(PYTHON_VERSION_FULL)
+    PYTHON_LIBS=-L/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/lib -lpython$(PYTHON_LIB_SUFFIX)
     BIN_SUBFOLDER=darwin
 else
     DFP_BIN=./dfp/lib/linux/64
