@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <classSet xmlns="http://xml.deltixlab.com/internal/quantserver/3.0">
-    <classDescriptor xsi:type="recordClass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
         <name>deltix.timebase.api.messages.MarketMessage</name>
-        <guid>c0a83801f0482qx2l1qr_a4</guid>
+        <guid>64406601eb05459078wp_1l</guid>
         <abstract>true</abstract>
         <field xsi:type="staticDataField">
             <name>originalTimestamp</name>
@@ -19,7 +19,6 @@
                 <nullable>true</nullable>
             </type>
             <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
         </field>
         <field xsi:type="nonStaticDataField">
             <name>sequenceNumber</name>
@@ -29,13 +28,12 @@
                 <nullable>true</nullable>
             </type>
             <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
         </field>
     </classDescriptor>
-    <classDescriptor xsi:type="enumClass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
         <name>deltix.timebase.api.messages.AggressorSide</name>
         <title>Aggressor Side</title>
-        <guid>c0a83801f0482qx2l1qr_a3</guid>
+        <guid>64406601eb05459078wp_1k</guid>
         <value>
             <symbol>BUY</symbol>
             <value>0</value>
@@ -46,10 +44,81 @@
         </value>
         <isBitmask>false</isBitmask>
     </classDescriptor>
-    <classDescriptor xsi:type="enumClass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.TradeMessage</name>
+        <guid>64406601eb05459078wp_1o</guid>
+        <abstract>false</abstract>
+        <parent>64406601eb05459078wp_1l</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>exchangeId</name>
+            <title>Exchange Code</title>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>price</name>
+            <title>Price</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>size</name>
+            <title>Size</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>condition</name>
+            <title>Trade Condition</title>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>aggressorSide</name>
+            <title>Aggressor Side</title>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>64406601eb05459078wp_1k</descriptor>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>netPriceChange</name>
+            <title>Net Price Change</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>eventType</name>
+            <title>Event Type</title>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>64406601eb05459078wp_1n</descriptor>
+            </type>
+            <pk>false</pk>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
         <name>deltix.timebase.api.messages.MarketEventType</name>
         <title>Market Event Type</title>
-        <guid>c0a83801f0482qx2l1qr_a6</guid>
+        <guid>64406601eb05459078wp_1n</guid>
         <value>
             <symbol>BID</symbol>
             <value>0</value>
@@ -196,11 +265,11 @@
         </value>
         <isBitmask>false</isBitmask>
     </classDescriptor>
-    <classDescriptor xsi:type="recordClass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
         <name>deltix.timebase.api.messages.BestBidOfferMessage</name>
-        <guid>c0a83801f0482qx2l1qr_a5</guid>
+        <guid>64406601eb05459078wp_1m</guid>
         <abstract>false</abstract>
-        <parent>c0a83801f0482qx2l1qr_a4</parent>
+        <parent>64406601eb05459078wp_1l</parent>
         <field xsi:type="staticDataField">
             <name>isNational</name>
             <title>National BBO</title>
@@ -217,7 +286,6 @@
                 <nullable>true</nullable>
             </type>
             <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
         </field>
         <field xsi:type="nonStaticDataField">
             <name>bidSize</name>
@@ -227,7 +295,6 @@
                 <nullable>true</nullable>
             </type>
             <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
         </field>
         <field xsi:type="nonStaticDataField">
             <name>bidExchangeId</name>
@@ -238,7 +305,6 @@
                 <multiLine>false</multiLine>
             </type>
             <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
         </field>
         <field xsi:type="nonStaticDataField">
             <name>offerPrice</name>
@@ -248,7 +314,6 @@
                 <nullable>true</nullable>
             </type>
             <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
         </field>
         <field xsi:type="nonStaticDataField">
             <name>offerSize</name>
@@ -258,7 +323,6 @@
                 <nullable>true</nullable>
             </type>
             <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
         </field>
         <field xsi:type="nonStaticDataField">
             <name>offerExchangeId</name>
@@ -269,87 +333,8 @@
                 <multiLine>false</multiLine>
             </type>
             <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
         </field>
     </classDescriptor>
-    <classDescriptor xsi:type="recordClass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-        <name>deltix.timebase.api.messages.TradeMessage</name>
-        <guid>c0a83801f0482qx2l1qr_a7</guid>
-        <abstract>false</abstract>
-        <parent>c0a83801f0482qx2l1qr_a4</parent>
-        <field xsi:type="nonStaticDataField">
-            <name>exchangeId</name>
-            <title>Exchange Code</title>
-            <type xsi:type="VARCHAR">
-                <encoding>ALPHANUMERIC(10)</encoding>
-                <nullable>true</nullable>
-                <multiLine>false</multiLine>
-            </type>
-            <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
-        </field>
-        <field xsi:type="nonStaticDataField">
-            <name>price</name>
-            <title>Price</title>
-            <type xsi:type="FLOAT">
-                <encoding>DECIMAL</encoding>
-                <nullable>true</nullable>
-            </type>
-            <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
-        </field>
-        <field xsi:type="nonStaticDataField">
-            <name>size</name>
-            <title>Size</title>
-            <type xsi:type="FLOAT">
-                <encoding>DECIMAL</encoding>
-                <nullable>true</nullable>
-            </type>
-            <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
-        </field>
-        <field xsi:type="nonStaticDataField">
-            <name>condition</name>
-            <title>Trade Condition</title>
-            <type xsi:type="VARCHAR">
-                <encoding>UTF8</encoding>
-                <nullable>true</nullable>
-                <multiLine>false</multiLine>
-            </type>
-            <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
-        </field>
-        <field xsi:type="nonStaticDataField">
-            <name>aggressorSide</name>
-            <title>Aggressor Side</title>
-            <type xsi:type="enum">
-                <nullable>true</nullable>
-                <descriptor>c0a83801f0482qx2l1qr_a3</descriptor>
-            </type>
-            <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
-        </field>
-        <field xsi:type="nonStaticDataField">
-            <name>netPriceChange</name>
-            <title>Net Price Change</title>
-            <type xsi:type="FLOAT">
-                <encoding>DECIMAL</encoding>
-                <nullable>true</nullable>
-            </type>
-            <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
-        </field>
-        <field xsi:type="nonStaticDataField">
-            <name>eventType</name>
-            <title>Event Type</title>
-            <type xsi:type="enum">
-                <nullable>true</nullable>
-                <descriptor>c0a83801f0482qx2l1qr_a6</descriptor>
-            </type>
-            <pk>false</pk>
-            <displayIdentifier>false</displayIdentifier>
-        </field>
-    </classDescriptor>
-    <contentClassId>c0a83801f0482qx2l1qr_a5</contentClassId>
-    <contentClassId>c0a83801f0482qx2l1qr_a7</contentClassId>
+    <contentClassId>64406601eb05459078wp_1m</contentClassId>
+    <contentClassId>64406601eb05459078wp_1o</contentClassId>
 </classSet>

@@ -28,28 +28,6 @@ class CursorTest(servertest.TestWithStreams):
 
         cursor.close()
 
-    def test_ContextManager(self):
-        stream = self.db.getStream(self.streamKeys[0])
-
-        with self.db.tryCursor(stream, dxapi.SelectionOptions()) as cursor:
-            self.assertTrue(cursor.next())
-            self.assertTrue(cursor.getMessage() != None)
-
-        with stream.tryCursor(dxapi.SelectionOptions()) as cursor:
-            self.assertTrue(cursor.next())
-            self.assertTrue(cursor.getMessage() != None)
-
-        with self.db.trySelect(0, [stream], dxapi.SelectionOptions(), None, None) as cursor:
-            self.assertTrue(cursor.next())
-            self.assertTrue(cursor.getMessage() != None)
-
-        with stream.trySelect(0, dxapi.SelectionOptions(), None, None) as cursor:
-            self.assertTrue(cursor.next())
-            self.assertTrue(cursor.getMessage() != None)
-
-        with self.db.tryExecuteQuery("select * from " + str(stream.key())) as cursor:
-            self.assertTrue(cursor.next())
-            self.assertTrue(cursor.getMessage() != None)
 
     def test_SelectFromToReverse(self):
         stream = self.db.getStream(self.streamKeys[0])
@@ -94,14 +72,14 @@ class CursorTest(servertest.TestWithStreams):
     def test_SetTimeForNewSubscription(self):
         barStream = self.db.getStream(self.streamKeys[0])
         cursor = self.db.select(0, [barStream], dxapi.SelectionOptions(), None, [])
-
+        
         cursor.addEntities([self.entities['AAPL']])
         messages = self.read(cursor, 10)
         for m in messages:
             print(str(m.timestamp))
             self.assertGreaterEqual(m.timestamp, 0)
             self.assertLessEqual(m.timestamp, 30000000000)
-
+        
         cursor.removeEntities([self.entities['AAPL']])
         cursor.setTimeForNewSubscriptions(100000)
         cursor.addEntities([self.entities['GOOG']])
@@ -110,7 +88,7 @@ class CursorTest(servertest.TestWithStreams):
             print(str(m.timestamp))
             self.assertGreaterEqual(m.timestamp, 100000000000)
             self.assertLessEqual(m.timestamp, 100000000000 + 3 * 10 * 1000000000)
-
+        
         cursor.removeEntities([self.entities['GOOG']])
         cursor.setTimeForNewSubscriptions(50000)
         cursor.addEntities([self.entities['IBM']])
@@ -146,6 +124,7 @@ class CursorTest(servertest.TestWithStreams):
 
         # none types
         cursor.removeTypes([self.types['trade'], self.types['bar']])
+        cursor.reset(0)
         self.assertFalse(cursor.next())
 
         # all types
@@ -266,7 +245,7 @@ class CursorTest(servertest.TestWithStreams):
         while cursor.next():
             stream = cursor.getCurrentStreamKey()
             typeName = cursor.getMessage().typeName
-
+            
             if "L2Message" in typeName:
                 self.assertEqual(stream, "l2")
             elif "TradeMessage" in typeName or "BestBidOfferMessage" in typeName:

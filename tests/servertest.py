@@ -20,7 +20,7 @@ import dxapi
 class TBServerTest(unittest.TestCase):
 
     HOST = os.getenv('TIMEBASE_HOST', 'localhost')
-    PORT = os.getenv('TIMEBASE_PORT', 8131)
+    PORT = os.getenv('TIMEBASE_PORT', 8011)
     DELTIX_HOME = os.getenv('DELTIX_HOME', None)
 
     TIMEBASE_WAIT_TIMEOUT = 10
@@ -121,23 +121,18 @@ class TBServerTest(unittest.TestCase):
         with open(testdir + 'testdata/' + key + '.qql', 'r') as qqlFile:
             qql = qqlFile.read()
 
-        #print("Creating stream: " + str(key))
         cursor = self.db.executeQuery(qql)
         self.assertTrue(cursor.next())
         reportMessage = cursor.getMessage()
-        self.assertEqual(reportMessage.instrumentType, 'SYSTEM')
-        self.assertEqual(reportMessage.messageText, 'Stream created')
-        #print("Stream created: " + str(key))
+        #self.assertEqual(reportMessage.messageText, 'Stream created')
 
         return self.db.getStream(key)
 
     def deleteStream(self, key):
         stream = self.db.getStream(key)
         if stream != None:
-            #print("Removing stream: " + str(key))
             stream.deleteStream()
-            #time.sleep(0.5)
-            #print("Stream removed: " + str(key))
+
 
 class TestWithStreams(TBServerTest):
 
@@ -146,9 +141,9 @@ class TestWithStreams(TBServerTest):
     ]
 
     entities = {
-        'AAPL':dxapi.InstrumentIdentity(dxapi.InstrumentType.EQUITY, 'AAPL'),
-        'GOOG':dxapi.InstrumentIdentity(dxapi.InstrumentType.EQUITY, 'GOOG'),
-        'IBM':dxapi.InstrumentIdentity(dxapi.InstrumentType.EQUITY, 'IBM'),
+        'AAPL':'AAPL',
+        'GOOG':'GOOG',
+        'IBM':'IBM',
     }
 
     types = {
@@ -157,15 +152,18 @@ class TestWithStreams(TBServerTest):
         'bar':'deltix.timebase.api.messages.BarMessage',
         'l2':'deltix.timebase.api.messages.L2Message'
     }
-
+    
     nStreams = 0
+
     def setUp(self):
         TBServerTest.setUp(self)
-
+        
         for key in self.streamKeys:
-            self.deleteStream(key)
+            stream = self.db.getStream(key)
+            if stream != None:
+                stream.deleteStream()
+        
         self.nStreams = len(self.db.listStreams())
-
         for key in self.streamKeys:
             self.createStreamQQL(key)
         self.assertEqual(len(self.db.listStreams()), self.nStreams + len(self.streamKeys))
@@ -181,7 +179,9 @@ class TestWithStreams(TBServerTest):
 
     def tearDown(self):
         for key in self.streamKeys:
-            self.deleteStream(key)
+            stream = self.db.getStream(key)
+            if stream != None:
+                stream.deleteStream()
         #self.assertEqual(len(self.db.listStreams()), self.nStreams)
         tbStreams = len(self.db.listStreams())
         if tbStreams != self.nStreams:
@@ -197,10 +197,10 @@ class TestWithStreams(TBServerTest):
             messages.append(copy.deepcopy(cursor.getMessage()))
         return messages
 
-    def readMessages(self, stream, startTime, endTime):
+    def readMessages(self, stream, _from, to):
         options = dxapi.SelectionOptions()
-        options._from  = startTime
-        options.to = endTime
+        options._from = _from
+        options.to = to
         cursor = stream.createCursor(options)
         messages = []
         try:
@@ -242,9 +242,7 @@ class TestWithStreams(TBServerTest):
         self.assertEqual(smbSet, symbols)
 
     def compareEntities(self, entities, symbols):
-        symbolsSet = set()
-        for entity in entities:
-            symbolsSet.add(entity.symbol)
+        symbolsSet = set(entities)
         self.assertEqual(symbolsSet, symbols)
 
     def removeAll(self, collection, elements):

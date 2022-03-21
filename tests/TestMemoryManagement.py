@@ -1,7 +1,7 @@
 import unittest
 import servertest
 import dxapi
-import sys, time
+import sys
 import generators
 
 class TestTickDB(servertest.TBServerTest):
@@ -12,31 +12,29 @@ class TestTickDB(servertest.TBServerTest):
         'bars1min', 'tradeBBO', 'l2'
     ]
 
+    nStreams = 0
+    
     def setUp(self):
         servertest.TBServerTest.setUp(self)
-
+        
         for key in self.streamKeys:
-            self.deleteStream(key)
-
+            stream = self.db.getStream(key)
+            if stream != None:
+                stream.deleteStream()
+                
         self.nStreams = len(self.db.listStreams())
-
+                
         for key in self.streamKeys:
             self.createStreamQQL(key)
-        #self.assertEqual(len(self.db.listStreams()), self.nStreams + len(self.streamKeys))
+        self.assertEqual(len(self.db.listStreams()), self.nStreams + len(self.streamKeys))
 
     def tearDown(self):
         for key in self.streamKeys:
-            self.deleteStream(key)
-        #self.assertEqual(len(self.db.listStreams()), self.nStreams)
+            stream = self.db.getStream(key)
+            if stream != None:
+                stream.deleteStream()
+        self.assertEqual(len(self.db.listStreams()), self.nStreams)
         servertest.TBServerTest.tearDown(self)
-
-    def deleteStream(self, key):
-        stream = self.db.getStream(key)
-        if stream != None:
-            print("Removing stream: " + str(key))
-            stream.deleteStream()
-            #time.sleep(0.5)
-            print("Stream removed: " + str(key))
 
     def test_NoneTrueFalse_refcount(self):
         start_refcounts = self.getNoneTrueFalseRefcount()

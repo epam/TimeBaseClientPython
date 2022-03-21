@@ -15,7 +15,7 @@ class TestQQL(servertest.TestWithStreams):
         options = dxapi.SelectionOptions()
         options._from = 5000
         options.to = 6000
-        cursor = self.db.executeQuery("select * from bars1min", options)
+        cursor = self.db.executeQuery("select * from bars1min", options, [])
 
         self.assertTrue(cursor.next())
         message = cursor.getMessage()

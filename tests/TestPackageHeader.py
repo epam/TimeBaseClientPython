@@ -9,7 +9,7 @@ class TestPackageHeader(servertest.TBServerTest):
     
     def test_Decimal64(self):
         try:
-            stream = self.createStream(self.streamKey, False)
+            stream = self.createStreamQQL(self.streamKey)
             self.assertIsNotNone(stream)
             self.assertEqual(self.streamCount(self.streamKey), 0)  # check stream is empty
             

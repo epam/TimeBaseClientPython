@@ -1,6 +1,5 @@
 import unittest
 import servertest
-import testutils
 import time
 import dxapi
 
@@ -32,26 +31,20 @@ class TestStream(servertest.TestWithStreams):
         streamEntities = stream.listEntities()
         self.compareEntities(streamEntities, set(self.entities.keys()))
 
-        streamEntities = stream.listEntities([dxapi.InstrumentType('EQUITY')])
-        self.compareEntities(streamEntities, set(self.entities.keys()))
+    def test_DeleteStream(self):
+        keys = set()
+        for stream in self.db.listStreams():
+            keys.add(stream.key())
 
-        streamEntities = stream.listEntities([dxapi.InstrumentType('BOND')])
-        self.assertEquals(len(streamEntities), 0)
+        keyToRemove = self.streamKeys[2]
+        keys.remove(keyToRemove)
+        self.db.getStream(keyToRemove).deleteStream()
 
-#    def test_DeleteStream(self):
-#        keys = set()
-#        for stream in self.db.listStreams():
-#            keys.add(stream.key())
+        afterRemove = set()
+        for stream in self.db.listStreams():
+            afterRemove.add(stream.key())
 
-#        keyToRemove = self.streamKeys[2]
-#        keys.remove(keyToRemove)
-#        self.db.getStream(keyToRemove).deleteStream()
-
-#        afterRemove = set()
-#        for stream in self.db.listStreams():
-#            afterRemove.add(stream.key())
-
-#        self.assertEqual(keys, afterRemove)
+        self.assertEqual(keys, afterRemove)
 
     def test_TruncatePurgeGetTimeRange(self):
         stream = self.db.getStream(self.streamKeys[0])
@@ -103,43 +96,6 @@ class TestStream(servertest.TestWithStreams):
         stream.clear()
         messages = self.readMessages(stream, 0, 9999000)
         self.checkSymbols(messages, set())
-        
-    def test_Spaces(self):
-        key = 'BarsWithSpaces'
-        try:
-            stream = self.createStream(key, False)
-            self.assertIsNotNone(stream)
-
-            count = 12345
-            testutils.loadBars(stream, count, 0, 1000000000, ['MSFT', 'ORCL'], 'SpaceX')
-            testutils.loadBars(stream, count, 0, 1000000000, ['MSFT', 'ORCL'], 'SpaceY')
-            
-            time.sleep(2)
-            
-            # Test Time Range of space
-            actualRange = stream.getSpaceTimeRange('SpaceY')
-            self.assertEqual(actualRange[0], 0)
-            self.assertEqual(actualRange[1], 12344000)
-            
-            # Test List Spaces
-            actualSpaces = set(stream.listSpaces())
-            expectedSpaces = set(['SpaceX', 'SpaceY', ''])
-            self.assertEqual(len(actualSpaces.difference(expectedSpaces)), 0)
-            
-            # Test Rename
-            stream.renameSpace('SpaceZ', 'SpaceY')
-            actualSpaces = set(stream.listSpaces())
-            expectedSpaces = set(['SpaceX', 'SpaceZ', ''])
-            self.assertEqual(len(actualSpaces.difference(expectedSpaces)), 0)
-            
-            # Test Delete Spaces
-            stream.deleteSpaces(['SpaceX', 'SpaceZ'])
-            actualSpaces = set(stream.listSpaces())
-            expectedSpaces = set([''])
-            self.assertEqual(len(actualSpaces.difference(expectedSpaces)), 0)
-            
-        finally:
-            self.deleteStream(key)
 
 
 if __name__ == '__main__':

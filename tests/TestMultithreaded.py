@@ -120,7 +120,7 @@ class TestMultithreaded(servertest.TestWithStreams):
     def loadTradeBBOThread(self, key, count):
         testutils.loadTradeBBO(self.db.getStream(key), count / 2)
 
-    def readStream(self, results, num, key, startTime = 0, timeout = 5, readUntil = 1000000000):
+    def readStream(self, results, num, key, startTime = 0, timeout = 30, readUntil = 1000000000):
         stream = self.db.getStream(key)
         options = dxapi.SelectionOptions()
         options.live = True
@@ -136,7 +136,6 @@ class TestMultithreaded(servertest.TestWithStreams):
             state = cursor.nextIfAvailable()
             if state == dxapi.OK:
                 message = cursor.getMessage()
-                tStart = time.time()
                 messages += 1
                 if messages >= readUntil:
                     break

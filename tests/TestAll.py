@@ -2,6 +2,7 @@ import unittest
 import datetime
 import sys, os
 
+#from HtmlTestRunner import HTMLTestRunner
 import HTMLTestRunner as HTMLTestRunner
 
 testmodules = [
@@ -14,8 +15,7 @@ testmodules = [
     'TestMemoryManagement',
     'TestNextIfAvailable',
     'TestMultithreaded'
-    #'TestEntities'
-    ]
+]
 
 suite = unittest.TestSuite()
 
@@ -37,10 +37,14 @@ if not os.path.exists(reportsDir):
     os.makedirs(reportsDir)
 reportFile = reportsDir + '/dxapi-test-report-' + datetime.datetime.now().strftime('%d%m%Y-%H%M%S') + '.html'
 fileStream = open(reportFile, 'w')
-title = 'Dxapi test report (Python version: ' + str(sys.version) + ')'
+version = "2"
+if sys.version.startswith("3.6"):
+    version = "3.6"
+elif sys.version.startswith("3.7"):
+    version = "3.7"
+title = 'Dxapi test report (Python version: ' + (version) + ')'
 runner = HTMLTestRunner.HTMLTestRunner(stream = fileStream, title = title)
 result = runner.run(suite)
-#unittest.TextTestRunner().run(suite)
 
 print('Tests finished')
 print('Errors: ' + str(result.error_count) + ", Failures: " + str(result.failure_count) + ", Tests OK: " + str(result.success_count))
@@ -50,3 +54,5 @@ if result.error_count > 0 or result.failure_count > 0:
     sys.exit(-1)
 else:
     sys.exit(0)
+
+

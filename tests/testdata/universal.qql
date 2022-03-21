@@ -1,0 +1,121 @@
+CREATE DURABLE STREAM "universal" (
+    ENUM "deltix.timebase.api.messages.AggressorSide" 'Aggressor Side' (
+        "BUY" = 0,
+        "SELL" = 1
+    );
+    ENUM "deltix.timebase.api.messages.BookUpdateAction" 'Book Update Action' (
+        "INSERT" = 0,
+        "UPDATE" = 1,
+        "DELETE" = 2
+    );
+    CLASS "deltix.timebase.api.messages.DacMessage" 'Data Access Control Message' (
+        STATIC "entitlementId" 'Entitlement ID' BINARY = NULL COMMENT 'Nullable field that defines what users can read this message.This field is a BLOB containing implementation-specific ID that describes source of data.Different users can have different permissions to see this data.Per-message permissions are checked on TimeBase server side.This field was added first to support Bloomberg B-PIPE Data Level Access control requirements.'
+    )
+        COMMENT 'Extension for Market Message that carries Entitlement ID of this message.This field can be used by TimeBase server to implement per-message data access control.';
+    ENUM "deltix.timebase.api.messages.DataModelType" (
+        "LEVEL_ONE" = 0,
+        "LEVEL_TWO" = 1,
+        "LEVEL_THREE" = 2,
+        "MAX" = 3
+    );
+    CLASS "deltix.timebase.api.messages.MarketMessage" 'Market Message' UNDER "deltix.timebase.api.messages.DacMessage" (
+        "currencyCode" 'Currency Code' INTEGER SIGNED (16) COMMENT 'Currency code represented as short. Use {currencyCodec} or{link #setCurrencyCode} and {link #getCurrencyCode} toconvert this value to a three-character code.',
+        "originalTimestamp" 'Original Timestamp' TIMESTAMP COMMENT 'Exchange Time is measured in milliseconds that passed since January 1, 1970 UTC',
+        "sequenceNumber" 'Sequence Number' INTEGER COMMENT 'Market specific identifier of the given event in a sequence of market events.',
+        "sourceId" 'Source Id' VARCHAR ALPHANUMERIC (10) COMMENT 'Identifies market data source. Different sessions of same connectorto a same data provider should have different id.'
+    )
+        COMMENT 'Most financial market-related messages subclass this abstract class.';
+    ENUM "deltix.timebase.api.messages.QuoteSide" (
+        "BID" = 0,
+        "ASK" = 1
+    );
+    ENUM "deltix.timebase.api.messages.QuoteUpdateAction" (
+        "CANCEL" = 0,
+        "MODIFY" = 1,
+        "REPLACE" = 2
+    );
+    ENUM "deltix.timebase.api.messages.TradeType" (
+        "REGULAR_TRADE" = 0,
+        "AUCTION_CLEARING_PRICE" = 1,
+        "CORRECTION" = 2,
+        "CANCELLATION" = 3,
+        "UNKNOWN" = 4
+    );
+    CLASS "deltix.timebase.api.messages.universal.BaseEntry" 'Base Entry' (
+        "contractId" 'Contract ID' VARCHAR ALPHANUMERIC (10) COMMENT 'Special field designed to store multiple derivative instruments'' updatesinto single package. Most of the time should be static null.',
+        "exchangeId" 'Exchange Code' VARCHAR ALPHANUMERIC (10) COMMENT 'Exchange code compressed to long using ALPHANUMERIC(10) encoding.see #getExchange()',
+        "isImplied" 'Is Implied' BOOLEAN COMMENT 'True, if quote (or trade) comes from an implied Order book.'
+    )
+        COMMENT 'Base class for market data entry to be included in package (PackageHeader).';
+    CLASS "deltix.timebase.api.messages.universal.BasePriceEntry" 'Base Price Entry' UNDER "deltix.timebase.api.messages.universal.BaseEntry" (
+        "numberOfOrders" 'Number Of Orders' INTEGER COMMENT 'Numbers of orders.',
+        "participantId" 'Participant' VARCHAR COMMENT 'Id of participant (or broker ID).',
+        "price" 'Price' FLOAT DECIMAL64 COMMENT 'Ask, Bid or Trade price.',
+        "quoteId" 'Quote ID' VARCHAR COMMENT 'Quote ID. In Forex market, for example, quote ID can be referenced inTradeOrders (to identify market maker''s quote/rate we want to deal with).Each market maker usually keeps this ID unique per session per day. Thisis a alpha-numeric text text field that can reach 64 characters or more,',
+        "size" 'Size' FLOAT DECIMAL64 COMMENT 'Ask, Bid or Trade quantity.'
+    )
+        COMMENT 'This is base class for price entry.';
+    CLASS "deltix.timebase.api.messages.universal.BookResetEntry" 'Book Reset Entry' UNDER "deltix.timebase.api.messages.universal.BaseEntry" (
+        "modelType" 'Model Type' "deltix.timebase.api.messages.DataModelType" NOT NULL COMMENT 'Data Model Type to identify what book we should reset.',
+        "side" 'Side' "deltix.timebase.api.messages.QuoteSide" COMMENT 'Deprecated as of November 2019. No longer used. BookResetEntry now applies to both sides of Order Book and must be used only in snapshot package types.Previous meaning: Quote side. Bid or Ask.Ask = Sell limit order.Bid = Buy limit  order.'
+    )
+        COMMENT 'This entry used for empty snapshot indication. It is necessary because PackageHeader has no field exchangeId.You should use this entry only for empty snapshot (both sides are empty) case.';
+    ENUM "deltix.timebase.api.messages.universal.InsertType" 'Insert Type' (
+        "ADD_BACK" = 0,
+        "ADD_FRONT" = 1,
+        "ADD_BEFORE" = 2
+    );
+    CLASS "deltix.timebase.api.messages.universal.L1Entry" 'L1Entry' UNDER "deltix.timebase.api.messages.universal.BasePriceEntry" (
+        "isNational" 'Is National' BOOLEAN COMMENT 'return <code>1</code> if this BBO quote represents the national best, <code>0</code> if this BBO is regionaland <code>BooleanDataType.NULL</code> if the property is undefined. In case of NBBO you can inspect {#getExchangeId()}to see what exchange/ECN has the national best price.',
+        "side" 'Side' "deltix.timebase.api.messages.QuoteSide" NOT NULL COMMENT 'Quote side. Bid or Ask.Ask = Sell limit order.Bid = Buy limit  order.'
+    )
+        COMMENT 'This class may represent both exchange-local top of the book (BBO) as well as National Best Bid Offer (NBBO).You can use method {getIsNational()} to filter out NBBO messages.This is always a one side quote, unlike old BestBidOfferMessage which is two-side (with nullable properties).';
+    CLASS "deltix.timebase.api.messages.universal.L2EntryNew" 'L2EntryNew' UNDER "deltix.timebase.api.messages.universal.BasePriceEntry" (
+        "level" 'Level Index' INTEGER NOT NULL SIGNED (16) COMMENT 'Market Depth  / Price Level.This value is zero-based (top of the book will have depth=0).',
+        "side" 'Side' "deltix.timebase.api.messages.QuoteSide" NOT NULL COMMENT 'Quote side. Bid or Ask.Ask = Sell limit order.Bid = Buy limit  order.'
+    )
+        COMMENT 'Reports incremental L2-updates: insert, delete or update of one line in Order Book either on ask or bid side.It also can encode L2-snapshot entry. Note L2 is level oriented depth-of-the-book format and should be usedwhenever price or integer index is used to locate book changes. It does support individual quotes book ofarbitrary depth. But if incremental changes key is a quoteId L3Entry should be used instead.';
+    CLASS "deltix.timebase.api.messages.universal.L2EntryUpdate" 'L2EntryUpdate' UNDER "deltix.timebase.api.messages.universal.BasePriceEntry" (
+        "action" 'Action' "deltix.timebase.api.messages.BookUpdateAction" NOT NULL COMMENT 'Directs how to update an Order Book<p><b>symbol, instrumentType, exchangeCode, marketMakerCode, depth</b> fields constitute the composite keyto identify the order book record.</p>.',
+        "level" 'Level Index' INTEGER NOT NULL SIGNED (16) COMMENT 'Market Depth  / Price Level.This value is zero-based (top of the book will have depth=0).',
+        "side" 'Side' "deltix.timebase.api.messages.QuoteSide" COMMENT 'Quote side. Bid or Ask.Ask = Sell limit order.Bid = Buy limit  order.'
+    )
+        COMMENT 'Reports incremental L2-updates: insert, delete or update of one line in Order Book either on ask or bid side.It also can encode L2-snapshot entry. Note L2 is level oriented depth-of-the-book format and should be usedwhenever price or integer index is used to locate book changes. It does support individual quotes book ofarbitrary depth. But if incremental changes key is a quoteId L3Entry should be used instead.';
+    CLASS "deltix.timebase.api.messages.universal.L3EntryNew" 'L3EntryNew' UNDER "deltix.timebase.api.messages.universal.BasePriceEntry" (
+        "insertBeforeQuoteId" 'Insert Before Quote Id' VARCHAR COMMENT 'In case of InsertType = ADD_BEFORE represents the id of the quote that should be after inserted.',
+        "insertType" 'Insert Type' "deltix.timebase.api.messages.universal.InsertType" COMMENT 'Insert type. Add front or Add back.',
+        "side" 'Side' "deltix.timebase.api.messages.QuoteSide" NOT NULL COMMENT 'Quote side. Bid or Ask.Ask = Sell limit order.Bid = Buy limit  order.'
+    )
+        COMMENT 'Reports incremental L3-updates: new, cancel, modify and replace of one quote in Order Book either on ask or bid side.It also can encode L3-snapshot entry. Note L3 is quote oriented depth-of-the-book format and should be usedwhenever quoteId is used to locate book changes.';
+    CLASS "deltix.timebase.api.messages.universal.L3EntryUpdate" 'L3 Entry Update' UNDER "deltix.timebase.api.messages.universal.BasePriceEntry" (
+        "action" 'Action' "deltix.timebase.api.messages.QuoteUpdateAction" NOT NULL COMMENT 'Directs how to update an Order Book<p><b>symbol, instrumentType, exchangeCode, quoteId</b> fields constitute the composite keyto identify the order book record.</p>.',
+        "side" 'Side' "deltix.timebase.api.messages.QuoteSide" COMMENT 'Quote side. Bid or Ask.Ask = Sell limit order.Bid = Buy limit  order.'
+    )
+        COMMENT 'Reports incremental L3-updates: new, cancel, modify and replace of one quote in Order Book either on ask or bid side.It also can encode L3-snapshot entry. Note L3 is quote oriented depth-of-the-book format and should be usedwhenever quoteId is used to locate book changes.';
+    CLASS "deltix.timebase.api.messages.universal.TradeEntry" 'Trade Entry' UNDER "deltix.timebase.api.messages.universal.BaseEntry" (
+        "buyerNumberOfOrders" 'Buyer Number Of Orders' INTEGER COMMENT 'Buyer number of orders involved in match.',
+        "buyerOrderId" 'Buyer Order ID' VARCHAR COMMENT 'ID of buyer order.',
+        "buyerParticipantId" 'Buyer Participant ID' VARCHAR COMMENT 'Buyer participant ID (or broker ID) for trader that submit buying order.',
+        "condition" 'Condition' VARCHAR COMMENT 'Market specific trade condition.',
+        "matchId" 'Match ID' VARCHAR COMMENT 'Id of particular execution event (ExecutionId, TradeId, MatchId)',
+        "price" 'Price' FLOAT DECIMAL64 COMMENT 'Ask, Bid or Trade price.',
+        "sellerNumberOfOrders" 'Seller Number Of Orders' INTEGER COMMENT 'Seller number of orders involved in match.',
+        "sellerOrderId" 'Seller Order ID' VARCHAR COMMENT 'ID of seller order.',
+        "sellerParticipantId" 'Seller Participant ID' VARCHAR COMMENT 'Seller participant ID (or broker ID) for trader that submit selling order.',
+        "side" 'Side' "deltix.timebase.api.messages.AggressorSide" COMMENT 'Trade side. Sell or Buy.For Trade it''s aggressor side, i.e. side from where market order has came.',
+        "size" 'Size' FLOAT DECIMAL64 COMMENT 'Ask, Bid or Trade quantity.',
+        "tradeType" 'Trade Type' "deltix.timebase.api.messages.TradeType" COMMENT 'Explains the meaning of the given price and/or size.The value is null for regular trades.'
+    )
+        COMMENT 'Basic information about a market trade.';
+    ENUM "deltix.timebase.api.messages.universal.PackageType" 'Package Type' (
+        "VENDOR_SNAPSHOT" = 0,
+        "PERIODICAL_SNAPSHOT" = 1,
+        "INCREMENTAL_UPDATE" = 2
+    );
+    CLASS "deltix.timebase.api.messages.universal.PackageHeader" 'Package Header' UNDER "deltix.timebase.api.messages.MarketMessage" (
+        "entries" 'Entries' ARRAY(OBJECT("deltix.timebase.api.messages.universal.TradeEntry", "deltix.timebase.api.messages.universal.L1Entry", "deltix.timebase.api.messages.universal.L2EntryNew", "deltix.timebase.api.messages.universal.L2EntryUpdate", "deltix.timebase.api.messages.universal.L3EntryNew", "deltix.timebase.api.messages.universal.L3EntryUpdate", "deltix.timebase.api.messages.universal.BookResetEntry") NOT NULL) NOT NULL COMMENT 'Message package content. Array of individual entries.Typical entries classes are L1Entry, L2Entry, L3Entry, TradeEntry.',
+        "packageType" 'Package Type' "deltix.timebase.api.messages.universal.PackageType" NOT NULL COMMENT 'Package type needs to distinguish between incremental changes and different types of snapshot.'
+    )
+        COMMENT 'Represents market data package.';
+)
+OPTIONS (POLYMORPHIC; PERIODICITY = 'IRREGULAR'; DF = 1; HIGHAVAILABILITY = FALSE)

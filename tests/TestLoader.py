@@ -4,6 +4,7 @@ import testutils, generators
 import time
 import dxapi
 
+
 class TestLoader(servertest.TBServerTest):
 
     streamKeys = [
@@ -13,7 +14,7 @@ class TestLoader(servertest.TBServerTest):
     def test_LoadFixed(self):
         key = self.streamKeys[0]
         try:
-            stream = self.createStream(key, False)
+            stream = self.createStreamQQL(key)
             self.assertIsNotNone(stream)
             self.assertEqual(self.streamCount(key), 0)  # check stream is empty
 
@@ -28,7 +29,7 @@ class TestLoader(servertest.TBServerTest):
     def test_LoadPolymorphic(self):
         key = self.streamKeys[1]
         try:
-            stream = self.createStream(key, True)
+            stream = self.createStreamQQL(key)
             self.assertIsNotNone(stream)
             self.assertEqual(self.streamCount(key), 0)  # check stream is empty
 
@@ -43,7 +44,7 @@ class TestLoader(servertest.TBServerTest):
     def test_LoadL2(self):
         key = self.streamKeys[2]
         try:
-            stream = self.createStream(key, True)
+            stream = self.createStreamQQL(key)
             self.assertIsNotNone(stream)
             self.assertEqual(self.streamCount(key), 0)  # check stream is empty
 
@@ -55,27 +56,12 @@ class TestLoader(servertest.TBServerTest):
         finally:
             self.deleteStream(key)
 
-    def test_ContextManager(self):
-        key = self.streamKeys[0]
-        try:
-            stream = self.createStream(key, False)
-            self.assertIsNotNone(stream)
-            self.assertEqual(self.streamCount(key), 0)  # check stream is empty
-
-            count = 12345
-            loadCount = testutils.loadWithBars(stream, count)
-            self.assertEqual(count, loadCount)
-            readCount = self.streamCount(key)
-            self.assertEqual(readCount, loadCount)
-        finally:
-            self.deleteStream(key)
-
     def test_registerTypesAndEntities(self):
         key = self.streamKeys[1]
         loader = None
         cursor = None
         try:
-            stream = self.createStream(key, True)
+            stream = self.createStreamQQL(key)
             self.assertIsNotNone(stream)
             self.assertEqual(self.streamCount(key), 0)  # check stream is empty
 
@@ -89,8 +75,8 @@ class TestLoader(servertest.TBServerTest):
             tradeTypeId = loader.registerType('deltix.timebase.api.messages.TradeMessage')
 
             # register entities
-            instrument1 = loader.registerInstrument(dxapi.InstrumentType('EQUITY'), 'AAAA')
-            instrument2 = loader.registerInstrumentIdentity(dxapi.InstrumentIdentity(dxapi.InstrumentType.BOND, 'BBBB'))
+            instrument1 = loader.registerInstrument('AAAA')
+            instrument2 = loader.registerInstrument('BBBB')
 
             message.typeId = bboTypeId
 
@@ -119,22 +105,18 @@ class TestLoader(servertest.TBServerTest):
             self.assertTrue(cursor.next())
             self.assertEqual(cursor.getMessage().typeName, 'deltix.timebase.api.messages.BestBidOfferMessage')
             self.assertEqual(cursor.getMessage().symbol, 'AAAA')
-            self.assertEqual(cursor.getMessage().instrumentType, 'EQUITY')
 
             self.assertTrue(cursor.next())
             self.assertEqual(cursor.getMessage().typeName, 'deltix.timebase.api.messages.BestBidOfferMessage')
             self.assertEqual(cursor.getMessage().symbol, 'BBBB')
-            self.assertEqual(cursor.getMessage().instrumentType, 'BOND')
 
             self.assertTrue(cursor.next())
             self.assertEqual(cursor.getMessage().typeName, 'deltix.timebase.api.messages.TradeMessage')
             self.assertEqual(cursor.getMessage().symbol, 'AAAA')
-            self.assertEqual(cursor.getMessage().instrumentType, 'EQUITY')
 
             self.assertTrue(cursor.next())
             self.assertEqual(cursor.getMessage().typeName, 'deltix.timebase.api.messages.TradeMessage')
             self.assertEqual(cursor.getMessage().symbol, 'BBBB')
-            self.assertEqual(cursor.getMessage().instrumentType, 'BOND')
 
         finally:
             if loader != None:
@@ -145,7 +127,7 @@ class TestLoader(servertest.TBServerTest):
 
     def test_Flush(self):
         key = self.streamKeys[0]
-        stream = self.createStream(key, False)
+        stream = self.createStreamQQL(key)
         loader = stream.createLoader(dxapi.LoadingOptions())
         try:
             barGenerator = generators.BarGenerator(0, 1000000000, 21, ['EPAM'])
@@ -198,7 +180,7 @@ class TestLoader(servertest.TBServerTest):
 
     def test_MassFlush(self):
         key = self.streamKeys[0]
-        stream = self.createStream(key, False)
+        stream = self.createStreamQQL(key)
         loader = stream.createLoader(dxapi.LoadingOptions())
         try:
             count = 100000
@@ -214,17 +196,6 @@ class TestLoader(servertest.TBServerTest):
 
     # helpers
 
-    def streamCountQQL(self, key):
-        cursor = self.db.executeQuery('SELECT count() as count FROM "' + key + '"')
-        try:
-            if cursor.next():
-                return cursor.getMessage().COUNT
-            else:
-                return 0
-        finally:
-            if cursor != None:
-                cursor.close()
-
     def streamCount(self, key):
         stream = self.db.getStream(key)
         cursor = stream.createCursor(dxapi.SelectionOptions())
@@ -234,6 +205,18 @@ class TestLoader(servertest.TBServerTest):
             while cursor.next():
                 count += 1
             return count
+        finally:
+            if cursor != None:
+                cursor.close()
+
+
+    def streamCountQQL(self, key):
+        cursor = self.db.executeQuery('SELECT count() as count FROM "' + key + '"')
+        try:
+            if cursor.next():
+                return cursor.getMessage().COUNT
+            else:
+                return 0
         finally:
             if cursor != None:
                 cursor.close()
