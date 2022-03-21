@@ -170,7 +170,7 @@ jobs:
           - py: '3.7'
             py_env: '37'
             py_v: '3.7.12'
-            py_lib_prefix: '3.7'
+            py_lib_prefix: '3.7m'
           - py: '3.8'
             py_env: '38'
             py_v: '3.8.12'
