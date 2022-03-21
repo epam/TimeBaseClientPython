@@ -33,22 +33,22 @@ jobs:
           name: dxapi-${{ matrix.os }}
           path: ./dxapi/bin/libdxapi-x64.a
           
-#  build-windows-dxapi:
-#    runs-on: windows-2019
-#    steps:
-#    - name: Check out repository code
-#      uses: actions/checkout@v2
-#      with:
-#        submodules: 'recursive'
-#    - name: Use MSBuild
-#      uses: microsoft/setup-msbuild@v1.1
-#    - name: Build Solution
-#      run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
-#    - name: Archive artifacts
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: dxapi-windows
-#        path: ./dxapi/bin/dxapi-x64.lib
+  build-windows-dxapi:
+    runs-on: windows-2019
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: Use MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+    - name: Build Solution
+      run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dxapi-windows
+        path: ./dxapi/bin/dxapi-x64.lib
         
   build-dxapi-python-linux:
     runs-on: ubuntu-latest
@@ -106,12 +106,12 @@ jobs:
             ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
             ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
 
-#  build-dxapi-python-windows:
-#    runs-on: windows-2019
-#    needs: [build-windows-dxapi]
-#    strategy:
-#      matrix:
-#        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+  build-dxapi-python-windows:
+    runs-on: windows-2019
+    needs: [build-windows-dxapi]
+    strategy:
+      matrix:
+        py: ['3.10']
 #        include:
 #          - py: '3.6'
 #            py_env: '36'
@@ -123,40 +123,40 @@ jobs:
 #            py_env: '39'
 #          - py: '3.10'
 #            py_env: '310'
-#    steps:
-#    - name: Check out repository code
-#      uses: actions/checkout@v2
-#      with:
-#        submodules: 'recursive'
-#    - name: Download dxapi-windows artifacts
-#      uses: actions/download-artifact@v2
-#      with:
-#        name: dxapi-windows
-#        path: dxapi/bin
-#    - uses: actions/setup-python@v2
-#      with:
-#        python-version: '${{ matrix.py }}'
-#    - name: Use MSBuild
-#      uses: microsoft/setup-msbuild@v1.1
-#    - name: Build Solution
-#      run: |
-#        Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
-#        $pwd = pwd
-#        $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
-#        $Env:SWIG_HOME
-#        python --version
-#        python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#        $Env:PYTHON${{ matrix.py_env }}_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
-#        $Env:PYTHON${{ matrix.py_env }}_HOME
-#        msbuild ./dxapi-python.sln /p:configuration=Release${{ matrix.py_env }} /p:platform=x64 /t:rebuild
-#    - name: Archive artifacts
-#      uses: actions/upload-artifact@v2
-#      with:
-#        name: dxapi-python-windows
-#        path: |
-#          ./bin/release/__init__.py
-#          ./bin/release/windows/x64/py${{ matrix.py_env }}/_dxapi.pyd
-#          ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+    - name: Download dxapi-windows artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: dxapi-windows
+        path: dxapi/bin
+    - uses: actions/setup-python@v2
+      with:
+        python-version: '${{ matrix.py }}'
+    - name: Use MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+    - name: Build Solution
+      run: |
+        Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
+        $pwd = pwd
+        $Env:SWIG_HOME="$pwd/swigwin/swigwin-3.0.12"
+        $Env:SWIG_HOME
+        python --version
+        python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON${{ matrix.py_env }}_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
+        $Env:PYTHON${{ matrix.py_env }}_HOME
+        msbuild ./dxapi-python.sln /p:configuration=Release${{ matrix.py_env }} /p:platform=x64 /t:rebuild
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dxapi-python-windows
+        path: |
+          ./bin/release/__init__.py
+          ./bin/release/windows/x64/py${{ matrix.py_env }}/_dxapi.pyd
+          ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
 
 #  build-dxapi-python-macos:
 #    runs-on: macos-latest
@@ -251,7 +251,6 @@ jobs:
         image: finos/timebase-ce-server
         env:
           JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
-          TIMEBASE_SERIAL: $TIMEBASE_SERIAL
         ports:
           - 8011:8011
     steps:
@@ -267,16 +266,14 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: '${{ matrix.py }}'
-      - name: Build Dxapi
+      - name: Run tests
         run: |
-          export TIMEBASE_HOST=timebase
-          export TIMEBASE_PORT=8011
           chmod -R 777 ./tests
           cd ./tests
           python TestAll.py
         env:
-          CC: clang
-          PYTHON_VERSION: ${{ matrix.py_env }}
+          TIMEBASE_HOST: timebase
+          TIMEBASE_PORT: 8011
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
