@@ -63,8 +63,6 @@ jobs:
             py_env: '37'
           - py: '3.8'
             py_env: '38'
-          - py: '3.8'
-            py_env: '38'
           - py: '3.9'
             py_env: '39'
           - py: '3.10'
@@ -79,8 +77,8 @@ jobs:
         with:
           name: dxapi-ubuntu-latest
           path: dxapi/bin
-      - name: install dev python 3.8
-        if: ${{ matrix.py == '3.8' }}
+      - name: install dev python 3.8, 3.9, 3.10
+        if: ${{ matrix.py == '3.8' || matrix.py == '3.9' || matrix.py == '3.10' }}
         run: |
           sudo apt-get update
           sudo apt install -y python${{ matrix.py }}-dev
