@@ -112,7 +112,7 @@ jobs:
     strategy:
       matrix:
         py: ['3.10']
-#        include:
+        include:
 #          - py: '3.6'
 #            py_env: '36'
 #          - py: '3.7'
@@ -121,8 +121,8 @@ jobs:
 #            py_env: '38'
 #          - py: '3.9'
 #            py_env: '39'
-#          - py: '3.10'
-#            py_env: '310'
+          - py: '3.10'
+            py_env: '310'
     steps:
     - name: Check out repository code
       uses: actions/checkout@v2
@@ -229,54 +229,54 @@ jobs:
 
 
 ## Tests
-  test-dxapi-python-linux:
-    runs-on: ubuntu-latest
-    needs: [build-dxapi-python-linux]
-    strategy:
-      matrix:
-        py: ['3.10']
-#        include:
-          #          - py: '3.6'
-          #            py_env: '36'
-          #          - py: '3.7'
-          #            py_env: '37'
-          #          - py: '3.8'
-          #            py_env: '38'
-          #          - py: '3.9'
-          #            py_env: '39'
-#          - py: '3.10'
-#            py_env: '310'
-    services:
-      timebase:
-        image: finos/timebase-ce-server
-        env:
-          JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
-        ports:
-          - 8011:8011
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download dxapi-python-linux artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-python-linux
-          path: tests/dxapi
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '${{ matrix.py }}'
-      - name: Run tests
-        run: |
-          chmod -R 777 ./tests
-          cd ./tests
-          python TestAll.py
-        env:
-          TIMEBASE_HOST: timebase
-          TIMEBASE_PORT: 8011
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-reports-dxapi-python-linux
-          path: |
-            ./tests/reports
+#  test-dxapi-python-linux:
+#    runs-on: ubuntu-latest
+#    needs: [build-dxapi-python-linux]
+#    strategy:
+#      matrix:
+#        py: ['3.10']
+##        include:
+#          #          - py: '3.6'
+#          #            py_env: '36'
+#          #          - py: '3.7'
+#          #            py_env: '37'
+#          #          - py: '3.8'
+#          #            py_env: '38'
+#          #          - py: '3.9'
+#          #            py_env: '39'
+##          - py: '3.10'
+##            py_env: '310'
+#    services:
+#      timebase:
+#        image: finos/timebase-ce-server
+#        env:
+#          JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
+#        ports:
+#          - 8011:8011
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v2
+#        with:
+#          submodules: 'recursive'
+#      - name: Download dxapi-python-linux artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: dxapi-python-linux
+#          path: tests/dxapi
+#      - uses: actions/setup-python@v2
+#        with:
+#          python-version: '${{ matrix.py }}'
+#      - name: Run tests
+#        run: |
+#          chmod -R 777 ./tests
+#          cd ./tests
+#          python TestAll.py
+#        env:
+#          TIMEBASE_HOST: timebase
+#          TIMEBASE_PORT: 8011
+#      - name: Archive artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: test-reports-dxapi-python-linux
+#          path: |
+#            ./tests/reports
