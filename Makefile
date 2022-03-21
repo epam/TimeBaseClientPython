@@ -2,15 +2,12 @@
 
 OS?=LINUX
 
-DXAPI_BIN=../dxapi/bin
+DXAPI_BIN=./dxapi/bin
 PYTHONAPI_INTERFACE=dxapi.py
 PYHTONAPI_LIB=_dxapi.so
 
 PYTHON_VERSION?=36
-ifeq ($(PYTHON_VERSION),27)
-	PYTHON=python2.7
-	PYTHON_VERSION_FULL=2.7
-else ifeq ($(PYTHON_VERSION),37)
+ifeq ($(PYTHON_VERSION),37)
 	PYTHON=python3.7
 	PYTHON_VERSION_FULL=3.7
 else ifeq ($(PYTHON_VERSION),38)
@@ -28,16 +25,17 @@ else
 endif
 
 ifeq ($(OS),MACOS)
-	DFP_BIN=.
-	DFP_LIB=DecimalNative
+    DFP_BIN=./dfp/lib/osx/64
+    DFP_LIB=DecimalNative
+    RPATH_PARAM=
     THIRD_PARTY_LIBS=
     PYTHON_INCLUDES=/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/Headers
     PYTHON_LIBS=-L/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/lib -lpython$(PYTHON_VERSION_FULL)
     BIN_SUBFOLDER=darwin
 else
-	DFP_BIN=../dfp/bin/Linux/Release/64
-	DFP_LIB=dfp
-    THIRD_PARTY_LIBS=-ldecimal
+    DFP_BIN=./dfp/lib/linux/64
+    DFP_LIB=DecimalNative
+    RPATH_PARAM=-Wl,-rpath,'$$ORIGIN'
     PYTHON_INCLUDES=/usr/include/$(PYTHON)
     PYTHON_LIBS=
     BIN_SUBFOLDER=linux
@@ -59,15 +57,13 @@ SRCDIR=src
 SRCDIRS=codecs swig swig/wrappers
 
 # Include directories
-INCLUDES= $(PYTHON_INCLUDES) ../dxapi/include/native ../dxapi/include/native/dxapi ../dxapi/src/dxapi ../dxapi/src/dxapi/native $(SRCDIR)
+INCLUDES= $(PYTHON_INCLUDES) ./dxapi/include/native ./dxapi/include/native/dxapi $(SRCDIR)
 
 OBJ=$(OBJ_LIB)
 
-LIBDIR=-L../dxapi/third-party/openssl/$(BIN_SUBFOLDER)/lib
-
 # Library files
 # LIBS=lib1 lib2
-LIBS=ssl crypto
+LIBS=
 
 # Common preprocessor flags
 COMMONPFLAGS=
@@ -137,11 +133,11 @@ CINCLUDES=-I. $(INCLUDES:%=-I%)
 CCFLAGS=-fPIC $(CFLAGS) $(CINCLUDES) $(CWARNINGS) $(PFLAGS:%=-D %)
 CXXFLAGS=-std=c++11 $(CCFLAGS)
 
-DEFLIBS=dl pthread
+DEFLIBS=
 #stdc++ c m pthread
 
 # Popular libs: rt-realtime extensions, pcap-packet capture, pthread-Posix threads
-LDFLAGS=$(patsubst %, -l%, $(LIBS) $(DEFLIBS))
+LDFLAGS=$(patsubst %, -l%, $(DEFLIBS) $(LIBS))
 
 
 OUTDIRS=$(WRAPDIR) $(OBJDIR) $(BINDIR)
@@ -163,7 +159,7 @@ $(OUTDIRS):
     
 # python wrapper
 $(WRAPPER_OBJDIR)/$(WRAPPER_OBJ).o: dxapi.i
-	swig -c++ -python -I../dxapi/include/native/dxapi -o $(WRAPDIR)/$(WRAPPER_OBJ).cxx -outdir $(INIT_PY_DIR) src/swig/dxapi.i
+	swig -c++ -python -I./dxapi/include/native/dxapi -o $(WRAPDIR)/$(WRAPPER_OBJ).cxx -outdir $(INIT_PY_DIR) src/swig/dxapi.i
 	cp $(INIT_PY_DIR)/dxapi.py $(INIT_PY_DIR)/__init__.py
 	$(CXX) -c $(CXXFLAGS) -o $@ $(WRAPDIR)/$(WRAPPER_OBJ).cxx
 
@@ -184,7 +180,7 @@ DXAPI_PYTHON_LIB_OBJ_PATHS=$(OBJ_LIB:%=$(OBJDIR)/%.o)
 
 # linking
 $(BINDIR)/$(PYHTONAPI_LIB): $(DXAPI_PYTHON_LIB_OBJ_PATHS)
-	$(CXX) -shared $(DXAPI_PYTHON_LIB_OBJ_PATHS) -L$(DXAPI_BIN)/ -L$(DFP_BIN)/ -l$(DXAPI_LIB) $(LDFLAGS) $(LIBDIR) -l$(DFP_LIB) $(PYTHON_LIBS) $(THIRD_PARTY_LIBS) -o $@
+	$(CXX) -shared $(DXAPI_PYTHON_LIB_OBJ_PATHS) $(LDFLAGS) -L$(DXAPI_BIN)/ -L$(DFP_BIN)/ -l$(DXAPI_LIB) -l$(DFP_LIB) $(RPATH_PARAM) $(PYTHON_LIBS) $(THIRD_PARTY_LIBS) -o $@
 
 $(CLEAN_TARGETS):
 	-rm $(@:clean-%=$(BINDIR)/%)
