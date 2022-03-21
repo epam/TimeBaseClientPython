@@ -198,8 +198,10 @@ jobs:
           make install
       - name: Build Dxapi
         run: |
-          ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/Headers
-          ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib
+          mkdir /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}
+          ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/include/python${{ matrix.py }} /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}
+          mv /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/python${{ matrix.py }} /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/Headers
+          ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}
           python -c "import os, sys; print(os.path.dirname(sys.executable))"
           make -C .
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
