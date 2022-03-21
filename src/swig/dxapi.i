@@ -17,6 +17,10 @@ elif _swig_python_version_info >= (3, 7) and _swig_python_version_info < (3, 8):
     subdir = 'py37'
 elif _swig_python_version_info >= (3, 8) and _swig_python_version_info < (3, 9):
     subdir = 'py38'
+elif _swig_python_version_info >= (3, 9) and _swig_python_version_info < (3, 10):
+    subdir = 'py39'
+elif _swig_python_version_info >= (3, 10) and _swig_python_version_info < (3, 11):
+    subdir = 'py310'
 else:
     raise Exception('Version of python (' + str(_swig_python_version_info) + ') is not supported')
 
