@@ -254,9 +254,9 @@ jobs:
     services:
       timebase:
         image: finos/timebase-ce-server
-        env:
-          JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
-          TIMEBASE_SERIAL: $TIMEBASE_SERIAL
+#        env:
+#          JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
+#          TIMEBASE_SERIAL: $TIMEBASE_SERIAL
         ports:
           - 8011:8011
     steps:
