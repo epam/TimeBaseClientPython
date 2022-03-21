@@ -201,7 +201,7 @@ jobs:
           which python
           which python3
           which python${{ matrix.py }}
-          cd /Users/runner/hostedtoolcache/Python/3.7
+          cd /System/Library/Frameworks/Python.framework/Headers
           ls -l
           make -C .
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
