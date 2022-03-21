@@ -42,6 +42,8 @@ jobs:
         submodules: 'recursive'
     - name: Use MSBuild
       uses: microsoft/setup-msbuild@v1.0.2
+      with:
+        vs-version: '[16.4,16.11)'
     - name: Build Solution
       run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
     - name: Archive artifacts
@@ -138,6 +140,8 @@ jobs:
         python-version: '${{ matrix.py }}'
     - name: Use MSBuild
       uses: microsoft/setup-msbuild@v1.0.2
+      with:
+        vs-version: '[16.4,16.11)'
     - name: Build Solution
       run: |
         Expand-Archive -Path ./swigwin/swigwin-3.0.12.zip -DestinationPath ./swigwin -Force
