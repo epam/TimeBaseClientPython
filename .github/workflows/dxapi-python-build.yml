@@ -174,7 +174,7 @@ jobs:
           - py: '3.8'
             py_env: '38'
             py_v: '3.8.12'
-            py_lib_prefix: '3.9'
+            py_lib_prefix: '3.8'
           - py: '3.9'
             py_env: '39'
             py_v: '3.9.10'
