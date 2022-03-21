@@ -122,7 +122,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F06CE5AA-B67E-4E38-8473-283FEBE7AE33}</ProjectGuid>
     <RootNamespace>dxapipython</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'" Label="Configuration">
