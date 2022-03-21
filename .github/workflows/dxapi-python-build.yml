@@ -181,7 +181,7 @@ jobs:
             py_lib_prefix: '3.9'
           - py: '3.10'
             py_env: '310'
-            py_v: '3.10'
+            py_v: '3.10.2'
             py_lib_prefix: '3.10'
     steps:
       - name: Check out repository code
