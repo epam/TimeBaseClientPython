@@ -55,16 +55,20 @@ jobs:
     needs: [build-dxapi]
     strategy:
       matrix:
-        py: ['2.7', '3.6', '3.7', '3.8']
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
         include:
-          - py: '2.7'
-            py_env: '27'
           - py: '3.6'
             py_env: '36'
           - py: '3.7'
             py_env: '37'
           - py: '3.8'
             py_env: '38'
+          - py: '3.8'
+            py_env: '38'
+          - py: '3.9'
+            py_env: '39'
+          - py: '3.10'
+            py_env: '310'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -75,8 +79,8 @@ jobs:
         with:
           name: dxapi-ubuntu-latest
           path: dxapi/bin
-      - name: install dev python 2.7 & 3.8
-        if: ${{ matrix.py == '2.7' || matrix.py == '3.8' }}
+      - name: install dev python 3.8
+        if: ${{ matrix.py == '3.8' }}
         run: |
           sudo apt-get update
           sudo apt install -y python${{ matrix.py }}-dev
@@ -109,20 +113,18 @@ jobs:
     needs: [build-windows-dxapi]
     strategy:
       matrix:
-        py: ['2.7', '3.6', '3.7', '3.8']
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
         include:
-          - py: '2.7'
-            py_env: '27'
-            release: Release27
           - py: '3.6'
             py_env: '36'
-            release: Release
           - py: '3.7'
             py_env: '37'
-            release: Release37
           - py: '3.8'
             py_env: '38'
-            release: Release38
+          - py: '3.9'
+            py_env: '39'
+          - py: '3.10'
+            py_env: '310'
     steps:
     - name: Check out repository code
       uses: actions/checkout@v2
@@ -148,7 +150,7 @@ jobs:
         python -c "import os, sys; print(os.path.dirname(sys.executable))"
         $Env:PYTHON${{ matrix.py_env }}_HOME=python -c "import os, sys; print(os.path.dirname(sys.executable))"
         $Env:PYTHON${{ matrix.py_env }}_HOME
-        msbuild ./dxapi-python.sln /p:configuration=${{ matrix.release }} /p:platform=x64 /t:rebuild
+        msbuild ./dxapi-python.sln /p:configuration=Release${{ matrix.py_env }} /p:platform=x64 /t:rebuild
     - name: Archive artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -163,10 +165,8 @@ jobs:
     needs: [build-dxapi]
     strategy:
       matrix:
-        py: ['2.7', '3.6', '3.7', '3.8']
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
         include:
-          - py: '2.7'
-            py_env: '27'
           - py: '3.6'
             py_env: '36'
             py_v: '3.6.8'
@@ -176,6 +176,12 @@ jobs:
           - py: '3.8'
             py_env: '38'
             py_v: '3.8.10'
+          - py: '3.9'
+            py_env: '39'
+            py_v: '3.9.11'
+          - py: '3.10'
+            py_env: '310'
+            py_v: '3.10.3'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -186,11 +192,6 @@ jobs:
         with:
           name: dxapi-macos-latest
           path: dxapi/bin
-      - name: Setup Python ${{ matrix.py_env }}
-        if: ${{ matrix.py != '2.7' }}
-        run: |
-          curl -O https://www.python.org/ftp/python/${{ matrix.py_v }}/python-${{ matrix.py_v }}-macosx10.9.pkg
-          sudo installer -pkg ./python-${{ matrix.py_v }}-macosx10.9.pkg -target /
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.py }}
