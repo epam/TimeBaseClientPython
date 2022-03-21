@@ -259,40 +259,40 @@ jobs:
       ports:
         - 8011:8011
     steps:
-    - name: Check out repository code
-      uses: actions/checkout@v2
-      with:
-        submodules: 'recursive'
-    - name: Download dxapi-linux artifacts
-      uses: actions/download-artifact@v2
-      with:
-        name: dxapi-ubuntu-latest
-        path: dxapi/bin
-    - name: install dev python 3.8, 3.9, 3.10
-      if: ${{ matrix.py == '3.8' || matrix.py == '3.9' || matrix.py == '3.10' }}
-      run: |
-        sudo apt-get update
-        sudo apt install -y python${{ matrix.py }}-dev
-    - name: install dev python 3.6 & 3.7
-      if: ${{ matrix.py == '3.6' || matrix.py == '3.7' }}
-      run: |
-        sudo apt-get update
-        sudo apt-get install -yq software-properties-common
-        sudo add-apt-repository ppa:deadsnakes/ppa
-        sudo apt-get update
-        sudo apt-get install python${{ matrix.py }}-dev
-    - name: Build Dxapi
-      run: |
-        make -C .
-        cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
-      env:
-        CC: clang
-        PYTHON_VERSION: ${{ matrix.py_env }}
-    - name: Archive artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: dxapi-python-linux
-        path: |
-          ./bin/release/__init__.py
-          ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
-          ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-ubuntu-latest
+          path: dxapi/bin
+      - name: install dev python 3.8, 3.9, 3.10
+        if: ${{ matrix.py == '3.8' || matrix.py == '3.9' || matrix.py == '3.10' }}
+        run: |
+          sudo apt-get update
+          sudo apt install -y python${{ matrix.py }}-dev
+      - name: install dev python 3.6 & 3.7
+        if: ${{ matrix.py == '3.6' || matrix.py == '3.7' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -yq software-properties-common
+          sudo add-apt-repository ppa:deadsnakes/ppa
+          sudo apt-get update
+          sudo apt-get install python${{ matrix.py }}-dev
+      - name: Build Dxapi
+        run: |
+          make -C .
+          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
+        env:
+          CC: clang
+          PYTHON_VERSION: ${{ matrix.py_env }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dxapi-python-linux
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
+            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
