@@ -161,14 +161,14 @@ jobs:
     needs: [build-dxapi]
     strategy:
       matrix:
-        py: ['3.6', '3.7', '3.8', '3.9']
+        py: ['3.8', '3.9']
         include:
-          - py: '3.6'
-            py_env: '36'
-            py_v: '3.6.15'
-          - py: '3.7'
-            py_env: '37'
-            py_v: '3.7.12'
+#          - py: '3.6'
+#            py_env: '36'
+#            py_v: '3.6.15'
+#          - py: '3.7'
+#            py_env: '37'
+#            py_v: '3.7.12'
           - py: '3.8'
             py_env: '38'
             py_v: '3.8.12'
@@ -198,6 +198,8 @@ jobs:
           make install
       - name: Build Dxapi
         run: |
+          ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/Headers
+          ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib
           python -c "import os, sys; print(os.path.dirname(sys.executable))"
           make -C .
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
