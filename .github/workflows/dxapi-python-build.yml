@@ -82,7 +82,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt install -y python${{ matrix.py }}-dev
-      - name: install dev python 3.6 & 3.7
+      - name: install dev python 3.6, 3.7, 3.10
         if: ${{ matrix.py == '3.6' || matrix.py == '3.7' || matrix.py == '3.10' }}
         run: |
           sudo apt-get update
@@ -235,7 +235,7 @@ jobs:
     strategy:
       matrix:
         py: ['3.10']
-        include:
+#        include:
           #          - py: '3.6'
           #            py_env: '36'
           #          - py: '3.7'
@@ -244,8 +244,8 @@ jobs:
           #            py_env: '38'
           #          - py: '3.9'
           #            py_env: '39'
-          - py: '3.10'
-            py_env: '310'
+#          - py: '3.10'
+#            py_env: '310'
     services:
       timebase:
         image: finos/timebase-ce-server
@@ -264,6 +264,9 @@ jobs:
         with:
           name: dxapi-python-linux
           path: tests/dxapi
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '${{ matrix.py }}'
       - name: Build Dxapi
         run: |
           export TIMEBASE_HOST=timebase
@@ -277,8 +280,6 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: dxapi-python-linux
+          name: test-reports-dxapi-python-linux
           path: |
-            ./bin/release/__init__.py
-            ./bin/release/linux/x64/py${{ matrix.py_env }}/_dxapi.so
-            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
+            ./tests/reports
