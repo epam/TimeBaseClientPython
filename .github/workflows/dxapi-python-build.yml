@@ -165,13 +165,13 @@ jobs:
         include:
           - py: '3.6'
             py_env: '36'
-            py_v: '3.6.8'
+            py_v: '3.6.15'
           - py: '3.7'
             py_env: '37'
-            py_v: '3.7.9'
+            py_v: '3.7.12'
           - py: '3.8'
             py_env: '38'
-            py_v: '3.8.10'
+            py_v: '3.8.12'
           - py: '3.9'
             py_env: '39'
             py_v: '3.9.10'
@@ -201,7 +201,7 @@ jobs:
           which python
           which python3
           which python${{ matrix.py }}
-          cd /Users/runner/hostedtoolcache/Python/3.8.12/x64
+          cd /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}//x64
           ls -l
           make -C .
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
