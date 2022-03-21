@@ -161,20 +161,28 @@ jobs:
     needs: [build-dxapi]
     strategy:
       matrix:
-        py: ['3.8', '3.9']
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
         include:
-#          - py: '3.6'
-#            py_env: '36'
-#            py_v: '3.6.15'
-#          - py: '3.7'
-#            py_env: '37'
-#            py_v: '3.7.12'
+          - py: '3.6'
+            py_env: '36'
+            py_v: '3.6.15'
+            py_lib_prefix: '3.6m'
+          - py: '3.7'
+            py_env: '37'
+            py_v: '3.7.12'
+            py_lib_prefix: '3.7'
           - py: '3.8'
             py_env: '38'
             py_v: '3.8.12'
+            py_lib_prefix: '3.9'
           - py: '3.9'
             py_env: '39'
             py_v: '3.9.10'
+            py_lib_prefix: '3.9'
+          - py: '3.10'
+            py_env: '310'
+            py_v: '3.10'
+            py_lib_prefix: '3.10'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -187,7 +195,7 @@ jobs:
           path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.py }}
+          python-version: ${{ matrix.py_v }}
       - name: Install SWIG
         run: |
           curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
@@ -199,10 +207,9 @@ jobs:
       - name: Build Dxapi
         run: |
           mkdir /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}
-          ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/include/python${{ matrix.py }} /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}
-          mv /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/python${{ matrix.py }} /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/Headers
+          ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/include/python${{ matrix.py_lib_prefix }} /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}
+          mv /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/python${{ matrix.py_lib_prefix }} /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/Headers
           ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}
-          python -c "import os, sys; print(os.path.dirname(sys.executable))"
           make -C .
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
         env:
