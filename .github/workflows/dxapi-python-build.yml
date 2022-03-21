@@ -201,7 +201,15 @@ jobs:
           which python
           which python3
           which python${{ matrix.py }}
-          cd /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}//x64
+          cd /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64
+          ls -l
+          cd ./include
+          ls -l
+          cd ../lib
+          ls -l
+          cd ../share
+          ls -l
+          cd ../bin
           ls -l
           make -C .
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
