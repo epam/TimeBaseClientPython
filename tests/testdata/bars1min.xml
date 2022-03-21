@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classSet xmlns="http://xml.deltixlab.com/internal/quantserver/3.0">
+    <classDescriptor xsi:type="recordClass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <name>deltix.timebase.api.messages.MarketMessage</name>
+        <title>Market Message</title>
+        <guid>c0a838017d6d2n6a1s5z_12</guid>
+        <abstract>false</abstract>
+        <field xsi:type="staticDataField">
+            <name>originalTimestamp</name>
+            <type xsi:type="dateTime">
+                <nullable>true</nullable>
+            </type>
+        </field>
+        <field xsi:type="staticDataField">
+            <name>currencyCode</name>
+            <title>Currency Code</title>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <staticValue>999</staticValue>
+        </field>
+        <field xsi:type="staticDataField">
+            <name>sequenceNumber</name>
+            <title></title>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+        </field>
+        <field xsi:type="staticDataField">
+            <name>sourceId</name>
+            <title></title>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>true</multiLine>
+            </type>
+        </field>
+    </classDescriptor>
+    <classDescriptor xsi:type="recordClass" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+        <name>deltix.timebase.api.messages.BarMessage</name>
+        <title>Bar Message</title>
+        <guid>c0a838017d6d2n6a1s5z_15</guid>
+        <abstract>false</abstract>
+        <parent>c0a838017d6d2n6a1s5z_12</parent>
+        <field xsi:type="staticDataField">
+            <name>exchangeId</name>
+            <title>Exchange Code</title>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>close</name>
+            <title>Close</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>open</name>
+            <title>Open</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <relativeTo>close</relativeTo>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>high</name>
+            <title>High</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <relativeTo>close</relativeTo>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>low</name>
+            <title>Low</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <relativeTo>close</relativeTo>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>volume</name>
+            <title>Volume</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <contentClassId>c0a838017d6d2n6a1s5z_15</contentClassId>
+</classSet>
