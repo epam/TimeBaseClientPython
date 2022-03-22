@@ -261,7 +261,7 @@ jobs:
           cd ./tests
           python TestAll.py
         env:
-          TIMEBASE_HOST: timebase
+          TIMEBASE_HOST: localhost
           TIMEBASE_PORT: 8011
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
