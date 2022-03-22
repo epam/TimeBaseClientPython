@@ -13,6 +13,8 @@ if testdir != "":
 class TestMultithreaded(servertest.TestWithStreams):
 
     def test_NextIfAvailableWithLoader(self):
+        self.db.getStream("bars1min").truncate(-1)
+
         results = [None] * 1
         reader = threading.Thread(target = self.readStream, args = (results, 0, self.streamKeys[0], ))
         writer = threading.Thread(target = self.loadBarsThread, args = ("bars1min", 3000, ))
@@ -23,7 +25,7 @@ class TestMultithreaded(servertest.TestWithStreams):
         writer.join()
         reader.join()
 
-        self.assertEqual(results[0], 13000)
+        self.assertEqual(results[0], 3000)
 
     def test_NextIfAvailable3Cursors(self):
         results = [None] * 3

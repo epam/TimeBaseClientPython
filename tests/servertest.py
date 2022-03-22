@@ -124,6 +124,7 @@ class TBServerTest(unittest.TestCase):
         cursor = self.db.executeQuery(qql)
         self.assertTrue(cursor.next())
         reportMessage = cursor.getMessage()
+        print(str(reportMessage))
         #self.assertEqual(reportMessage.messageText, 'Stream created')
 
         return self.db.getStream(key)

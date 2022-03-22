@@ -42,7 +42,7 @@ CREATE DURABLE STREAM "universal" (
         "UNKNOWN" = 4
     );
     CLASS "deltix.timebase.api.messages.universal.BaseEntry" 'Base Entry' (
-        "contractId" 'Contract ID' VARCHAR ALPHANUMERIC (10) COMMENT 'Special field designed to store multiple derivative instruments'' updatesinto single package. Most of the time should be static null.',
+        "contractId" 'Contract ID' VARCHAR ALPHANUMERIC (10) COMMENT 'Special field designed to store multiple derivative instruments\' updatesinto single package. Most of the time should be static null.',
         "exchangeId" 'Exchange Code' VARCHAR ALPHANUMERIC (10) COMMENT 'Exchange code compressed to long using ALPHANUMERIC(10) encoding.see #getExchange()',
         "isImplied" 'Is Implied' BOOLEAN COMMENT 'True, if quote (or trade) comes from an implied Order book.'
     )
@@ -51,7 +51,7 @@ CREATE DURABLE STREAM "universal" (
         "numberOfOrders" 'Number Of Orders' INTEGER COMMENT 'Numbers of orders.',
         "participantId" 'Participant' VARCHAR COMMENT 'Id of participant (or broker ID).',
         "price" 'Price' FLOAT DECIMAL64 COMMENT 'Ask, Bid or Trade price.',
-        "quoteId" 'Quote ID' VARCHAR COMMENT 'Quote ID. In Forex market, for example, quote ID can be referenced inTradeOrders (to identify market maker''s quote/rate we want to deal with).Each market maker usually keeps this ID unique per session per day. Thisis a alpha-numeric text text field that can reach 64 characters or more,',
+        "quoteId" 'Quote ID' VARCHAR COMMENT 'Quote ID. In Forex market, for example, quote ID can be referenced inTradeOrders (to identify market maker\'s quote/rate we want to deal with).Each market maker usually keeps this ID unique per session per day. Thisis a alpha-numeric text text field that can reach 64 characters or more,',
         "size" 'Size' FLOAT DECIMAL64 COMMENT 'Ask, Bid or Trade quantity.'
     )
         COMMENT 'This is base class for price entry.';
@@ -102,7 +102,7 @@ CREATE DURABLE STREAM "universal" (
         "sellerNumberOfOrders" 'Seller Number Of Orders' INTEGER COMMENT 'Seller number of orders involved in match.',
         "sellerOrderId" 'Seller Order ID' VARCHAR COMMENT 'ID of seller order.',
         "sellerParticipantId" 'Seller Participant ID' VARCHAR COMMENT 'Seller participant ID (or broker ID) for trader that submit selling order.',
-        "side" 'Side' "deltix.timebase.api.messages.AggressorSide" COMMENT 'Trade side. Sell or Buy.For Trade it''s aggressor side, i.e. side from where market order has came.',
+        "side" 'Side' "deltix.timebase.api.messages.AggressorSide" COMMENT 'Trade side. Sell or Buy.For Trade it\'s aggressor side, i.e. side from where market order has came.',
         "size" 'Size' FLOAT DECIMAL64 COMMENT 'Ask, Bid or Trade quantity.',
         "tradeType" 'Trade Type' "deltix.timebase.api.messages.TradeType" COMMENT 'Explains the meaning of the given price and/or size.The value is null for regular trades.'
     )

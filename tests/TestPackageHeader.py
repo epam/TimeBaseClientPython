@@ -35,7 +35,7 @@ class TestPackageHeader(servertest.TBServerTest):
     # helpers
 
     def streamCount(self, key):
-        cursor = self.db.executeQuery('SELECT count() as count FROM "' + key + '"')
+        cursor = self.db.executeQuery('SELECT count{}() as count FROM "' + key + '"')
         try:
             if cursor.next():
                 return cursor.getMessage().COUNT
