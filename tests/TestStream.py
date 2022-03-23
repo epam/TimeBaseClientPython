@@ -1,5 +1,6 @@
 import unittest
 import servertest
+import testutils
 import time
 import dxapi
 
@@ -97,6 +98,41 @@ class TestStream(servertest.TestWithStreams):
         messages = self.readMessages(stream, 0, 9999000)
         self.checkSymbols(messages, set())
 
+    def test_Spaces(self):
+        key = 'BarsWithSpaces'
+        try:
+            stream = self.createStream(key, False)
+            self.assertIsNotNone(stream)
+
+            count = 12345
+            testutils.loadBars(stream, count, 0, 1000000000, ['MSFT', 'ORCL'], 'SpaceX')
+            testutils.loadBars(stream, count, 0, 1000000000, ['MSFT', 'ORCL'], 'SpaceY')
+
+            time.sleep(2)
+
+            # Test Time Range of space
+            actualRange = stream.getTimeRange('SpaceY')
+            self.assertEqual(actualRange[0], 0)
+            self.assertEqual(actualRange[1], 12344000)
+
+            # Test List Spaces
+            actualSpaces = set(stream.listSpaces())
+            expectedSpaces = set(['SpaceX', 'SpaceY', ''])
+            self.assertEqual(len(actualSpaces.difference(expectedSpaces)), 0)
+
+            # Test Rename
+            stream.renameSpace('SpaceZ', 'SpaceY')
+            actualSpaces = set(stream.listSpaces())
+            expectedSpaces = set(['SpaceX', 'SpaceZ', ''])
+            self.assertEqual(len(actualSpaces.difference(expectedSpaces)), 0)
+
+            # Test Delete Spaces
+            stream.deleteSpaces(['SpaceX', 'SpaceZ'])
+            actualSpaces = set(stream.listSpaces())
+            expectedSpaces = set([''])
+            self.assertEqual(len(actualSpaces.difference(expectedSpaces)), 0)
+        finally:
+            self.deleteStream(key)
 
 if __name__ == '__main__':
     unittest.main()

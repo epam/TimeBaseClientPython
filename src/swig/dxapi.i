@@ -9,9 +9,7 @@ if _swig_python_platform.startswith('linux'):
 elif _swig_python_platform.startswith('darwin'):
     platform = 'darwin'
 
-if _swig_python_version_info >= (2, 7) and _swig_python_version_info < (2, 8):
-    subdir = 'py27'
-elif _swig_python_version_info >= (3, 6) and _swig_python_version_info < (3, 7):
+if _swig_python_version_info >= (3, 6) and _swig_python_version_info < (3, 7):
     subdir = 'py36'
 elif _swig_python_version_info >= (3, 7) and _swig_python_version_info < (3, 8):
     subdir = 'py37'
@@ -205,6 +203,46 @@ typedef int64_t TimestampNs;
 
 ///--------
 
+%typemap(in) const std::vector<std::string> & {
+
+	/* %typemap(in) const std::vector<std::string> & */
+	if ($input == NULL) {
+		$1 = NULL;
+	} else if (PyList_Check($input)) {
+		Py_ssize_t size = PyList_Size($input);
+		$1 = new std::vector<std::string>();
+		for (int i = 0; i < size; i++) {
+			std::string str;
+			bool type_mismatch = false;
+			DxApiImpl::Python::getStringValue(PyList_GetItem($input,i), str, type_mismatch);
+			$1->push_back(str);
+			if (type_mismatch) {
+				delete $1;
+				PyErr_SetString(PyExc_TypeError, "list must contain strings");
+				return NULL;
+			}
+		}
+	} else {
+		if ($input == Py_None) {
+			$1 = NULL;
+		} else {
+			PyErr_SetString(PyExc_TypeError, "not a list");
+			return NULL;
+		}
+	}
+}
+
+%typemap(typecheck) const std::vector<std::string> & {
+	$1 = PyList_Check($input) ? 1 : 0;
+}
+
+%typemap(freearg) const std::vector<std::string> & {
+
+	/* %typemap(freearg) const std::vector<std::string> & */
+    if ($1 != NULL) 
+		delete $1;
+}
+
 %typemap(directorin) const std::vector<std::string> & {
 
 	/* %typemap(directorin) const std::vector<std::string> & */
@@ -218,12 +256,6 @@ typedef int64_t TimestampNs;
 		}
 	}
 }
-
-//%typemap(directorin) const std::string & {
-
-	/* %typemap(directorin) const std::string & */
-//	$input = PyUnicode_FromString($1.c_str());
-//}
 
 ///--------
 

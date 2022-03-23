@@ -656,7 +656,7 @@ public:
     inline PyObject * decode(DxApi::DataReader &reader) {
         bool hasField = reader.readUTF8(buffer);
         if (hasField) {
-            return PyUnicode_FromString(buffer.c_str());
+            return PyUnicode_DecodeUTF8(buffer.c_str(), buffer.size(), "ignore");
         } else {
             Py_RETURN_NONE;
         }

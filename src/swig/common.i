@@ -160,6 +160,7 @@ public:
     WriteMode writeMode;
     bool raw;
     bool minLatency;
+    std::string space;
 
     LoadingOptions();
 };

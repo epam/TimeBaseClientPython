@@ -24,8 +24,11 @@ def loadTradeBBO(stream, count, startTime = 0, timeInterval = 1000000000, symbol
         if loader != None:
             loader.close()
 
-def loadBars(stream, count, startTime = 0, timeInterval = 1000000000, symbols = ['MSFT', 'ORCL']):
-    loader = stream.createLoader(dxapi.LoadingOptions())
+def loadBars(stream, count, startTime = 0, timeInterval = 1000000000, symbols = ['MSFT', 'ORCL'], space = None):
+    options = dxapi.LoadingOptions()
+    if space != None:
+        options.space = space
+    loader = stream.createLoader(options)
     try:
         loadCount = 0
         barGenerator = generators.BarGenerator(startTime, timeInterval, count, symbols)
