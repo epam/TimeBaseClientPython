@@ -17,6 +17,8 @@ public:
     const std::string&						periodicity() const;
     const DxApi::StreamOptions&				options() const;
 
+    const std::string                       describe() const;
+
     bool									setSchema(const DxApi::StreamOptions & options);
 	
     std::vector<std::string>				listEntities();

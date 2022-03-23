@@ -25,6 +25,12 @@ class TestStream(servertest.TestWithStreams):
         self.assertEqual(options.polymorphic, True)
         self.assertEqual(options.periodicity, 'IRREGULAR')
 
+    def test_StreamDescribe(self):
+        stream = self.db.getStream(self.streamKeys[1])
+        description = stream.describe()
+        print(description)
+        self.assertIsNotNone(description)
+
     def test_ListEntities(self):
         stream = self.db.getStream(self.streamKeys[2])
         self.assertIsNotNone(stream)
