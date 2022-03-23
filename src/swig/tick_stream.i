@@ -35,6 +35,10 @@ public:
     DxApi::TickCursor * createCursor(const DxApi::SelectionOptions &options) const;
     DxApi::TickLoader * createLoader(const DxApi::LoadingOptions &options) const;
 
+	std::vector<std::string> listSpaces() const;
+    void renameSpace(const std::string &newName, const std::string &oldName) const;
+    void deleteSpaces(const std::vector<std::string>& spaces) const;
+
     static void operator delete(void* ptr, size_t sz); //not supported by swig, will be skipped
 
     ~TickStream();
@@ -84,6 +88,26 @@ protected:
 			return result;
 		}
 	}
+
+	std::vector<long long> getTimeRange(const std::string &space) {
+		std::vector<long long> result(2);
+
+		//todo: refactor it
+		// used array for clang linux copiler
+		TimestampMs range[2];
+		bool not_null = $self->getTimeRange(range, space);
+
+		if (not_null) {
+			result[0] = range[0];
+			result[1] = range[1];
+			return result;
+		} else {
+			result[0] = DxApi::TIMESTAMP_UNKNOWN;
+			result[1] = DxApi::TIMESTAMP_UNKNOWN;
+			return result;
+		}
+	}
+
 }
 
 

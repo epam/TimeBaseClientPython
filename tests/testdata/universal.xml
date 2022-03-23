@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classSet xmlns="http://xml.deltixlab.com/internal/quantserver/3.0">
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.PackageHeader</name>
+        <title>Package Header</title>
+        <guid>c0a83801f46b36i2q6or_1d</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f46b36i2q6or_1c</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>entries</name>
+            <title>Entries</title>
+            <description></description>
+            <type xsi:type="array">
+                <nullable>false</nullable>
+                <type xsi:type="object">
+                    <nullable>false</nullable>
+                    <types>c0a83801f49d36i2r1gm_3g</types>
+                    <types>c0a83801f49d36i2r1gm_3j</types>
+                    <types>c0a83801f49d36i2r1gm_3k</types>
+                    <types>c0a83801f49d36i2r1gm_3m</types>
+                    <types>c0a83801f49d36i2r1gm_3o</types>
+                    <types>c0a83801f49d36i2r1gm_3q</types>
+                    <types>c0a83801f49d36i2r1gm_3s</types>
+                </type>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>packageType</name>
+            <title>Package Type</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3t</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.AggressorSide</name>
+        <title>Aggressor Side</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3e</guid>
+        <value>
+            <symbol>BUY</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>SELL</symbol>
+            <value>1</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.BookUpdateAction</name>
+        <title>Book Update Action</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3l</guid>
+        <value>
+            <symbol>INSERT</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>UPDATE</symbol>
+            <value>1</value>
+        </value>
+        <value>
+            <symbol>DELETE</symbol>
+            <value>2</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.DataModelType</name>
+        <title>deltix.timebase.api.messages.DataModelType</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3r</guid>
+        <value>
+            <symbol>LEVEL_ONE</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>LEVEL_TWO</symbol>
+            <value>1</value>
+        </value>
+        <value>
+            <symbol>LEVEL_THREE</symbol>
+            <value>2</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.MarketMessage</name>
+        <title>Market Message</title>
+        <guid>c0a83801f46b36i2q6or_1c</guid>
+        <abstract>false</abstract>
+        <field xsi:type="nonStaticDataField">
+            <name>currencyCode</name>
+            <title>currencyCode</title>
+            <description></description>
+            <type xsi:type="INTEGER">
+                <encoding>INT16</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>originalTimestamp</name>
+            <title>originalTimestamp</title>
+            <description></description>
+            <type xsi:type="dateTime">
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>sequenceNumber</name>
+            <title>sequenceNumber</title>
+            <description></description>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>sourceId</name>
+            <title>sourceId</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>true</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.QuoteSide</name>
+        <title>deltix.timebase.api.messages.QuoteSide</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3i</guid>
+        <value>
+            <symbol>BID</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>ASK</symbol>
+            <value>1</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.QuoteUpdateAction</name>
+        <title>deltix.timebase.api.messages.QuoteUpdateAction</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3p</guid>
+        <value>
+            <symbol>CANCEL</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>MODIFY</symbol>
+            <value>1</value>
+        </value>
+        <value>
+            <symbol>REPLACE</symbol>
+            <value>2</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.TradeType</name>
+        <title>deltix.timebase.api.messages.TradeType</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3f</guid>
+        <value>
+            <symbol>REGULAR_TRADE</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>AUCTION_CLEARING_PRICE</symbol>
+            <value>1</value>
+        </value>
+        <value>
+            <symbol>CORRECTION</symbol>
+            <value>2</value>
+        </value>
+        <value>
+            <symbol>CANCELLATION</symbol>
+            <value>3</value>
+        </value>
+        <value>
+            <symbol>UNKNOWN</symbol>
+            <value>4</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.BaseEntry</name>
+        <title>Base Entry</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3d</guid>
+        <abstract>false</abstract>
+        <field xsi:type="nonStaticDataField">
+            <name>contractId</name>
+            <title>Contract ID</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>true</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>exchangeId</name>
+            <title>Exchange Code</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>true</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>isImplied</name>
+            <title>Is Implied</title>
+            <description></description>
+            <type xsi:type="boolean">
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.BasePriceEntry</name>
+        <title>Base Price Entry</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3h</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f49d36i2r1gm_3d</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>numberOfOrders</name>
+            <title>Number Of Orders</title>
+            <description></description>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>participantId</name>
+            <title>Participant</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>price</name>
+            <title>Price</title>
+            <description></description>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>quoteId</name>
+            <title>Quote ID</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>size</name>
+            <title>Size</title>
+            <description></description>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.BookResetEntry</name>
+        <title>Book Reset Entry</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3s</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f49d36i2r1gm_3d</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>modelType</name>
+            <title>Model Type</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3r</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>side</name>
+            <title>Side</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3i</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.universal.InsertType</name>
+        <title>Insert Type</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3n</guid>
+        <value>
+            <symbol>ADD_BACK</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>ADD_FRONT</symbol>
+            <value>1</value>
+        </value>
+        <value>
+            <symbol>ADD_BEFORE</symbol>
+            <value>2</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.L1Entry</name>
+        <title>L1Entry</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3j</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f49d36i2r1gm_3h</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>isNational</name>
+            <title>Is National</title>
+            <description></description>
+            <type xsi:type="boolean">
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>side</name>
+            <title>Side</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3i</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.L2EntryNew</name>
+        <title>L2EntryNew</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3k</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f49d36i2r1gm_3h</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>level</name>
+            <title>Level Index</title>
+            <description></description>
+            <type xsi:type="INTEGER">
+                <encoding>INT16</encoding>
+                <nullable>false</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>side</name>
+            <title>Side</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3i</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.L2EntryUpdate</name>
+        <title>L2EntryUpdate</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3m</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f49d36i2r1gm_3h</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>action</name>
+            <title>Action</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3l</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>level</name>
+            <title>Level Index</title>
+            <description></description>
+            <type xsi:type="INTEGER">
+                <encoding>INT16</encoding>
+                <nullable>false</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>side</name>
+            <title>Side</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3i</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.L3EntryNew</name>
+        <title>L3EntryNew</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3o</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f49d36i2r1gm_3h</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>insertBeforeQuoteId</name>
+            <title>insertBeforeQuoteId</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>insertType</name>
+            <title>insertType</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3n</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>side</name>
+            <title>Side</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3i</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.L3EntryUpdate</name>
+        <title>L3 Entry Update</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3q</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f49d36i2r1gm_3h</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>action</name>
+            <title>Action</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3p</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>side</name>
+            <title>Side</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3i</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.PackageHeader</name>
+        <title>Package Header</title>
+        <guid>c0a83801f46b36i2q6or_1d</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f46b36i2q6or_1c</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>entries</name>
+            <title>Entries</title>
+            <description></description>
+            <type xsi:type="array">
+                <nullable>false</nullable>
+                <type xsi:type="object">
+                    <nullable>false</nullable>
+                    <types>c0a83801f49d36i2r1gm_3g</types>
+                    <types>c0a83801f49d36i2r1gm_3j</types>
+                    <types>c0a83801f49d36i2r1gm_3k</types>
+                    <types>c0a83801f49d36i2r1gm_3m</types>
+                    <types>c0a83801f49d36i2r1gm_3o</types>
+                    <types>c0a83801f49d36i2r1gm_3q</types>
+                    <types>c0a83801f49d36i2r1gm_3s</types>
+                </type>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>packageType</name>
+            <title>Package Type</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3t</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.universal.PackageType</name>
+        <title>Package Type</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3t</guid>
+        <value>
+            <symbol>VENDOR_SNAPSHOT</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>PERIODICAL_SNAPSHOT</symbol>
+            <value>1</value>
+        </value>
+        <value>
+            <symbol>INCREMENTAL_UPDATE</symbol>
+            <value>2</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.universal.TradeEntry</name>
+        <title>Trade Entry</title>
+        <description></description>
+        <guid>c0a83801f49d36i2r1gm_3g</guid>
+        <abstract>false</abstract>
+        <parent>c0a83801f49d36i2r1gm_3d</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>buyerNumberOfOrders</name>
+            <title>Buyer Number Of Orders</title>
+            <description></description>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>buyerOrderId</name>
+            <title>Buyer Order ID</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>buyerParticipantId</name>
+            <title>Buyer Participant ID</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>condition</name>
+            <title>Condition</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>matchId</name>
+            <title>Match ID</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>price</name>
+            <title>Price</title>
+            <description></description>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>sellerNumberOfOrders</name>
+            <title>Seller Number Of Orders</title>
+            <description></description>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>sellerOrderId</name>
+            <title>Seller Order ID</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>sellerParticipantId</name>
+            <title>Seller Participant ID</title>
+            <description></description>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>side</name>
+            <title>Side</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3e</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>size</name>
+            <title>Size</title>
+            <description></description>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>tradeType</name>
+            <title>Trade Type</title>
+            <description></description>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>c0a83801f49d36i2r1gm_3f</descriptor>
+            </type>
+            <pk>false</pk>
+            <displayIdentifier>false</displayIdentifier>
+        </field>
+    </classDescriptor>
+    <contentClassId>c0a83801f46b36i2q6or_1d</contentClassId>
+</classSet>

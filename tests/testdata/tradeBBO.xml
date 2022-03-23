@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classSet xmlns="http://xml.deltixlab.com/internal/quantserver/3.0">
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.MarketMessage</name>
+        <guid>64406601eb05459078wp_1l</guid>
+        <abstract>true</abstract>
+        <field xsi:type="staticDataField">
+            <name>originalTimestamp</name>
+            <title>Original Time</title>
+            <type xsi:type="dateTime">
+                <nullable>true</nullable>
+            </type>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>currencyCode</name>
+            <title>Currency Code</title>
+            <type xsi:type="INTEGER">
+                <encoding>INT16</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>sequenceNumber</name>
+            <title>Sequence Number</title>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.AggressorSide</name>
+        <title>Aggressor Side</title>
+        <guid>64406601eb05459078wp_1k</guid>
+        <value>
+            <symbol>BUY</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>SELL</symbol>
+            <value>1</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.TradeMessage</name>
+        <guid>64406601eb05459078wp_1o</guid>
+        <abstract>false</abstract>
+        <parent>64406601eb05459078wp_1l</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>exchangeId</name>
+            <title>Exchange Code</title>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>price</name>
+            <title>Price</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>size</name>
+            <title>Size</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>condition</name>
+            <title>Trade Condition</title>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>aggressorSide</name>
+            <title>Aggressor Side</title>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>64406601eb05459078wp_1k</descriptor>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>netPriceChange</name>
+            <title>Net Price Change</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>eventType</name>
+            <title>Event Type</title>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>64406601eb05459078wp_1n</descriptor>
+            </type>
+            <pk>false</pk>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.MarketEventType</name>
+        <title>Market Event Type</title>
+        <guid>64406601eb05459078wp_1n</guid>
+        <value>
+            <symbol>BID</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>OFFER</symbol>
+            <value>1</value>
+        </value>
+        <value>
+            <symbol>TRADE</symbol>
+            <value>2</value>
+        </value>
+        <value>
+            <symbol>INDEX_VALUE</symbol>
+            <value>3</value>
+        </value>
+        <value>
+            <symbol>OPENING_PRICE</symbol>
+            <value>4</value>
+        </value>
+        <value>
+            <symbol>CLOSING_PRICE</symbol>
+            <value>5</value>
+        </value>
+        <value>
+            <symbol>SETTLEMENT_PRICE</symbol>
+            <value>6</value>
+        </value>
+        <value>
+            <symbol>TRADING_SESSION_HIGH_PRICE</symbol>
+            <value>7</value>
+        </value>
+        <value>
+            <symbol>TRADING_SESSION_LOW_PRICE</symbol>
+            <value>8</value>
+        </value>
+        <value>
+            <symbol>TRADING_SESSION_VWAP_PRICE</symbol>
+            <value>9</value>
+        </value>
+        <value>
+            <symbol>IMBALANCE</symbol>
+            <value>10</value>
+        </value>
+        <value>
+            <symbol>TRADE_VOLUME</symbol>
+            <value>11</value>
+        </value>
+        <value>
+            <symbol>OPEN_INTEREST</symbol>
+            <value>12</value>
+        </value>
+        <value>
+            <symbol>COMPOSITE_UNDERLYING_PRICE</symbol>
+            <value>13</value>
+        </value>
+        <value>
+            <symbol>SIMULATED_SELL_PRICE</symbol>
+            <value>14</value>
+        </value>
+        <value>
+            <symbol>SIMULATED_BUY_PRICE</symbol>
+            <value>15</value>
+        </value>
+        <value>
+            <symbol>MARGIN_RATE</symbol>
+            <value>16</value>
+        </value>
+        <value>
+            <symbol>MID_PRICE</symbol>
+            <value>17</value>
+        </value>
+        <value>
+            <symbol>EMPTY_BOOK</symbol>
+            <value>18</value>
+        </value>
+        <value>
+            <symbol>SETTLE_HIGH_PRICE</symbol>
+            <value>19</value>
+        </value>
+        <value>
+            <symbol>SETTLE_LOW_PRICE</symbol>
+            <value>20</value>
+        </value>
+        <value>
+            <symbol>PRIOR_SETTLE_PRICE</symbol>
+            <value>21</value>
+        </value>
+        <value>
+            <symbol>SESSION_HIGH_BID</symbol>
+            <value>22</value>
+        </value>
+        <value>
+            <symbol>SESSION_LOW_OFFER</symbol>
+            <value>23</value>
+        </value>
+        <value>
+            <symbol>EARLY_PRICE</symbol>
+            <value>24</value>
+        </value>
+        <value>
+            <symbol>AUCTION_CLEARING_PRICE</symbol>
+            <value>25</value>
+        </value>
+        <value>
+            <symbol>SWAP_VALUE_FACTOR</symbol>
+            <value>26</value>
+        </value>
+        <value>
+            <symbol>VALUE_ADJ_LONG</symbol>
+            <value>27</value>
+        </value>
+        <value>
+            <symbol>CUMMULATIVE_VALUE_ADJ_LONG</symbol>
+            <value>28</value>
+        </value>
+        <value>
+            <symbol>DAILY_VALUE_ADJ_SHORT</symbol>
+            <value>29</value>
+        </value>
+        <value>
+            <symbol>CUMMULATIVE_VALUE_ADJ_SHORT</symbol>
+            <value>30</value>
+        </value>
+        <value>
+            <symbol>FIXING_PRICE</symbol>
+            <value>31</value>
+        </value>
+        <value>
+            <symbol>CASH_RATE</symbol>
+            <value>32</value>
+        </value>
+        <value>
+            <symbol>RECOVERY_RATE</symbol>
+            <value>33</value>
+        </value>
+        <value>
+            <symbol>RECOVERY_RATE_LONG</symbol>
+            <value>34</value>
+        </value>
+        <value>
+            <symbol>RECOVERY_RATE_SHORT</symbol>
+            <value>35</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.BestBidOfferMessage</name>
+        <guid>64406601eb05459078wp_1m</guid>
+        <abstract>false</abstract>
+        <parent>64406601eb05459078wp_1l</parent>
+        <field xsi:type="staticDataField">
+            <name>isNational</name>
+            <title>National BBO</title>
+            <type xsi:type="boolean">
+                <nullable>true</nullable>
+            </type>
+            <staticValue>true</staticValue>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>bidPrice</name>
+            <title>Bid Price</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>bidSize</name>
+            <title>Bid Size</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>bidExchangeId</name>
+            <title>Bid Exchange</title>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>offerPrice</name>
+            <title>Offer Price</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>offerSize</name>
+            <title>Offer Size</title>
+            <type xsi:type="FLOAT">
+                <encoding>DECIMAL</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>offerExchangeId</name>
+            <title>Offer Exchange</title>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+        </field>
+    </classDescriptor>
+    <contentClassId>64406601eb05459078wp_1m</contentClassId>
+    <contentClassId>64406601eb05459078wp_1o</contentClassId>
+</classSet>

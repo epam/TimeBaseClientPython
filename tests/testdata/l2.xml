@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<classSet xmlns="http://xml.deltixlab.com/internal/quantserver/3.0">
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.L2Message</name>
+        <title>L2 Message</title>
+        <guid>64406601eb05459078wp_1t</guid>
+        <abstract>false</abstract>
+        <parent>64406601eb05459078wp_1r</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>actions</name>
+            <type xsi:type="array">
+                <nullable>true</nullable>
+                <type xsi:type="object">
+                    <nullable>true</nullable>
+                    <types>64406601eb05459078wp_1s</types>
+                </type>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>exchangeId</name>
+            <title>exchangeCode</title>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>isImplied</name>
+            <type xsi:type="boolean">
+                <nullable>false</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>isSnapshot</name>
+            <type xsi:type="boolean">
+                <nullable>false</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>sequenceId</name>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="staticDataField">
+            <name>maxDepth</name>
+            <title>Max Depth</title>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.Level2Action</name>
+        <title>Level2 Action</title>
+        <guid>64406601eb05459078wp_1s</guid>
+        <abstract>false</abstract>
+        <field xsi:type="nonStaticDataField">
+            <name>level</name>
+            <type xsi:type="INTEGER">
+                <encoding>INT8</encoding>
+                <nullable>false</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>isAsk</name>
+            <type xsi:type="boolean">
+                <nullable>false</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>action</name>
+            <type xsi:type="enum">
+                <nullable>false</nullable>
+                <descriptor>64406601eb05459078wp_1q</descriptor>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>price</name>
+            <type xsi:type="FLOAT">
+                <encoding>IEEE64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>size</name>
+            <type xsi:type="FLOAT">
+                <encoding>IEEE64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>numOfOrders</name>
+            <type xsi:type="INTEGER">
+                <encoding>INT32</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="staticDataField">
+            <name>quoteId</name>
+            <title>Quote Id</title>
+            <type xsi:type="BINARY">
+                <nullable>true</nullable>
+                <maxSize>-2147483648</maxSize>
+                <compression>0</compression>
+            </type>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.MarketMessage</name>
+        <title>Market Message</title>
+        <guid>64406601eb05459078wp_1r</guid>
+        <abstract>true</abstract>
+        <field xsi:type="nonStaticDataField">
+            <name>originalTimestamp</name>
+            <title>Original Time</title>
+            <description>The timestamp of the event provided by the exchange, or by the data vendor. Some data vendors may not supply it. There is no guarantee that arriving messages are sorted in the order of original timestamps. This timestamp is commonly used by trading algorithms for stale data detection.</description>
+            <type xsi:type="dateTime">
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>currencyCode</name>
+            <title>Currency Code</title>
+            <description>The currency code associated with this message. Some message types may have no price data, or have separate currency code information, in which case this field would be set to &lt;b&gt;NULL&lt;/b&gt;. For example, the Quote (Best Bid Offer) Message, while a subclass of Market Message, has separate currency codes for the bid and offer sides.</description>
+            <type xsi:type="INTEGER">
+                <encoding>INT16</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>sequenceNumber</name>
+            <title>Sequence Number</title>
+            <description>Nanotime from the timeApiServer field of MarketView event</description>
+            <type xsi:type="INTEGER">
+                <encoding>INT64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="staticDataField">
+            <name>sourceId</name>
+            <title>Source Id</title>
+            <type xsi:type="VARCHAR">
+                <encoding>UTF8</encoding>
+                <nullable>true</nullable>
+                <multiLine>true</multiLine>
+            </type>
+        </field>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="enumClass">
+        <name>deltix.timebase.api.messages.BookUpdateAction</name>
+        <title>Book Update Action</title>
+        <guid>64406601eb05459078wp_1q</guid>
+        <value>
+            <symbol>INSERT</symbol>
+            <value>0</value>
+        </value>
+        <value>
+            <symbol>UPDATE</symbol>
+            <value>1</value>
+        </value>
+        <value>
+            <symbol>DELETE</symbol>
+            <value>2</value>
+        </value>
+        <isBitmask>false</isBitmask>
+    </classDescriptor>
+    <classDescriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="recordClass">
+        <name>deltix.timebase.api.messages.Level2Message</name>
+        <title>Level2 Message</title>
+        <guid>64406601eb05459078wp_1u</guid>
+        <abstract>false</abstract>
+        <parent>64406601eb05459078wp_1r</parent>
+        <field xsi:type="nonStaticDataField">
+            <name>price</name>
+            <title>Price</title>
+            <description>Price at this level.</description>
+            <type xsi:type="FLOAT">
+                <encoding>IEEE64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>size</name>
+            <title>Size</title>
+            <description>Size at this level.</description>
+            <type xsi:type="FLOAT">
+                <encoding>IEEE64</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>exchangeId</name>
+            <title>Exchange Code</title>
+            <description>Vendor-specific market code. This field is critically important in that it identifies the order book, along with instrument identity (symbol and type) and the &lt;b&gt;Is Offer&lt;/b&gt; flag.</description>
+            <type xsi:type="VARCHAR">
+                <encoding>ALPHANUMERIC(10)</encoding>
+                <nullable>true</nullable>
+                <multiLine>false</multiLine>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>depth</name>
+            <title>Depth</title>
+            <description>The order book depth, 0-based. Level 0 is the best bid or offer.</description>
+            <type xsi:type="INTEGER">
+                <encoding>INT8</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>isAsk</name>
+            <title>Is Offer</title>
+            <description>&lt;b&gt;true&lt;/b&gt; if this is the offer side of the book; &lt;b&gt;false&lt;/b&gt; if this is the bid side of the book.</description>
+            <type xsi:type="boolean">
+                <nullable>false</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>action</name>
+            <title>Action</title>
+            <description>&lt;dl&gt; &lt;dt&gt;INSERT&lt;/dt&gt;&lt;dd&gt;A new price level is created. No orders previously existed at the given price.&lt;/dd&gt;&lt;dt&gt;DELETE&lt;/dt&gt;&lt;dd&gt;An existing price level is deleted. All orders at this level were filled or cancelled.&lt;/dd&gt;&lt;dt&gt;UPDATE&lt;/dt&gt;&lt;dd&gt;The total order size at an existing price level is changed.&lt;/dd&gt;&lt;/dl&gt;</description>
+            <type xsi:type="enum">
+                <nullable>true</nullable>
+                <descriptor>64406601eb05459078wp_1q</descriptor>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>isLast</name>
+            <title>End Of Package</title>
+            <description>In some cases, several simultaneous changes are broadcast as a single set of updates. For example, when a Level 2 source tracks infinite book depth, but only broadcasts 10 levels, a DELETE at one price level is immediately compensated by an INSERT at the maximum output depth (9). Such increments come in a single package, all but the last one tagged with the value of &lt;b&gt;false&lt;/b&gt; in this field. The last message in a package, as well as any independent increments are tagged with the value of &lt;b&gt;true&lt;/b&gt;.</description>
+            <type xsi:type="boolean">
+                <nullable>false</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="nonStaticDataField">
+            <name>numOfOrders</name>
+            <title>Number Of Orders</title>
+            <description>Number Of Orders at this level.</description>
+            <type xsi:type="INTEGER">
+                <encoding>INT32</encoding>
+                <nullable>true</nullable>
+            </type>
+            <pk>false</pk>
+        </field>
+        <field xsi:type="staticDataField">
+            <name>quoteId</name>
+            <title>Quote Id</title>
+            <type xsi:type="BINARY">
+                <nullable>true</nullable>
+                <maxSize>-2147483648</maxSize>
+                <compression>0</compression>
+            </type>
+        </field>
+    </classDescriptor>
+    <contentClassId>64406601eb05459078wp_1s</contentClassId>
+    <contentClassId>64406601eb05459078wp_1t</contentClassId>
+    <contentClassId>64406601eb05459078wp_1u</contentClassId>
+</classSet>

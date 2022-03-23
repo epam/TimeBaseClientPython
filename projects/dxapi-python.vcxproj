@@ -1,68 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug37|Win32">
-      <Configuration>Debug37</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug37|x64">
       <Configuration>Debug37</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug38|Win32">
-      <Configuration>Debug38</Configuration>
-      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Debug38|x64">
       <Configuration>Debug38</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug27|Win32">
-      <Configuration>Debug27</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug27|x64">
-      <Configuration>Debug27</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release27|Win32">
-      <Configuration>Release27</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release27|x64">
-      <Configuration>Release27</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release37|Win32">
-      <Configuration>Release37</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
     <ProjectConfiguration Include="Release37|x64">
       <Configuration>Release37</Configuration>
       <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release38|Win32">
-      <Configuration>Release38</Configuration>
-      <Platform>Win32</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release38|x64">
       <Configuration>Release38</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
+    <ProjectConfiguration Include="Debug36|x64">
+      <Configuration>Debug36</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
+    <ProjectConfiguration Include="Release36|x64">
+      <Configuration>Release36</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug39|x64">
+      <Configuration>Debug39</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release39|x64">
+      <Configuration>Release39</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug310|x64">
+      <Configuration>Debug310</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release310|x64">
+      <Configuration>Release310</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
@@ -70,27 +46,32 @@
     <None Include="..\src\swig\common.i" />
     <CustomBuild Include="..\src\swig\dxapi.i">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
 ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release37|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
 ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release38|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
 ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release27|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
 ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+del /f "$(ProjectDir)..\bin\release\__init__.py"
+ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release37|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release38|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release27|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
 "$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\debug\__init__.py"
 ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
@@ -102,23 +83,19 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
 "$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\debug\__init__.py"
 ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug27|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
 "$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\debug\__init__.py"
 ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
+del /f "$(ProjectDir)..\bin\debug\__init__.py"
+ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug27|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\$(PlatformTarget)\$(Configuration)" -Fmicrosoft %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release37|Win32'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\$(PlatformTarget)\$(Configuration)" -Fmicrosoft %(FullPath)</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release38|Win32'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\$(PlatformTarget)\$(Configuration)" -Fmicrosoft %(FullPath)</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release37|Win32'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release38|Win32'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
     </CustomBuild>
     <None Include="..\src\swig\tick_cursor.i" />
     <None Include="..\src\swig\tick_db.i" />
@@ -145,113 +122,76 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F06CE5AA-B67E-4E38-8473-283FEBE7AE33}</ProjectGuid>
     <RootNamespace>dxapipython</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug37|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug38|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug27|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release37|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release38|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release27|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>MultiByte</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug27|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release36|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release37|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release38|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release27|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release39|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release310|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -260,31 +200,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug37|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug38|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug27|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release37|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release38|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release27|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'" Label="PropertySheets">
@@ -293,10 +209,13 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug27|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release37|x64'" Label="PropertySheets">
@@ -305,11 +224,14 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release38|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release27|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release39|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release310|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">
     <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py36</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetName>_dxapi_d</TargetName>
@@ -327,13 +249,19 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
     <TargetName>_dxapi_d</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug27|x64'">
-    <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py27</OutDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">
+    <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py39</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
-    <TargetName>_dxapi</TargetName>
+    <TargetName>_dxapi_d</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">
+    <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py310</OutDir>
+    <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
+    <TargetName>_dxapi_d</TargetName>
+    <TargetExt>.pyd</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">
     <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py36</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetExt>.pyd</TargetExt>
@@ -354,65 +282,26 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
     <TargetName>_dxapi</TargetName>
     <CustomBuildBeforeTargets />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release27|x64'">
-    <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py27</OutDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">
+    <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py39</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetExt>.pyd</TargetExt>
     <TargetName>_dxapi</TargetName>
     <CustomBuildBeforeTargets />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(ProjectDir)../bin/$(PlatformTarget)/$(Configuration)</OutDir>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">
+    <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py310</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
-    <TargetName>_dxapi</TargetName>
     <TargetExt>.pyd</TargetExt>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release37|Win32'">
-    <OutDir>$(ProjectDir)../bin/$(PlatformTarget)/$(Configuration)</OutDir>
-    <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetName>_dxapi</TargetName>
-    <TargetExt>.pyd</TargetExt>
+    <CustomBuildBeforeTargets />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release38|Win32'">
-    <OutDir>$(ProjectDir)../bin/$(PlatformTarget)/$(Configuration)</OutDir>
-    <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
-    <TargetName>_dxapi</TargetName>
-    <TargetExt>.pyd</TargetExt>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug37|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug38|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug27|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>Disabled</Optimization>
-      <SDLCheck>true</SDLCheck>
-    </ClCompile>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON36_HOME)\include;$(ProjectDir)..\src;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON36_HOME)\include;$(ProjectDir)..\src;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -437,10 +326,10 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python37.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>S:\programing\tools\python3.6\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>S:\programing\tools\python3.7\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <Link>
       <AdditionalDependencies>python37.lib;dxapi-x64d.lib;dfp.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -457,111 +346,64 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python38.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>S:\programing\tools\python3.6\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>S:\programing\tools\python3.8\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <Link>
       <AdditionalDependencies>python38.lib;dxapi-x64d.lib;dfp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\dfp\bin\Windows\Release\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON38_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug27|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON27_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON39_HOME)\include;$(ProjectDir)..\src;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Lib>
-      <AdditionalDependencies>python36.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>python39.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>S:\programing\tools\python3.6\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>S:\programing\tools\python3.9\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
     <Link>
-      <AdditionalDependencies>python27.lib;dxapi-x64d.lib;dfp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\dfp\bin\Windows\Debug\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON27_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>python38.lib;dxapi-x64d.lib;dfp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\dfp\bin\Windows\Release\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON39_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(PYTHON310_HOME)\include;$(ProjectDir)..\src;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Lib>
+      <AdditionalDependencies>python310.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>S:\programing\tools\python3.10\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>python310.lib;dxapi-x64d.lib;dfp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\dfp\bin\Windows\Release\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON310_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON_HOME_X86)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CallingConvention>FastCall</CallingConvention>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\dxapi\bin;$(PYTHON_HOME_X86)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python3.lib;dxapi-x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release37|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON_HOME_X86)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CallingConvention>FastCall</CallingConvention>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\dxapi\bin;$(PYTHON_HOME_X86)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python3.lib;dxapi-x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release38|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON_HOME_X86)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <CallingConvention>FastCall</CallingConvention>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\dxapi\bin;$(PYTHON_HOME_X86)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>python3.lib;dxapi-x86.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release27|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <CallingConvention>FastCall</CallingConvention>
-    </ClCompile>
-    <Link>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON36_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON36_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CallingConvention>FastCall</CallingConvention>
     </ClCompile>
@@ -569,7 +411,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>python36.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON36_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON36_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -588,7 +430,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON37_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON37_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CallingConvention>FastCall</CallingConvention>
     </ClCompile>
@@ -596,7 +438,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>python37.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON37_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON37_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -615,7 +457,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON38_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON38_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CallingConvention>FastCall</CallingConvention>
     </ClCompile>
@@ -623,7 +465,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>python38.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON38_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON38_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -635,22 +477,49 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
       <Command>copy /Y "$(SolutionDir)dfp\lib\windows\64\DecimalNative.dll" "$(OutputPath)DecimalNative.dll"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release27|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(PYTHON27_HOME)\include;$(ProjectDir)..\..\dxapi\include\native;$(ProjectDir)..\..\dxapi\include\native\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi;$(ProjectDir)..\..\dxapi\src\dxapi\native;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PYTHON39_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CallingConvention>FastCall</CallingConvention>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>python27.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\..\dxapi\bin;$(PYTHON27_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>python39.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON39_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+      <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>copy /Y "$(SolutionDir)dfp\lib\windows\64\DecimalNative.dll" "$(OutputPath)DecimalNative.dll"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(PYTHON310_HOME)\include;$(ProjectDir)..\dxapi\include\native;$(ProjectDir)..\dxapi\include\native\dxapi;$(ProjectDir)..\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <CallingConvention>FastCall</CallingConvention>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>python310.lib;dxapi-x64.lib;DecimalNative.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\dfp\lib\windows\64;$(ProjectDir)..\dxapi\bin;$(PYTHON310_HOME)\libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMT %(AdditionalOptions)</AdditionalOptions>
     </Link>
