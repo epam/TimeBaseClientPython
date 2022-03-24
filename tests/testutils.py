@@ -44,6 +44,22 @@ def loadBars(stream, count, startTime = 0, timeInterval = 1000000000, symbols = 
         if loader != None:
             loader.close()
 
+def loadWithBars(stream, count, startTime = 0, timeInterval = 1000000000, symbols = ['MSFT', 'ORCL'], space = None):
+    options = dxapi.LoadingOptions()
+    if space != None:
+        options.space = space
+    with stream.tryLoader(options) as loader:
+        loadCount = 0
+        barGenerator = generators.BarGenerator(startTime, timeInterval, count, symbols)
+        while barGenerator.next():
+            message = barGenerator.getMessage()
+            loader.send(message)
+            loadCount = loadCount + 1
+            printLoadingInfo(loadCount, message)
+
+        print("Total loaded " + str(loadCount) + " messages")
+        return loadCount
+
 def loadL2(stream, count, actionsCount = 5, startTime = 0, timeInterval = 1000000000, symbols = ['MSFT', 'ORCL']):
     loader = stream.createLoader(dxapi.LoadingOptions())
     try:

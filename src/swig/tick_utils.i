@@ -1,37 +1,11 @@
 %pythoncode
 %{
 
-from contextlib import contextmanager
-
-@contextmanager
-def open_TickDb(url, readonly):
-    db = TickDb.createFromUrl(url)
-    try:
-        db.open(readonly)
-        yield db
-    finally:
-        if db.isOpen():
-            db.close()
-
-
-@contextmanager
-def open_TickCursor(stream, ts_from=0, options=SelectionOptions(), types=None, entities=None):
-    cursor = None
-    try:
-        cursor = stream.select(ts_from, options, types, entities)
-        yield cursor
-    finally:
-        cursor.close()
-
-
-
 from collections import defaultdict
 
-__JAVA_LONG_MAX_VALUE = 922337203685477580
-
-def stream_to_dict(db, stream, fields=None, ts_from=0, ts_to=__JAVA_LONG_MAX_VALUE):
-    if ts_to > __JAVA_LONG_MAX_VALUE:
-        ts_to = __JAVA_LONG_MAX_VALUE
+def stream_to_dict(db, stream, fields=None, ts_from=0, ts_to=JAVA_LONG_MAX_VALUE):
+    if ts_to > JAVA_LONG_MAX_VALUE:
+        ts_to = JAVA_LONG_MAX_VALUE
     if not db.isOpen():
         raise Exception('Database is not opened.')
     options = SelectionOptions()

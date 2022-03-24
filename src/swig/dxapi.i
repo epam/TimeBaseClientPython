@@ -55,6 +55,8 @@ else:
     import _dxapi
 del _swig_python_version_info
 del _swig_python_platform
+
+version = (6, 1)
 "
 %enddef
 
@@ -85,7 +87,6 @@ typedef int64_t TimestampNs;
 %}
 
 %feature("director") DxApi::TickLoader::ErrorListener;
-//%feature("director") DxApi::TickLoader::SubscriptionListener;
 
 %exception {
    try {
@@ -107,12 +108,6 @@ typedef int64_t TimestampNs;
 		goto fail;
    }
 }
-
-%pythoncode %{
-class InstrumentMessage(object):
-    def __str__(self):
-        return str(vars(self))
-%}
 
 typedef int64_t TimestampMs;
 typedef int64_t TimestampNs;

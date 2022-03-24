@@ -117,7 +117,7 @@ class TestStream(servertest.TestWithStreams):
             time.sleep(2)
 
             # Test Time Range of space
-            actualRange = stream.getTimeRange('SpaceY')
+            actualRange = stream.getSpaceTimeRange('SpaceY')
             self.assertEqual(actualRange[0], 0)
             self.assertEqual(actualRange[1], 12344000)
 

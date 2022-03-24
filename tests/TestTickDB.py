@@ -19,6 +19,10 @@ class TestTickDB(servertest.TBServerTest):
     def test_isReadOnly(self):
         self.assertFalse(self.db.isReadOnly())
 
+    def test_open(self):
+        with dxapi.TickDb.openFromUrl(self.dxtickURL(), True) as tickdb:
+            self.assertTrue(tickdb.isOpen())
+
     #def test_createStream(self):
     #    key = self.streamKeys[1]
     #    try:

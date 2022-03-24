@@ -26,6 +26,21 @@ class TestLoader(servertest.TBServerTest):
         finally:
             self.deleteStream(key)
 
+    def test_ContextManager(self):
+        key = self.streamKeys[0]
+        try:
+            stream = self.createStream(key, False)
+            self.assertIsNotNone(stream)
+            self.assertEqual(self.streamCount(key), 0)  # check stream is empty
+
+            count = 12345
+            loadCount = testutils.loadWithBars(stream, count)
+            self.assertEqual(count, loadCount)
+            readCount = self.streamCount(key)
+            self.assertEqual(readCount, loadCount)
+        finally:
+            self.deleteStream(key)
+
     def test_LoadPolymorphic(self):
         key = self.streamKeys[1]
         try:

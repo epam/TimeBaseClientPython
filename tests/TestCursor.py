@@ -253,5 +253,29 @@ class CursorTest(servertest.TestWithStreams):
             elif "BarMessage" in typeName:
                 self.assertEqual(stream, "bars1min")
 
+    def test_ContextManager(self):
+        stream = self.db.getStream(self.streamKeys[0])
+
+        with self.db.tryCursor(stream, dxapi.SelectionOptions()) as cursor:
+            self.assertTrue(cursor.next())
+            self.assertTrue(cursor.getMessage() != None)
+
+        with stream.tryCursor(dxapi.SelectionOptions()) as cursor:
+            self.assertTrue(cursor.next())
+            self.assertTrue(cursor.getMessage() != None)
+
+        with self.db.trySelect(0, [stream], dxapi.SelectionOptions(), None, None) as cursor:
+            self.assertTrue(cursor.next())
+            self.assertTrue(cursor.getMessage() != None)
+
+        with stream.trySelect(0, dxapi.SelectionOptions(), None, None) as cursor:
+            self.assertTrue(cursor.next())
+            self.assertTrue(cursor.getMessage() != None)
+
+        with self.db.tryExecuteQuery("select * from " + str(stream.key())) as cursor:
+            self.assertTrue(cursor.next())
+            self.assertTrue(cursor.getMessage() != None)
+
+
 if __name__ == '__main__':
     unittest.main()
