@@ -5,14 +5,12 @@ on:
   push:
     branches:
       - "*"
-    branches-ignore:
-      - "release-*"
+      - "!release-*"
   pull_request:
     types: [opened, synchronize]
     branches:
       - "*"
-    branches-ignore:
-      - "release-*"
+      - "!release-*"
     
 jobs:
   build-dxapi:
