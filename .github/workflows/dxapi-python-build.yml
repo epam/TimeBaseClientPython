@@ -3,10 +3,14 @@ name: Build dxapi
 on:
   workflow_dispatch:
   push:
-    branches: [!release-*]
+    branches: [*]
+    branches-ignore:
+      - release-*
   pull_request:
     types: [opened, synchronize]
-    branches:  [!release-*]
+    branches:  [*]
+    branches-ignore:
+      - release-*
     
 jobs:
   build-dxapi:
