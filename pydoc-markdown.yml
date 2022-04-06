@@ -1,0 +1,15 @@
+renderer:
+  type: markdown
+
+loaders:
+  - type: python
+    search_path: [./bin]
+    modules:
+      - dxapi
+
+renderer:
+  type: markdown
+  render_toc: false
+  descriptive_class_title: false
+  docstrings_as_blockquote: true
+  insert_header_anchors: false
