@@ -240,7 +240,7 @@ jobs:
         py: ['3.10']
     services:
       timebase:
-        image: finos/timebase-ce-server
+        image: finos/timebase-ce-server:6.1
         env:
           JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
         ports:
