@@ -14,8 +14,8 @@ testmodules = [
     'TestQQL',
     'TestMemoryManagement',
     'TestNextIfAvailable',
-    'TestMultithreaded',
-    'TestEntities'
+    'TestMultithreaded'
+    #'TestEntities'
 ]
 
 suite = unittest.TestSuite()
