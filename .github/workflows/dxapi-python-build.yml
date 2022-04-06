@@ -237,7 +237,7 @@ jobs:
     needs: [build-dxapi-python-linux]
     strategy:
       matrix:
-        py: ['3.10']
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
     services:
       timebase:
         image: finos/timebase-ce-server:6.1
