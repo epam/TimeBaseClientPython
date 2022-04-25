@@ -2,7 +2,7 @@ import unittest
 import servertest
 import testutils
 import time
-import dxapi
+import tbapi
 
 class TestStream(servertest.TestWithStreams):
 

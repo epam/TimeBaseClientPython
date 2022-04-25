@@ -2,7 +2,7 @@ import unittest
 import servertest
 import testutils
 import copy
-import dxapi
+import tbapi
 
 class TestNextIfAvailable(servertest.TestWithStreams):
 
@@ -18,12 +18,12 @@ class TestNextIfAvailable(servertest.TestWithStreams):
         barStream = self.db.getStream(self.streamKeys[0])
         tradeBBOStream = self.db.getStream(self.streamKeys[1])
         l2Stream = self.db.getStream(self.streamKeys[2])
-        cursor = self.db.select(0, [tradeBBOStream, barStream, l2Stream], dxapi.SelectionOptions(), None, None)
+        cursor = self.db.select(0, [tradeBBOStream, barStream, l2Stream], tbapi.SelectionOptions(), None, None)
         self.assertEqual(self.readCursorIfAvailable(cursor), 30000)
 
     def test_Reset(self):
         stream = self.db.getStream(self.streamKeys[0])
-        cursor = stream.createCursor(dxapi.SelectionOptions())
+        cursor = stream.createCursor(tbapi.SelectionOptions())
 
         cursor.reset(9000)
         self.assertEqual(self.readMessage(cursor).timestamp, self.msToNs(9000))
@@ -41,7 +41,7 @@ class TestNextIfAvailable(servertest.TestWithStreams):
 
     def test_SelectReverse(self):
         stream = self.db.getStream(self.streamKeys[0])
-        options = dxapi.SelectionOptions()
+        options = tbapi.SelectionOptions()
         options.reverse = True
         cursor = stream.createCursor(options)
 
@@ -62,9 +62,9 @@ class TestNextIfAvailable(servertest.TestWithStreams):
     def readMessage(self, cursor):
         while True:
             state = cursor.nextIfAvailable()
-            if state == dxapi.OK:
+            if state == tbapi.OK:
                 return cursor.getMessage()
-            elif state == dxapi.END_OF_CURSOR:
+            elif state == tbapi.END_OF_CURSOR:
                 return None
 
     def readMessagesCount(self, cursor, count):
@@ -74,7 +74,7 @@ class TestNextIfAvailable(servertest.TestWithStreams):
         return messages
 
     def readStreamIfAvailable(self, stream):
-        cursor = stream.createCursor(dxapi.SelectionOptions())
+        cursor = stream.createCursor(tbapi.SelectionOptions())
         try:
             return self.readCursorIfAvailable(cursor)
         finally:
@@ -85,11 +85,11 @@ class TestNextIfAvailable(servertest.TestWithStreams):
         readCount = 0
         while True:
             state = cursor.nextIfAvailable()
-            if state == dxapi.OK:
+            if state == tbapi.OK:
                 message = cursor.getMessage()
                 readCount += 1
                 self.printReadingInfo(readCount)
-            elif state == dxapi.END_OF_CURSOR:
+            elif state == tbapi.END_OF_CURSOR:
                 break
         print("Read " + str(readCount) + " messages")
         return readCount

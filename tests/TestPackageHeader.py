@@ -1,7 +1,7 @@
 import unittest
 import servertest
 import testutils
-import dxapi
+import tbapi
 
 class TestPackageHeader(servertest.TBServerTest):
 
@@ -19,7 +19,7 @@ class TestPackageHeader(servertest.TBServerTest):
             
             readCount = 0
             currentPrice = 0
-            cursor = stream.select(0, dxapi.SelectionOptions(), None, None)
+            cursor = stream.select(0, tbapi.SelectionOptions(), None, None)
             while cursor.next():
                 readCount += 1
                 message = cursor.getMessage()

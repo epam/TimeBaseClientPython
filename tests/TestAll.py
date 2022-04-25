@@ -36,14 +36,9 @@ if testdir != "":
 reportsDir =  testdir + 'reports'
 if not os.path.exists(reportsDir):
     os.makedirs(reportsDir)
-reportFile = reportsDir + '/dxapi-test-report-' + datetime.datetime.now().strftime('%d%m%Y-%H%M%S') + '.html'
+reportFile = reportsDir + '/tbapi-test-report-' + datetime.datetime.now().strftime('%d%m%Y-%H%M%S') + '.html'
 fileStream = open(reportFile, 'w')
-version = "2"
-if sys.version.startswith("3.6"):
-    version = "3.6"
-elif sys.version.startswith("3.7"):
-    version = "3.7"
-title = 'Dxapi test report (Python version: ' + (version) + ')'
+title = 'Tbapi test report (Python version: ' + (sys.version) + ')'
 runner = HTMLTestRunner.HTMLTestRunner(stream = fileStream, title = title)
 result = runner.run(suite)
 

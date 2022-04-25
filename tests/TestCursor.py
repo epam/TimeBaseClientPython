@@ -1,7 +1,7 @@
 import unittest
 import servertest
 import testutils
-import dxapi
+import tbapi
 
 class CursorTest(servertest.TestWithStreams):
 
@@ -11,7 +11,7 @@ class CursorTest(servertest.TestWithStreams):
 
     def test_SelectFromTo(self):
         stream = self.db.getStream(self.streamKeys[0])
-        options = dxapi.SelectionOptions()
+        options = tbapi.SelectionOptions()
         options._from = 5000
         options.to = 6000
         cursor = stream.createCursor(options)
@@ -31,7 +31,7 @@ class CursorTest(servertest.TestWithStreams):
 
     def test_SelectFromToReverse(self):
         stream = self.db.getStream(self.streamKeys[0])
-        options = dxapi.SelectionOptions()
+        options = tbapi.SelectionOptions()
         options._from = 5000
         options.to = 6000
         options.reverse = True
@@ -51,7 +51,7 @@ class CursorTest(servertest.TestWithStreams):
 
     def test_Reset(self):
         stream = self.db.getStream(self.streamKeys[0])
-        cursor = stream.createCursor(dxapi.SelectionOptions())
+        cursor = stream.createCursor(tbapi.SelectionOptions())
 
         cursor.reset(9000)
         self.assertTrue(cursor.next())
@@ -71,7 +71,7 @@ class CursorTest(servertest.TestWithStreams):
 
     def test_SetTimeForNewSubscription(self):
         barStream = self.db.getStream(self.streamKeys[0])
-        cursor = self.db.select(0, [barStream], dxapi.SelectionOptions(), None, [])
+        cursor = self.db.select(0, [barStream], tbapi.SelectionOptions(), None, [])
         
         cursor.addEntities([self.entities['AAPL']])
         messages = self.read(cursor, 10)
@@ -102,7 +102,7 @@ class CursorTest(servertest.TestWithStreams):
         barStream = self.db.getStream(self.streamKeys[0])
         tradeBBOStream = self.db.getStream(self.streamKeys[1])
         l2Stream = self.db.getStream(self.streamKeys[2])
-        cursor = self.db.select(0, [tradeBBOStream, barStream, l2Stream], dxapi.SelectionOptions(), None, None)
+        cursor = self.db.select(0, [tradeBBOStream, barStream, l2Stream], tbapi.SelectionOptions(), None, None)
 
         # all types
         typeSet = set(self.types.values())
@@ -137,7 +137,7 @@ class CursorTest(servertest.TestWithStreams):
     def test_SubscribeEntities(self):
         tradeBBOStream = self.db.getStream(self.streamKeys[0])
         barStream = self.db.getStream(self.streamKeys[1])
-        cursor = self.db.select(0, [tradeBBOStream, barStream], dxapi.SelectionOptions(), None, None)
+        cursor = self.db.select(0, [tradeBBOStream, barStream], tbapi.SelectionOptions(), None, None)
 
         # all entities
         entitySet = set(self.entities.keys())
@@ -180,7 +180,7 @@ class CursorTest(servertest.TestWithStreams):
         l2Stream = self.db.getStream(self.streamKeys[2])
         cursor = self.db.select(0,
                                 [tradeBBOStream, barStream, l2Stream],
-                                dxapi.SelectionOptions(),
+                                tbapi.SelectionOptions(),
                                 [self.types['bbo'], self.types['trade']],
                                 [self.entities['AAPL'], self.entities['IBM']])
 
@@ -211,7 +211,7 @@ class CursorTest(servertest.TestWithStreams):
         tradeBBOStream = self.db.getStream(self.streamKeys[1])
         l2Stream = self.db.getStream(self.streamKeys[2])
 
-        cursor = self.db.select(0, [tradeBBOStream], dxapi.SelectionOptions(), None, None)
+        cursor = self.db.select(0, [tradeBBOStream], tbapi.SelectionOptions(), None, None)
 
         # trade streams
         typeSet = set([self.types['trade'], self.types['bbo']])
@@ -241,7 +241,7 @@ class CursorTest(servertest.TestWithStreams):
         tradeBBOStream = self.db.getStream(self.streamKeys[1])
         l2Stream = self.db.getStream(self.streamKeys[2])
 
-        cursor = self.db.select(0, [barStream, tradeBBOStream, l2Stream], dxapi.SelectionOptions(), None, None)
+        cursor = self.db.select(0, [barStream, tradeBBOStream, l2Stream], tbapi.SelectionOptions(), None, None)
         while cursor.next():
             stream = cursor.getCurrentStreamKey()
             typeName = cursor.getMessage().typeName
@@ -256,19 +256,19 @@ class CursorTest(servertest.TestWithStreams):
     def test_ContextManager(self):
         stream = self.db.getStream(self.streamKeys[0])
 
-        with self.db.tryCursor(stream, dxapi.SelectionOptions()) as cursor:
+        with self.db.tryCursor(stream, tbapi.SelectionOptions()) as cursor:
             self.assertTrue(cursor.next())
             self.assertTrue(cursor.getMessage() != None)
 
-        with stream.tryCursor(dxapi.SelectionOptions()) as cursor:
+        with stream.tryCursor(tbapi.SelectionOptions()) as cursor:
             self.assertTrue(cursor.next())
             self.assertTrue(cursor.getMessage() != None)
 
-        with self.db.trySelect(0, [stream], dxapi.SelectionOptions(), None, None) as cursor:
+        with self.db.trySelect(0, [stream], tbapi.SelectionOptions(), None, None) as cursor:
             self.assertTrue(cursor.next())
             self.assertTrue(cursor.getMessage() != None)
 
-        with stream.trySelect(0, dxapi.SelectionOptions(), None, None) as cursor:
+        with stream.trySelect(0, tbapi.SelectionOptions(), None, None) as cursor:
             self.assertTrue(cursor.next())
             self.assertTrue(cursor.getMessage() != None)
 

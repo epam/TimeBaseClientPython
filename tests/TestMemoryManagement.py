@@ -1,6 +1,6 @@
 import unittest
 import servertest
-import dxapi
+import tbapi
 import sys
 import generators
 
@@ -66,7 +66,7 @@ class TestTickDB(servertest.TBServerTest):
         stream = self.db.getStream(key)
         self.assertIsNotNone(stream)
 
-        loader = stream.createLoader(dxapi.LoadingOptions())
+        loader = stream.createLoader(tbapi.LoadingOptions())
         self.assertIsNotNone(loader)
         try:
             loaded = 0
@@ -87,7 +87,7 @@ class TestTickDB(servertest.TBServerTest):
         stream = self.db.getStream(key)
         self.assertIsNotNone(stream)
 
-        cursor = stream.createCursor(dxapi.SelectionOptions())
+        cursor = stream.createCursor(tbapi.SelectionOptions())
         self.assertIsNotNone(cursor)
         try:
             read = 0
@@ -129,7 +129,7 @@ class L2EmptyGenerator(generators.BaseGenerator):
         return True
 
     def newAction(self):
-        action = dxapi.InstrumentMessage()
+        action = tbapi.InstrumentMessage()
         action.typeName = None
         action.level = None
         action.isAsk = True

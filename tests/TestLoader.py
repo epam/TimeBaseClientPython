@@ -2,7 +2,7 @@ import unittest
 import servertest
 import testutils, generators
 import time
-import dxapi
+import tbapi
 
 
 class TestLoader(servertest.TBServerTest):
@@ -80,10 +80,10 @@ class TestLoader(servertest.TBServerTest):
             self.assertIsNotNone(stream)
             self.assertEqual(self.streamCount(key), 0)  # check stream is empty
 
-            loader = stream.createLoader(dxapi.LoadingOptions())
+            loader = stream.createLoader(tbapi.LoadingOptions())
             self.assertIsNotNone(loader)
 
-            message = dxapi.InstrumentMessage()
+            message = tbapi.InstrumentMessage()
 
             # register types
             bboTypeId = loader.registerType('deltix.timebase.api.messages.BestBidOfferMessage')
@@ -115,7 +115,7 @@ class TestLoader(servertest.TBServerTest):
 
             loader.close()
 
-            cursor = stream.createCursor(dxapi.SelectionOptions())
+            cursor = stream.createCursor(tbapi.SelectionOptions())
             self.assertIsNotNone(cursor)
             self.assertTrue(cursor.next())
             self.assertEqual(cursor.getMessage().typeName, 'deltix.timebase.api.messages.BestBidOfferMessage')
@@ -143,7 +143,7 @@ class TestLoader(servertest.TBServerTest):
     def test_Flush(self):
         key = self.streamKeys[0]
         stream = self.createStreamQQL(key)
-        loader = stream.createLoader(dxapi.LoadingOptions())
+        loader = stream.createLoader(tbapi.LoadingOptions())
         try:
             barGenerator = generators.BarGenerator(0, 1000000000, 21, ['EPAM'])
 
@@ -196,7 +196,7 @@ class TestLoader(servertest.TBServerTest):
     def test_MassFlush(self):
         key = self.streamKeys[0]
         stream = self.createStreamQQL(key)
-        loader = stream.createLoader(dxapi.LoadingOptions())
+        loader = stream.createLoader(tbapi.LoadingOptions())
         try:
             count = 100000
             barGenerator = generators.BarGenerator(0, 1000000000, count, ['EPAM'])
@@ -213,7 +213,7 @@ class TestLoader(servertest.TBServerTest):
 
     def streamCount(self, key):
         stream = self.db.getStream(key)
-        cursor = stream.createCursor(dxapi.SelectionOptions())
+        cursor = stream.createCursor(tbapi.SelectionOptions())
         cursor.reset(0)
         try:
             count = 0
