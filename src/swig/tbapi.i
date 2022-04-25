@@ -56,7 +56,23 @@ else:
 del _swig_python_version_info
 del _swig_python_platform
 
-version = (6, 1)
+
+from os import path
+
+def version():
+    tbapi_dir = path.dirname(__file__)
+    if tbapi_dir != '':
+        tbapi_dir = tbapi_dir + '/project.properties'
+        with open(tbapi_dir) as file:
+            lines = file.readlines()
+            for line in lines:
+                split_line = line.split('=')
+                if len(split_line) == 2:
+                    key = split_line[0].strip()
+                    value = split_line[1].strip()
+                    if key.strip() == 'version' and value != None:
+                        return value
+    return 'UNKNOWN'
 "
 %enddef
 

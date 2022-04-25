@@ -220,6 +220,8 @@ jobs:
           ln -s /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}
           make -C .
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
+          otool -l ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+          otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
         env:
           CC: clang
           OS: MACOS
@@ -238,6 +240,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-tbapi-python-linux, build-tbapi-python-macos, build-tbapi-python-windows]
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
       - name: Download tbapi-python-linux artifacts
         uses: actions/download-artifact@v2
         with:
@@ -253,6 +257,9 @@ jobs:
         with:
           name: tbapi-python-macos
           path: tbapi
+      - name: Copy version file
+        run: |
+          cp ./project.properties ./tbapi/
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -291,6 +298,7 @@ jobs:
         run: |
           chmod -R 777 ./tests
           cd ./tests
+          python -c "import tbapi; print(tbapi.version())"
           python TestAll.py
         env:
           TIMEBASE_HOST: localhost
@@ -301,3 +309,49 @@ jobs:
           name: test-reports-tbapi-python-linux
           path: |
             ./tests/reports
+
+  test-tbapi-python-windows-smoke:
+    runs-on: windows-2019
+    needs: [gather-tbapi-artifacts]
+    strategy:
+      matrix:
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download tbapi-python artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: tbapi-python
+          path: tests/tbapi
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '${{ matrix.py }}'
+      - name: Run tests
+        run: |
+          python -c "import tbapi; print(tbapi.version())"
+
+  test-tbapi-python-macos-smoke:
+    runs-on: macos-latest
+    needs: [gather-tbapi-artifacts]
+    strategy:
+      matrix:
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download tbapi-python artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: tbapi-python
+          path: tests/tbapi
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '${{ matrix.py }}'
+      - name: Run tests
+        run: |
+          python -c "import tbapi; print(tbapi.version())"
