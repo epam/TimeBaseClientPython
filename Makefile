@@ -14,7 +14,7 @@ ifeq ($(PYTHON_VERSION),37)
 else ifeq ($(PYTHON_VERSION),38)
     PYTHON=python3.8
     PYTHON_VERSION_FULL=3.8
-    PYTHON_MACOS_LIB?=python$3.8
+    PYTHON_MACOS_LIB?=python3.8
 else ifeq ($(PYTHON_VERSION),39)
     PYTHON=python3.9
     PYTHON_VERSION_FULL=3.9
