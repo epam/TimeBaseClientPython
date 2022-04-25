@@ -3,7 +3,7 @@
 #include "python_common.h"
 #include "codecs/message_codec.h"
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 enum CursorState {
@@ -118,13 +118,13 @@ void TickCursor::decodeCurrentMessage() {
         std::vector<Schema::TickDbClassDescriptor> descriptors =
             Schema::TickDbClassDescriptor::parseDescriptors(*schema, true);
 
-        message_decoder = std::shared_ptr<MessageCodec>(new MessageCodec(&dxapi_module_, descriptors, 0));
+        message_decoder = std::shared_ptr<MessageCodec>(new MessageCodec(&tbapi_module_, descriptors, 0));
         message_decoders_[type_id] = message_decoder;
     }
 
     PyObject *message_object = message_objects_[type_id];
     if (message_object == NULL) {
-        message_object = dxapi_module_.newInstrumentMessageObject();
+        message_object = tbapi_module_.newInstrumentMessageObject();
         //message_object = PyDict_New();
         if (message_object == NULL)
             THROW_EXCEPTION("Can't create object of class '%32s'", MESSAGE_OBJECT_CLASS_NAME.c_str());

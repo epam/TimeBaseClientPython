@@ -6,16 +6,16 @@
 #include <algorithm>
 #include <string> 
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
     
 MessageCodec::MessageCodec(const ClassDescriptors &descriptors, intptr_t num) {
     buildDecoders(descriptors, num);
 }
 
-MessageCodec::MessageCodec(PythonDxApiModule *dxapi_module, const ClassDescriptors &descriptors, intptr_t num)
+MessageCodec::MessageCodec(PythonTbApiModule *tbapi_module, const ClassDescriptors &descriptors, intptr_t num)
 {
-    dxapi_module_ = dxapi_module;
+    tbapi_module_ = tbapi_module;
     buildDecoders(descriptors, num);
 }
 
@@ -193,12 +193,12 @@ FieldCodecPtr MessageCodec::createFieldCodec(
             if (index == INT32_MIN)
                 THROW_EXCEPTION("Unknown object type: %s.", type.c_str());
 
-            codecs.push_back(MessageCodecPtr(new MessageCodec(dxapi_module_, descriptors, index)));
+            codecs.push_back(MessageCodecPtr(new MessageCodec(tbapi_module_, descriptors, index)));
             types.push_back(descriptors[index].className);
         }
 
         return FieldCodecPtr(
-            new ObjectFieldCodec(field_name.c_str(), dxapi_module_, types, codecs)
+            new ObjectFieldCodec(field_name.c_str(), tbapi_module_, types, codecs)
         );
     }
     else if (!temptype.compare(0, strlen("alphanumeric("), "alphanumeric(")) {

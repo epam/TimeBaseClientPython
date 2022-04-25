@@ -1,15 +1,15 @@
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 %feature("autodoc", "Object which consumes messages.
 
 Create loader from TickDb:
-    options = dxapi.LoadingOptions()
+    options = tbapi.LoadingOptions()
     stream = tickdb.createLoader(stream, options)
 
 Create loader from TickStream:
-    options = dxapi.LoadingOptions()
+    options = tbapi.LoadingOptions()
     stream = stream.createLoader(options)");
 
 class TickLoader {
@@ -63,7 +63,7 @@ public:
         you could specify type id instead of type name, for example:
 
         ```
-        message = dxapi.InstrumentMessage()
+        message = tbapi.InstrumentMessage()
         message.typeId = loader.registerType("deltix.timebase.api.messages.universal.PackageHeader")
         // as alternative, you could write:
         //   message.typeName = "deltix.timebase.api.messages.universal.PackageHeader"
@@ -83,7 +83,7 @@ public:
         you could specify instrument id instead of symbol and instrument type, for example:
 
         ```
-        message = dxapi.InstrumentMessage()
+        message = tbapi.InstrumentMessage()
         message.instrumentId = loader.registerInstrument('AAPL')
         // as alternative, you could write:
         //    message.symbol = 'AAPL'

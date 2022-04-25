@@ -7,10 +7,10 @@
 
 #include <iostream>
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
-const std::string MODULE_NAME = "dxapi";
+const std::string MODULE_NAME = "tbapi";
 const std::string MESSAGE_OBJECT_CLASS_NAME = "InstrumentMessage";
 
 const std::string TYPE_ID_PROPERTY = "typeId";
@@ -36,22 +36,22 @@ bool getInt64Value(PyObject *message, const std::string &field_name, PyObject *f
 //bool getBooleanValue(PyObject *message, const std::string &field_name, PyObject *field_key, bool &ret_value);
 
 //todo: should be singletone
-class PythonDxApiModule {
+class PythonTbApiModule {
 public:
-    PythonDxApiModule() {
-        dxapi_module_ = PyImport_ImportModule(MODULE_NAME.c_str());
-        if (dxapi_module_ == NULL)
+    PythonTbApiModule() {
+        tbapi_module_ = PyImport_ImportModule(MODULE_NAME.c_str());
+        if (tbapi_module_ == NULL)
             THROW_EXCEPTION("Module '%32s' is not loaded.", MODULE_NAME.c_str());
 
-        module_dict_ = PyModule_GetDict(dxapi_module_);
+        module_dict_ = PyModule_GetDict(tbapi_module_);
 
         instrument_message_class_ = PyDict_GetItemString(module_dict_, MESSAGE_OBJECT_CLASS_NAME.c_str());
         if (instrument_message_class_ == NULL)
             THROW_EXCEPTION("Class '%32s' not found in module '%32s'.", MESSAGE_OBJECT_CLASS_NAME.c_str(), MODULE_NAME.c_str());
     }
 
-    ~PythonDxApiModule() {
-        Py_XDECREF(dxapi_module_);
+    ~PythonTbApiModule() {
+        Py_XDECREF(tbapi_module_);
     }
 
     PyObject * newInstrumentMessageObject() {
@@ -63,7 +63,7 @@ public:
     }
 
 private:
-    PyObject *dxapi_module_ = NULL;
+    PyObject *tbapi_module_ = NULL;
     PyObject *module_dict_ = NULL;
     PyObject *instrument_message_class_ = NULL;
 };

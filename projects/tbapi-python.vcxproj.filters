@@ -35,14 +35,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\src\swig\dxapi.i">
+    <CustomBuild Include="..\src\swig\tbapi.i">
       <Filter>swig</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\swig\wrappers\dxapi_wrap.cxx">
-      <Filter>swig\wrappers</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\tick_loader.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -57,6 +54,9 @@
     </ClCompile>
     <ClCompile Include="..\src\common.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\swig\wrappers\tbapi_wrap.cxx">
+      <Filter>swig\wrappers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

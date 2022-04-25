@@ -25,12 +25,12 @@ else:
 if _swig_python_version_info >= (3, 7, 0):
     def swig_import_helper():
         import importlib
-        mname = '.'.join((__name__, platform, 'x64', subdir, '_dxapi')).lstrip('.')
+        mname = '.'.join((__name__, platform, 'x64', subdir, '_tbapi')).lstrip('.')
         try:
             return importlib.import_module(mname)
         except ImportError:
-            return importlib.import_module('_dxapi')
-    _dxapi = swig_import_helper()
+            return importlib.import_module('_tbapi')
+    _tbapi = swig_import_helper()
     del swig_import_helper
 elif _swig_python_version_info >= (2, 6, 0):
     def swig_import_helper():
@@ -39,20 +39,20 @@ elif _swig_python_version_info >= (2, 6, 0):
         fp = None
         try:
             directory = '/'.join((dirname(__file__), platform, 'x64', subdir))
-            fp, pathname, description = imp.find_module('_dxapi', [directory])
+            fp, pathname, description = imp.find_module('_tbapi', [directory])
         except ImportError:
-            import _dxapi
-            return _dxapi
+            import _tbapi
+            return _tbapi
         try:
-            _mod = imp.load_module('_dxapi', fp, pathname, description)
+            _mod = imp.load_module('_tbapi', fp, pathname, description)
         finally:
             if fp is not None:
                 fp.close()
         return _mod
-    _dxapi = swig_import_helper()
+    _tbapi = swig_import_helper()
     del swig_import_helper
 else:
-    import _dxapi
+    import _tbapi
 del _swig_python_version_info
 del _swig_python_platform
 
@@ -61,7 +61,7 @@ version = (6, 1)
 %enddef
 
 
-%module(moduleimport=MODULEIMPORT, directors="1") dxapi
+%module(moduleimport=MODULEIMPORT, directors="1") tbapi
 
 %include "stdint.i"
 %include "std_string.i"
@@ -125,7 +125,7 @@ typedef int64_t TimestampNs;
 		for (int i = 0; i < size; i++) {
 			std::string str;
 			bool type_mismatch = false;
-			DxApiImpl::Python::getStringValue(PyList_GetItem($input,i), str, type_mismatch);
+			TbApiImpl::Python::getStringValue(PyList_GetItem($input,i), str, type_mismatch);
 			$1->push_back(str);
 			if (type_mismatch) {
 				delete $1;
@@ -167,7 +167,7 @@ typedef int64_t TimestampNs;
 		for (int i = 0; i < size; i++) {
 			std::string str;
 			bool type_mismatch = false;
-			DxApiImpl::Python::getStringValue(PyList_GetItem($input,i), str, type_mismatch);
+			TbApiImpl::Python::getStringValue(PyList_GetItem($input,i), str, type_mismatch);
 			$1->push_back(str);
 			if (type_mismatch) {
 				delete $1;
@@ -209,7 +209,7 @@ typedef int64_t TimestampNs;
 		for (int i = 0; i < size; i++) {
 			std::string str;
 			bool type_mismatch = false;
-			DxApiImpl::Python::getStringValue(PyList_GetItem($input,i), str, type_mismatch);
+			TbApiImpl::Python::getStringValue(PyList_GetItem($input,i), str, type_mismatch);
 			$1->push_back(str);
 			if (type_mismatch) {
 				delete $1;
@@ -356,8 +356,8 @@ typedef int64_t TimestampNs;
 
 	/* %typemap(out) DxApi::TickCursor * */
 	$result = SWIG_NewPointerObj(
-		SWIG_as_voidptr(new DxApiImpl::Python::TickCursor($1)), 
-		SWIGTYPE_p_DxApiImpl__Python__TickCursor, 
+		SWIG_as_voidptr(new TbApiImpl::Python::TickCursor($1)), 
+		SWIGTYPE_p_TbApiImpl__Python__TickCursor, 
 		SWIG_POINTER_OWN | 0 
 	);
 }
@@ -366,8 +366,8 @@ typedef int64_t TimestampNs;
 
 	/* %typemap(out) DxApi::TickLoader * */
 	$result = SWIG_NewPointerObj(
-		SWIG_as_voidptr(new DxApiImpl::Python::TickLoader($1)), 
-		SWIGTYPE_p_DxApiImpl__Python__TickLoader, 
+		SWIG_as_voidptr(new TbApiImpl::Python::TickLoader($1)), 
+		SWIGTYPE_p_TbApiImpl__Python__TickLoader, 
 		SWIG_POINTER_OWN | 0 
 	);
 }

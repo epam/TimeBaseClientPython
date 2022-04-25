@@ -5,7 +5,7 @@
 #include <exception>
 #include <mutex>
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 
 std::string string_format(const std::string format, ...);
 
@@ -30,6 +30,6 @@ private:
     std::mutex *mutex_;
 };
 
-} // DxApiImpl
+} // TbApiImpl
 
 #endif //_COMMON_H_

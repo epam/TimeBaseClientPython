@@ -1,5 +1,5 @@
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 enum NextResult {
@@ -16,7 +16,7 @@ or call executeQuery to open cursor to QQL result set.
 Also cursor can be created with createCursor method, but it will be not initialized cursor,
 so cursor should be configured with types, entities and read time calling reset:
     ```
-    options = dxapi.SelectionOptions()
+    options = tbapi.SelectionOptions()
     cursor = tickdb.createCursor(stream, options)
     cursor.subscribeToAllEntities()
     cursor.subscribeToAllTypes()

@@ -9,13 +9,13 @@ Database engine. Instances of this class are created by static method
 createFromUrl:
 
 ```
-db = dxapi.TickDb.createFromUrl('dxtick://localhost:8011')
+db = tbapi.TickDb.createFromUrl('dxtick://localhost:8011')
 ```
 
 or
 
 ```
-db = dxapi.TickDb.createFromUrl('dxtick://localhost:8011', 'user', 'password')
+db = tbapi.TickDb.createFromUrl('dxtick://localhost:8011', 'user', 'password')
 ```");
 
 class TickDb {
@@ -35,9 +35,9 @@ public:
             TickDb: An un-opened TickDB instance.
         '''
         if user == None:
-            return _dxapi.TickDb___createFromUrl(url)
+            return _tbapi.TickDb___createFromUrl(url)
         else:
-            return _dxapi.TickDb___createFromUrlWithUser(url, user, password)
+            return _tbapi.TickDb___createFromUrlWithUser(url, user, password)
 
     @staticmethod
     @contextmanager

@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <memory>
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 class MessageCodec;

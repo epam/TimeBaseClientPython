@@ -3,30 +3,30 @@
 OS?=LINUX
 
 DXAPI_BIN=./dxapi/bin
-PYTHONAPI_INTERFACE=dxapi.py
-PYHTONAPI_LIB=_dxapi.so
+PYTHONAPI_INTERFACE=tbapi.py
+PYHTONAPI_LIB=_tbapi.so
 
-PYTHON_VERSION?=36
+PYTHON_VERSION?=39
 ifeq ($(PYTHON_VERSION),37)
-	PYTHON=python3.7
-	PYTHON_VERSION_FULL=3.7
-	PYTHON_LIB_SUFFIX=3.7m
+    PYTHON=python3.7
+    PYTHON_VERSION_FULL=3.7
+    PYTHON_MACOS_LIB?=python3.7m
 else ifeq ($(PYTHON_VERSION),38)
-	PYTHON=python3.8
-	PYTHON_VERSION_FULL=3.8
-	PYTHON_LIB_SUFFIX=3.8
+    PYTHON=python3.8
+    PYTHON_VERSION_FULL=3.8
+    PYTHON_MACOS_LIB?=python$3.8
 else ifeq ($(PYTHON_VERSION),39)
-	PYTHON=python3.9
-	PYTHON_VERSION_FULL=3.9
-	PYTHON_LIB_SUFFIX=3.9
+    PYTHON=python3.9
+    PYTHON_VERSION_FULL=3.9
+    PYTHON_MACOS_LIB?=python3.9
 else ifeq ($(PYTHON_VERSION),310)
-	PYTHON=python3.10
-	PYTHON_VERSION_FULL=3.10
-	PYTHON_LIB_SUFFIX=3.10
+    PYTHON=python3.10
+    PYTHON_VERSION_FULL=3.10
+    PYTHON_MACOS_LIB?=python3.10
 else
-	PYTHON=python3.6
-	PYTHON_VERSION_FULL=3.6
-	PYTHON_LIB_SUFFIX=3.6m
+    PYTHON=python3.6
+    PYTHON_VERSION_FULL=3.6
+    PYTHON_MACOS_LIB?=python3.6m
 endif
 
 ifeq ($(OS),MACOS)
@@ -34,8 +34,11 @@ ifeq ($(OS),MACOS)
     DFP_LIB=DecimalNative
     RPATH_PARAM=
     THIRD_PARTY_LIBS=
-    PYTHON_INCLUDES=/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/Headers
-    PYTHON_LIBS=-L/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)/lib -lpython$(PYTHON_LIB_SUFFIX)
+    PYTHON_MACOS_PATH?=/Library/Frameworks/Python.framework/Versions/$(PYTHON_VERSION_FULL)
+    PYTHON_MACOS_HEADERS_PATH?=$(PYTHON_MACOS_PATH)/Headers
+    PYTHON_MACOS_LIB_PATH?=$(PYTHON_MACOS_PATH)/lib
+    PYTHON_INCLUDES=$(PYTHON_MACOS_HEADERS_PATH)
+    PYTHON_LIBS=-L$(PYTHON_MACOS_LIB_PATH) -l$(PYTHON_MACOS_LIB)
     BIN_SUBFOLDER=darwin
 else
     DFP_BIN=./dfp/lib/linux/64
@@ -50,7 +53,7 @@ BUILD_TARGETS=$(BINDIR)/$(PYHTONAPI_LIB)
 CLEAN_TARGETS=clean-$(PYHTONAPI_LIB) clean-$(PYTHONAPI_INTERFACE)
 
 # wrapper
-WRAPPER_OBJ=dxapi_wrap
+WRAPPER_OBJ=tbapi_wrap
 
 # Names of C/C++ source files to build, without path/extension
 OBJ_LIB=common python_common tick_cursor tick_loader message_codec $(WRAPPER_OBJ)
@@ -163,9 +166,9 @@ $(OUTDIRS):
 	mkdir -p $@
     
 # python wrapper
-$(WRAPPER_OBJDIR)/$(WRAPPER_OBJ).o: dxapi.i
-	swig -c++ -python -I./dxapi/include/native/dxapi -o $(WRAPDIR)/$(WRAPPER_OBJ).cxx -outdir $(INIT_PY_DIR) src/swig/dxapi.i
-	cp $(INIT_PY_DIR)/dxapi.py $(INIT_PY_DIR)/__init__.py
+$(WRAPPER_OBJDIR)/$(WRAPPER_OBJ).o: tbapi.i
+	swig -c++ -python -I./dxapi/include/native/dxapi -o $(WRAPDIR)/$(WRAPPER_OBJ).cxx -outdir $(INIT_PY_DIR) src/swig/tbapi.i
+	cp $(INIT_PY_DIR)/tbapi.py $(INIT_PY_DIR)/__init__.py
 	$(CXX) -c $(CXXFLAGS) -o $@ $(WRAPDIR)/$(WRAPPER_OBJ).cxx
 
 # c++ files
@@ -180,12 +183,12 @@ $(OBJDIR)/%.o: %.c
 #==============================================================================
 # build lib
 
-DXAPI_PYTHON_LIB_PATH=$(BINDIR)/$(PYHTONAPI_LIB)
-DXAPI_PYTHON_LIB_OBJ_PATHS=$(OBJ_LIB:%=$(OBJDIR)/%.o)
+TBAPI_PYTHON_LIB_PATH=$(BINDIR)/$(PYHTONAPI_LIB)
+TBAPI_PYTHON_LIB_OBJ_PATHS=$(OBJ_LIB:%=$(OBJDIR)/%.o)
 
 # linking
-$(BINDIR)/$(PYHTONAPI_LIB): $(DXAPI_PYTHON_LIB_OBJ_PATHS)
-	$(CXX) -shared $(DXAPI_PYTHON_LIB_OBJ_PATHS) $(LDFLAGS) -L$(DXAPI_BIN)/ -L$(DFP_BIN)/ -l$(DXAPI_LIB) -l$(DFP_LIB) $(RPATH_PARAM) $(PYTHON_LIBS) $(THIRD_PARTY_LIBS) -o $@
+$(BINDIR)/$(PYHTONAPI_LIB): $(TBAPI_PYTHON_LIB_OBJ_PATHS)
+	$(CXX) -shared $(TBAPI_PYTHON_LIB_OBJ_PATHS) $(LDFLAGS) -L$(DXAPI_BIN)/ -L$(DFP_BIN)/ -l$(DXAPI_LIB) -l$(DFP_LIB) $(RPATH_PARAM) $(PYTHON_LIBS) $(THIRD_PARTY_LIBS) -o $@
 
 $(CLEAN_TARGETS):
 	-rm $(@:clean-%=$(BINDIR)/%)
