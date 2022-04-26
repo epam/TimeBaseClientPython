@@ -223,7 +223,7 @@ jobs:
           OS: MACOS
           PYTHON_VERSION: ${{ matrix.py_env }}
           PYTHON_MACOS_HEADERS_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/include/${{ matrix.py_lib }}
-          PYTHON_MACOS_LIB_PATH: /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/${{ matrix.py_lib }}
+          PYTHON_MACOS_LIB_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib
           PYTHON_MACOS_LIB: ${{ matrix.py_lib }}
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
