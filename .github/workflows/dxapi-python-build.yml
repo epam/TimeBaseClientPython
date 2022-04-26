@@ -48,6 +48,8 @@ jobs:
         run: |
           ls -l /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/
           ls -l /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib/
+          ls -l /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/bin/
+          ls -l /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib/python${{ matrix.py }}
 
 
 
