@@ -3,9 +3,9 @@ renderer:
 
 loaders:
   - type: python
-    search_path: [./bin]
+    search_path: [.]
     modules:
-      - dxapi
+      - tbapi
 
 renderer:
   type: markdown

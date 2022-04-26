@@ -261,9 +261,18 @@ jobs:
         with:
           name: tbapi-python-macos
           path: tbapi
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10.2"
       - name: Copy version file
         run: |
+          # version file
           cp ./project.properties ./tbapi/
+          # pydoc
+          pip3 install pydoc-markdown
+          export LC_ALL=C.UTF-8
+          export LANG=C.UTF-8
+          pydoc-markdown > ./tbapi/tbapi.md
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
