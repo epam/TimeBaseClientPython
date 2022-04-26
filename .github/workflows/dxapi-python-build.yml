@@ -237,7 +237,7 @@ jobs:
   # Gather artifacts
   gather-tbapi-artifacts:
     runs-on: ubuntu-latest
-    needs: [build-tbapi-python-linux, build-tbapi-python-macos, build-tbapi-python-windows]
+    needs: [build-tbapi-python-macos] # [build-tbapi-python-linux, build-tbapi-python-macos, build-tbapi-python-windows]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
