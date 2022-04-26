@@ -345,6 +345,17 @@ jobs:
     strategy:
       matrix:
         py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+        include:
+          - py: '3.6'
+            py_v: '3.6.15'
+          - py: '3.7'
+            py_v: '3.7.12'
+          - py: '3.8'
+            py_v: '3.8.12'
+          - py: '3.9'
+            py_v: '3.9.10'
+          - py: '3.10'
+            py_v: '3.10.2'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -357,7 +368,7 @@ jobs:
           path: tests/tbapi
       - uses: actions/setup-python@v2
         with:
-          python-version: '${{ matrix.py }}'
+          python-version: '${{ matrix.py_v }}'
       - name: Run tests
         run: |
           chmod -R 777 ./tests
