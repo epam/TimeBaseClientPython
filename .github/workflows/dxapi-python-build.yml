@@ -218,13 +218,18 @@ jobs:
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
           otool -l ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
           otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+          install_name_tool -change /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib/lib${{ matrix.py_lib }}.dylib @rpath/lib${{ matrix.py_lib }}.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+          otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+          install_name_tool -add_rpath /usr/local/opt/python@${{ matrix.py }}/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib/ ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+          install_name_tool -add_rpath /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib/ ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+          otool -l ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
         env:
           CC: clang
           OS: MACOS
           PYTHON_VERSION: ${{ matrix.py_env }}
           PYTHON_MACOS_HEADERS_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/include/${{ matrix.py_lib }}
           PYTHON_MACOS_LIB_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib
-          PYTHON_MACOS_LIB: python${{ matrix.py }}
+          PYTHON_MACOS_LIB: ${{ matrix.py_lib }}
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
