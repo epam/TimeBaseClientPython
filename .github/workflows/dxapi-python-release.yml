@@ -301,10 +301,20 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.10.2"
-      - name: Copy version file
+      - name: Prepare test package
         run: |
           # version file
+          versionSnapshot=`grep 'version=' project.properties | sed 's/version=\([^-]*\)/\1/'`
+          versionRelease=`echo $versionSnapshot | sed 's/\([^-]*\)-SNAPSHOT/\1/'`
+          echo version=$versionRelease >> ./tbapi/project.properties
           cp ./project.properties ./tbapi/
+
+          # pydoc
+          pip3 install pydoc-markdown
+          export LC_ALL=C.UTF-8
+          export LANG=C.UTF-8
+          pydoc-markdown > ./tbapi/tbapi.md
+          pip3 install wheel
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -442,13 +452,6 @@ jobs:
       - name: Prepare artifacts
         id: tag
         run: |
-          # pydoc
-          pip3 install pydoc-markdown
-          export LC_ALL=C.UTF-8
-          export LANG=C.UTF-8
-          pydoc-markdown > ./tbapi/tbapi.md
-          pip3 install wheel
-
           # wheel package
           python3 setup.py bdist_wheel --universal
 
@@ -460,12 +463,6 @@ jobs:
           export VERSION=$versionRelease
           echo $VERSION
           echo ::set-output name=tag::$VERSION
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: tbapi-python
-          path: |
-            ./tbapi
       - name: Wheel artifacts
         uses: actions/upload-artifact@v2
         with:
