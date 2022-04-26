@@ -430,7 +430,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
   publish-pip:
-    needs: [release]
+    needs: [gather-artifacts, test-linux, test-windows-smoke, test-macos-smoke]
     runs-on: windows-latest
     steps:
       - name: Checkout code
