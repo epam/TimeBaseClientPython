@@ -453,6 +453,7 @@ jobs:
         id: tag
         run: |
           # wheel package
+          pip3 install wheel
           python3 setup.py bdist_wheel --universal
 
           # git tag
