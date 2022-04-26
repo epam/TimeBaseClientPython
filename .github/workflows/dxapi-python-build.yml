@@ -16,7 +16,6 @@ jobs:
 
   check-python:
     runs-on: macos-latest
-    needs: [build-dxapi]
     strategy:
       matrix:
         py: ['3.6', '3.7', '3.8', '3.9', '3.10']
