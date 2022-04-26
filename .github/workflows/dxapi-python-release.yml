@@ -460,7 +460,7 @@ jobs:
 
   cleanup-release:
     if: ${{ always() && !contains(github.event.head_commit.message, '[skip-ci]') }}
-    needs: [publish]
+    needs: [publish-github, publish-pip]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
