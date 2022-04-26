@@ -216,10 +216,10 @@ jobs:
         run: |
           make -C .
           cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
-          otool -l ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
           otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
           install_name_tool -change /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib/lib${{ matrix.py_lib }}.dylib @rpath/lib${{ matrix.py_lib }}.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
           otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+          install_name_tool -add_rpath /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib/ ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
           install_name_tool -add_rpath /usr/local/opt/python@${{ matrix.py }}/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib/ ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
           install_name_tool -add_rpath /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib/ ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
           otool -l ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
@@ -246,16 +246,16 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Download tbapi-python-linux artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: tbapi-python-linux
-          path: tbapi
-      - name: Download tbapi-python-windows artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: tbapi-python-windows
-          path: tbapi
+#      - name: Download tbapi-python-linux artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: tbapi-python-linux
+#          path: tbapi
+#      - name: Download tbapi-python-windows artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: tbapi-python-windows
+#          path: tbapi
       - name: Download tbapi-python-windows artifacts
         uses: actions/download-artifact@v2
         with:
