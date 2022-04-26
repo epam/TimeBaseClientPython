@@ -17,7 +17,7 @@ namespace DxApi {
 
 Example:
     ```
-    scope = dxapi.StreamScope('TRANSIENT')
+    scope = tbapi.StreamScope('TRANSIENT')
     ```
 
 Possible values:
@@ -60,7 +60,7 @@ TRUNCATE: Stream truncated every time when loader writes a messages earlier than
 
 Example:
     ```
-    mode = dxapi.StreamScope('TRUNCATE')
+    mode = tbapi.StreamScope('TRUNCATE')
     ```
 
 Possible values:
@@ -98,7 +98,7 @@ public:
 
 Example:
     ```
-    so = dxapi.SelectionOptions()
+    so = tbapi.SelectionOptions()
     so._from = 0
     so.to = 100000
     so.useCompression = False
@@ -151,8 +151,8 @@ public:
 
 Example:
     ```
-    lo = dxapi.LoadingOptions()
-    lo.writeMode = dxapi.WriteMode('TRUNCATE')
+    lo = tbapi.LoadingOptions()
+    lo.writeMode = tbapi.WriteMode('TRUNCATE')
     so.space = 'myspace'
     ...
     ```");
@@ -177,10 +177,10 @@ public:
 
 Example:
     ```
-    so = dxapi.StreamOptions()
+    so = tbapi.StreamOptions()
     so.name = key
     so.description = key
-    so.scope = dxapi.StreamScope('DURABLE')
+    so.scope = tbapi.StreamScope('DURABLE')
     so.distributionFactor = 1
     so.highAvailability = False
     so.polymorphic = False
@@ -235,7 +235,7 @@ public:
             return distributionRuleName
 
     def metadata(self, metadata: str = None) -> None:
-        '''Stream metadata in XML format. To build metadata programatically, use dxapi.SchemaDef class.'''
+        '''Stream metadata in XML format. To build metadata programatically, use tbapi.SchemaDef class.'''
         if metadata == None:
             return self.__getMetadata()
         else:

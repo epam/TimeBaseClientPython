@@ -1,6 +1,6 @@
 import unittest
 import servertest
-import dxapi
+import tbapi
 import sys
 
 class TestQQL(servertest.TestWithStreams):
@@ -12,7 +12,7 @@ class TestQQL(servertest.TestWithStreams):
         cursor.close()
 
     def test_ExecuteQueryWithOptions(self):
-        options = dxapi.SelectionOptions()
+        options = tbapi.SelectionOptions()
         options._from = 5000
         options.to = 6000
         cursor = self.db.executeQuery("select * from bars1min", options)
@@ -28,7 +28,7 @@ class TestQQL(servertest.TestWithStreams):
         cursor.close()
 
     def test_ExecuteQueryWithInstruments(self):
-        cursor = self.db.executeQuery("select * from l2", dxapi.SelectionOptions(), 10000, [self.entities['IBM']], [])
+        cursor = self.db.executeQuery("select * from l2", tbapi.SelectionOptions(), 10000, [self.entities['IBM']], [])
         self.checkCursorSymbols(cursor, set(['IBM']))
         cursor.close()
 

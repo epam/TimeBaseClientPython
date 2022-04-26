@@ -37,7 +37,7 @@ uint64_t dfp_fromDouble(double value) {
 #endif
 
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 class FieldCodec {
@@ -904,9 +904,9 @@ private:
 class ObjectFieldCodec : public FieldCodec {
 public:
     ObjectFieldCodec(
-        const char* field_name, PythonDxApiModule *dxapi_module,
+        const char* field_name, PythonTbApiModule *tbapi_module,
         std::vector<std::string> types, std::vector<MessageCodecPtr> codecs)
-        : FieldCodec(field_name), dxapi_module_(dxapi_module), types_(types), codecs_(codecs)
+        : FieldCodec(field_name), tbapi_module_(tbapi_module), types_(types), codecs_(codecs)
     {
         for (int i = 0; i < types.size(); ++i) {
             type_name_to_id_[types[i]] = i;
@@ -921,10 +921,10 @@ public:
         if (type_id < 0 || type_id >= codecs_.size())
             THROW_EXCEPTION("Can't find codec of type id '%d' for field: %s.", type_id, field_name_.c_str());
 
-        if (dxapi_module_ == NULL)
+        if (tbapi_module_ == NULL)
             THROW("DxApi module is not initialized for object codec.");
 
-        PyObject *object = dxapi_module_->newInstrumentMessageObject();
+        PyObject *object = tbapi_module_->newInstrumentMessageObject();
         codecs_[type_id]->decode(object, reader);
         reader.readObjectEnd();
 
@@ -971,7 +971,7 @@ public:
     }
 
 private:
-    PythonDxApiModule *dxapi_module_;
+    PythonTbApiModule *tbapi_module_;
     std::vector<std::string> types_;
     std::vector<MessageCodecPtr> codecs_;
     std::unordered_map<std::string, int32_t> type_name_to_id_;

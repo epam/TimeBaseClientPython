@@ -1,7 +1,7 @@
 import os
 import unittest
 import servertest
-import dxapi
+import tbapi
 
 testdir = os.path.dirname(__file__)
 if testdir != "":
@@ -20,7 +20,7 @@ class TestTickDB(servertest.TBServerTest):
         self.assertFalse(self.db.isReadOnly())
 
     def test_open(self):
-        with dxapi.TickDb.openFromUrl(self.dxtickURL(), True) as tickdb:
+        with tbapi.TickDb.openFromUrl(self.dxtickURL(), True) as tickdb:
             self.assertTrue(tickdb.isOpen())
 
     #def test_createStream(self):
@@ -29,10 +29,10 @@ class TestTickDB(servertest.TBServerTest):
     #        with open(testdir + 'testdata/' + key + '.xml', 'r') as schemaFile:
     #            schema = schemaFile.read()
 
-    #        options = dxapi.StreamOptions()
+    #        options = tbapi.StreamOptions()
     #        options.name(key)
     #        options.description(key)
-    #        options.scope = dxapi.StreamScope('DURABLE')
+    #        options.scope = tbapi.StreamScope('DURABLE')
     #        options.distributionFactor = 9
     #        options.highAvailability = False
     #        options.polymorphic = False

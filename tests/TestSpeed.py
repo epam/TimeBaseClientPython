@@ -2,7 +2,7 @@ import unittest
 import servertest
 import generators
 import time
-import dxapi
+import tbapi
 
 class TestSpeed(servertest.TBServerTest):
 
@@ -27,7 +27,7 @@ class TestSpeed(servertest.TBServerTest):
         stream = self.db.getStream(key)
         self.assertIsNotNone(stream)
 
-        loader = stream.createLoader(dxapi.LoadingOptions())
+        loader = stream.createLoader(tbapi.LoadingOptions())
         self.assertIsNotNone(loader)
         try:
             typeId = loader.registerType('deltix.timebase.api.messages.BarMessage')
@@ -53,7 +53,7 @@ class TestSpeed(servertest.TBServerTest):
         finally:
             loader.close()
 
-        cursor = stream.createCursor(dxapi.SelectionOptions())
+        cursor = stream.createCursor(tbapi.SelectionOptions())
         self.assertIsNotNone(cursor)
         try:
             read = 0
@@ -80,7 +80,7 @@ class TestSpeed(servertest.TBServerTest):
         stream = self.db.getStream(key)
         self.assertIsNotNone(stream)
 
-        loader = stream.createLoader(dxapi.LoadingOptions())
+        loader = stream.createLoader(tbapi.LoadingOptions())
         self.assertIsNotNone(loader)
         try:
             tradeId = loader.registerType('deltix.timebase.api.messages.TradeMessage')
@@ -114,7 +114,7 @@ class TestSpeed(servertest.TBServerTest):
         finally:
             loader.close()
 
-        cursor = stream.createCursor(dxapi.SelectionOptions())
+        cursor = stream.createCursor(tbapi.SelectionOptions())
         self.assertIsNotNone(cursor)
         try:
             read = 0
@@ -141,7 +141,7 @@ class TestSpeed(servertest.TBServerTest):
         stream = self.db.getStream(key)
         self.assertIsNotNone(stream)
 
-        loader = stream.createLoader(dxapi.LoadingOptions())
+        loader = stream.createLoader(tbapi.LoadingOptions())
         self.assertIsNotNone(loader)
         try:
             typeId = loader.registerType('deltix.timebase.api.messages.L2Message')
@@ -167,7 +167,7 @@ class TestSpeed(servertest.TBServerTest):
         finally:
             loader.close()
 
-        cursor = stream.createCursor(dxapi.SelectionOptions())
+        cursor = stream.createCursor(tbapi.SelectionOptions())
         self.assertIsNotNone(cursor)
         try:
             read = 0

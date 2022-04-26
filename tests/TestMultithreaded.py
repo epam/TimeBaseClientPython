@@ -2,7 +2,7 @@ import unittest
 import servertest
 import testutils
 import os, sys, threading, time
-import dxapi
+import tbapi
 
 from sys import version_info
 
@@ -102,10 +102,10 @@ class TestMultithreaded(servertest.TestWithStreams):
     def createStream(self, fileName, key, polymorphic = False):
         with open(testdir + 'testdata/' + fileName + '.xml', 'r') as schemaFile:
             schema = schemaFile.read()
-        options = dxapi.StreamOptions()
+        options = tbapi.StreamOptions()
         options.name(key)
         options.description(key)
-        options.scope = dxapi.StreamScope('DURABLE')
+        options.scope = tbapi.StreamScope('DURABLE')
         options.distributionFactor = 1
         options.highAvailability = False
         options.polymorphic = polymorphic
@@ -124,7 +124,7 @@ class TestMultithreaded(servertest.TestWithStreams):
 
     def readStream(self, results, num, key, startTime = 0, timeout = 30, readUntil = 1000000000):
         stream = self.db.getStream(key)
-        options = dxapi.SelectionOptions()
+        options = tbapi.SelectionOptions()
         options.live = True
 
         cursor = stream.createCursor(options)
@@ -136,12 +136,12 @@ class TestMultithreaded(servertest.TestWithStreams):
             if time.time() - tStart > timeout:
                 break
             state = cursor.nextIfAvailable()
-            if state == dxapi.OK:
+            if state == tbapi.OK:
                 message = cursor.getMessage()
                 messages += 1
                 if messages >= readUntil:
                     break
-            elif state == dxapi.END_OF_CURSOR:
+            elif state == tbapi.END_OF_CURSOR:
                 break
         print("Total read from " + key + ": " + str(messages))
         results[num] = messages

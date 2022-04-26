@@ -6,7 +6,7 @@
 #include "python_common.h"
 #include "dxapi.h"
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 class MessageCodec;
@@ -69,7 +69,7 @@ private:
     std::vector<std::shared_ptr<MessageCodec>> message_decoders_;
     std::vector<PyObject *> message_objects_;
 
-    PythonDxApiModule dxapi_module_;
+    PythonTbApiModule tbapi_module_;
 
     PyObject *  TYPE_ID_PROPERTY1 = PyUnicode_FromString("typeId");
     PyObject *  TYPE_NAME_PROPERTY1 = PyUnicode_FromString("typeName");
@@ -80,6 +80,6 @@ private:
 }; // TickCursor
 
 } // namespace Python
-} // namespace DxApiImpl
+} // namespace TbApiImpl
 
 #endif //DELTIX_API_TICK_CURSOR_H_

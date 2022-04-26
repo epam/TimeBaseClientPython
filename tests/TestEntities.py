@@ -3,13 +3,13 @@ import servertest
 import generators
 import testutils
 import time
-import dxapi
+import tbapi
 
 class TestEntities(servertest.TBServerTest):
 
     def test_LoadManyEntities(self):
         stream = self.createStream('bars1min', False)
-        loader = stream.createLoader(dxapi.LoadingOptions())
+        loader = stream.createLoader(tbapi.LoadingOptions())
         try:
             loadCount = 0
             generator = generators.BarGenerator(0, 0, 35000, ['AAPL'])
@@ -27,7 +27,7 @@ class TestEntities(servertest.TBServerTest):
             if loader != None:
                 loader.close()
                 
-        cursor = stream.select(0, dxapi.SelectionOptions(), None, None)
+        cursor = stream.select(0, tbapi.SelectionOptions(), None, None)
         count = 0
         while cursor.next():
             count += 1

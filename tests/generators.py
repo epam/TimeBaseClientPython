@@ -1,10 +1,10 @@
-import dxapi
+import tbapi
 import random
 
 class BaseGenerator:
     
     def __init__(self, time, timeInterval, count, symbols):
-        self.message = dxapi.InstrumentMessage()
+        self.message = tbapi.InstrumentMessage()
 
         self.count = count
         self.currentTime = time
@@ -133,7 +133,7 @@ class L2Generator(BaseGenerator):
         return True
 
     def newAction(self):
-        action = dxapi.InstrumentMessage()
+        action = tbapi.InstrumentMessage()
         action.typeName = self.actionTypeName
         action.level = random.randint(0, 100)
         action.isAsk = True
@@ -172,7 +172,7 @@ class UniversalGenerator(BaseGenerator):
 
     def newEntry(self, level):
         self.currentPrice += 1.1
-        entry = dxapi.InstrumentMessage()
+        entry = tbapi.InstrumentMessage()
         entry.typeName = self.entryTypeName
         entry.level = level
         entry.side = 'BID'

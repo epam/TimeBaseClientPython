@@ -6,7 +6,7 @@
 #include <thread>
 #include <chrono>
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 TickLoader::TickLoader(DxApi::TickLoader *loader) {
@@ -217,4 +217,4 @@ int32_t TickLoader::findDescriptor(const std::string &name) {
 }
 
 } // namespace Python
-} // namespace DxApiImpl
+} // namespace TbApiImpl

@@ -10,11 +10,11 @@
 #include <algorithm>
 #include <memory>
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 class FieldCodec;
-class PythonDxApiModule;
+class PythonTbApiModule;
 
 typedef std::vector<Schema::TickDbClassDescriptor> ClassDescriptors;
 typedef std::shared_ptr<FieldCodec> FieldCodecPtr;
@@ -22,7 +22,7 @@ typedef std::shared_ptr<FieldCodec> FieldCodecPtr;
 class MessageCodec {
 public:
     MessageCodec(const ClassDescriptors &descriptors, intptr_t num);
-    MessageCodec(PythonDxApiModule *dxapi_module, const ClassDescriptors &descriptors, intptr_t num);
+    MessageCodec(PythonTbApiModule *tbapi_module, const ClassDescriptors &descriptors, intptr_t num);
     ~MessageCodec();
 
     void decode(PyObject *message, DxApi::DataReader &reader);
@@ -51,7 +51,7 @@ private:
 private:
     std::vector<FieldCodecPtr> field_codecs_;
     std::unordered_map<std::string, FieldCodecPtr> codecs_search_map_;
-    PythonDxApiModule *dxapi_module_ = NULL;
+    PythonTbApiModule *tbapi_module_ = NULL;
 
 };
 

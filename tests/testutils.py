@@ -1,8 +1,8 @@
-import dxapi
+import tbapi
 import generators
 
 def loadTradeBBO(stream, count, startTime = 0, timeInterval = 1000000000, symbols = ['MSFT', 'ORCL']):
-    loader = stream.createLoader(dxapi.LoadingOptions())
+    loader = stream.createLoader(tbapi.LoadingOptions())
     try:
         loadCount = 0
         tradeGenerator = generators.TradeGenerator(startTime, timeInterval, count, symbols)
@@ -25,7 +25,7 @@ def loadTradeBBO(stream, count, startTime = 0, timeInterval = 1000000000, symbol
             loader.close()
 
 def loadBars(stream, count, startTime = 0, timeInterval = 1000000000, symbols = ['MSFT', 'ORCL'], space = None):
-    options = dxapi.LoadingOptions()
+    options = tbapi.LoadingOptions()
     if space != None:
         options.space = space
     loader = stream.createLoader(options)
@@ -45,7 +45,7 @@ def loadBars(stream, count, startTime = 0, timeInterval = 1000000000, symbols = 
             loader.close()
 
 def loadWithBars(stream, count, startTime = 0, timeInterval = 1000000000, symbols = ['MSFT', 'ORCL'], space = None):
-    options = dxapi.LoadingOptions()
+    options = tbapi.LoadingOptions()
     if space != None:
         options.space = space
     with stream.tryLoader(options) as loader:
@@ -61,7 +61,7 @@ def loadWithBars(stream, count, startTime = 0, timeInterval = 1000000000, symbol
         return loadCount
 
 def loadL2(stream, count, actionsCount = 5, startTime = 0, timeInterval = 1000000000, symbols = ['MSFT', 'ORCL']):
-    loader = stream.createLoader(dxapi.LoadingOptions())
+    loader = stream.createLoader(tbapi.LoadingOptions())
     try:
         loadCount = 0
         barGenerator = generators.L2Generator(startTime, timeInterval, count, symbols, actionsCount)
@@ -78,7 +78,7 @@ def loadL2(stream, count, actionsCount = 5, startTime = 0, timeInterval = 100000
             loader.close()
 
 def loadUniversal(stream, count, entriesCount = 5, startTime = 0, timeInterval = 1000000000, symbols = ['BTCUSD']):
-    loader = stream.createLoader(dxapi.LoadingOptions())
+    loader = stream.createLoader(tbapi.LoadingOptions())
     try:
         loadCount = 0
         universalGenerator = generators.UniversalGenerator(startTime, timeInterval, count, symbols, entriesCount)
@@ -95,7 +95,7 @@ def loadUniversal(stream, count, entriesCount = 5, startTime = 0, timeInterval =
             loader.close()
 
 def readStream(stream):
-    cursor = stream.createCursor(dxapi.SelectionOptions())
+    cursor = stream.createCursor(tbapi.SelectionOptions())
     try:
         readCount = 0
         while cursor.next():

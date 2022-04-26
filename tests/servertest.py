@@ -15,7 +15,7 @@ if testdir != "":
 sys.path.append(testdir + "..")
 
 import testutils
-import dxapi
+import tbapi
 
 class TBServerTest(unittest.TestCase):
 
@@ -59,7 +59,7 @@ class TBServerTest(unittest.TestCase):
     def setUp(self):
         url = self.dxtickURL()
         print('Connecting to ' + str(url) + "...")
-        self.db = dxapi.TickDb.createFromUrl(url)
+        self.db = tbapi.TickDb.createFromUrl(url)
         self.db.open(False)
         print('OK')
 
@@ -109,7 +109,7 @@ class TBServerTest(unittest.TestCase):
 
         with open(testdir + 'testdata/' + key + '.xml', 'r') as schemaFile:
             schema = schemaFile.read()
-        options = dxapi.StreamOptions()
+        options = tbapi.StreamOptions()
         options.polymorphic = polymorphic
         options.metadata(schema)
 
@@ -199,7 +199,7 @@ class TestWithStreams(TBServerTest):
         return messages
 
     def readMessages(self, stream, _from, to):
-        options = dxapi.SelectionOptions()
+        options = tbapi.SelectionOptions()
         options._from = _from
         options.to = to
         cursor = stream.createCursor(options)

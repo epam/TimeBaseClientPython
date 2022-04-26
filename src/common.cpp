@@ -4,7 +4,7 @@
 #include <memory>
 #include <cstring>
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 
 std::string string_format(const std::string fmt_str, ...) {
     int final_n, n = ((int)fmt_str.size()) * 2; /* Reserve two times as much as the length of the fmt_str */
@@ -26,4 +26,4 @@ std::string string_format(const std::string fmt_str, ...) {
     return std::string(formatted.get());
 }
 
-} // namespace DxApiImpl
+} // namespace TbApiImpl

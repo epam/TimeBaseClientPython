@@ -1,6 +1,6 @@
 #include "python_common.h"
 
-namespace DxApiImpl {
+namespace TbApiImpl {
 namespace Python {
 
 bool getStringValue(PyObject *field_value, std::string &ret_value, bool &type_mismatch) {

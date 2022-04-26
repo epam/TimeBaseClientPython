@@ -44,58 +44,58 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\swig\common.i" />
-    <CustomBuild Include="..\src\swig\dxapi.i">
+    <CustomBuild Include="..\src\swig\tbapi.i">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
-ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release37|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\release\tbapi.py" "__init__.py"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release37|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
-ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release38|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\release\tbapi.py" "__init__.py"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release38|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
-ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\release\tbapi.py" "__init__.py"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
-ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\release\tbapi.py" "__init__.py"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\release" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\release\__init__.py"
-ren "$(ProjectDir)..\bin\release\dxapi.py" "__init__.py"</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release37|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release38|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\release\tbapi.py" "__init__.py"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release37|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release38|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\release\__init__.py</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\debug\__init__.py"
-ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\debug\tbapi.py" "__init__.py"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\debug\__init__.py"
-ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\debug\tbapi.py" "__init__.py"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\debug\__init__.py"
-ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\debug\tbapi.py" "__init__.py"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\debug\__init__.py"
-ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">rm "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx"
-"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
+ren "$(ProjectDir)..\bin\debug\tbapi.py" "__init__.py"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">rm "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx"
+"$(SWIG_HOME)\swig.exe" -c++  -python -I$(ProjectDir)..\..\dxapi\include\native\dxapi -o "$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx" -outdir "$(ProjectDir)..\bin\debug" -Fmicrosoft %(FullPath)
 del /f "$(ProjectDir)..\bin\debug\__init__.py"
-ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">$(ProjectDir)..\src\swig\wrappers\dxapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
+ren "$(ProjectDir)..\bin\debug\tbapi.py" "__init__.py"</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">$(ProjectDir)..\src\swig\wrappers\tbapi_wrap.cxx;$(ProjectDir)..\bin\debug\__init__.py</Outputs>
     </CustomBuild>
     <None Include="..\src\swig\tick_cursor.i" />
     <None Include="..\src\swig\tick_db.i" />
@@ -107,7 +107,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
     <ClCompile Include="..\src\codecs\message_codec.cpp" />
     <ClCompile Include="..\src\common.cpp" />
     <ClCompile Include="..\src\python_common.cpp" />
-    <ClCompile Include="..\src\swig\wrappers\dxapi_wrap.cxx" />
+    <ClCompile Include="..\src\swig\wrappers\tbapi_wrap.cxx" />
     <ClCompile Include="..\src\tick_cursor.cpp" />
     <ClCompile Include="..\src\tick_loader.cpp" />
   </ItemGroup>
@@ -123,6 +123,7 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
     <ProjectGuid>{F06CE5AA-B67E-4E38-8473-283FEBE7AE33}</ProjectGuid>
     <RootNamespace>dxapipython</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <ProjectName>tbapi-python</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'" Label="Configuration">
@@ -234,66 +235,66 @@ ren "$(ProjectDir)..\bin\debug\dxapi.py" "__init__.py"</Command>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">
     <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py36</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
-    <TargetName>_dxapi_d</TargetName>
+    <TargetName>_tbapi_d</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug37|x64'">
     <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py37</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
-    <TargetName>_dxapi_d</TargetName>
+    <TargetName>_tbapi_d</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug38|x64'">
     <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py38</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
-    <TargetName>_dxapi_d</TargetName>
+    <TargetName>_tbapi_d</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug39|x64'">
     <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py39</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
-    <TargetName>_dxapi_d</TargetName>
+    <TargetName>_tbapi_d</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug310|x64'">
     <OutDir>$(ProjectDir)../bin/debug/windows/$(PlatformTarget)/py310</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
-    <TargetName>_dxapi_d</TargetName>
+    <TargetName>_tbapi_d</TargetName>
     <TargetExt>.pyd</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release36|x64'">
     <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py36</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetExt>.pyd</TargetExt>
-    <TargetName>_dxapi</TargetName>
+    <TargetName>_tbapi</TargetName>
     <CustomBuildBeforeTargets />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release37|x64'">
     <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py37</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetExt>.pyd</TargetExt>
-    <TargetName>_dxapi</TargetName>
+    <TargetName>_tbapi</TargetName>
     <CustomBuildBeforeTargets />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release38|x64'">
     <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py38</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetExt>.pyd</TargetExt>
-    <TargetName>_dxapi</TargetName>
+    <TargetName>_tbapi</TargetName>
     <CustomBuildBeforeTargets />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release39|x64'">
     <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py39</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetExt>.pyd</TargetExt>
-    <TargetName>_dxapi</TargetName>
+    <TargetName>_tbapi</TargetName>
     <CustomBuildBeforeTargets />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release310|x64'">
     <OutDir>$(ProjectDir)../bin/release/windows/$(PlatformTarget)/py310</OutDir>
     <IntDir>$(ProjectDir)../obj/$(PlatformTarget)/$(Configuration)/$(ProjectName)/</IntDir>
     <TargetExt>.pyd</TargetExt>
-    <TargetName>_dxapi</TargetName>
+    <TargetName>_tbapi</TargetName>
     <CustomBuildBeforeTargets />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug36|x64'">
