@@ -2,7 +2,7 @@ name: Release dxapi
 
 on:
   push:
-    branches: [release-*]
+    branches: [release-*, tbapi]
     
 jobs:
   prepare:
