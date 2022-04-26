@@ -457,7 +457,7 @@ jobs:
           python3 setup.py bdist_wheel --universal
 
           # git tag
-          versionRelease=`grep 'version=' gradle.properties | sed 's/version=\([^-]*\)/\1/'`
+          versionRelease=`grep 'version=' project.properties | sed 's/version=\([^-]*\)/\1/'`
           git tag $versionRelease
           git push origin $versionRelease
           git push origin origin/workflow-$GITHUB_RUN_ID:$GITHUB_REF
