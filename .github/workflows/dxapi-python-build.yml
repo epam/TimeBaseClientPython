@@ -19,7 +19,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-20.04, macos-12]
         include:
           - os: macos-latest
             env_os: MACOS
@@ -58,7 +58,7 @@ jobs:
 
   # build tbapi python
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [build-dxapi]
     strategy:
       matrix:
@@ -166,7 +166,7 @@ jobs:
           ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
 
   build-macos:
-    runs-on: macos-latest
+    runs-on: macos-12
     needs: [build-dxapi]
     strategy:
       matrix:
@@ -242,7 +242,7 @@ jobs:
 
   # Gather artifacts
   gather-artifacts:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [build-linux, build-macos, build-windows]
     steps:
       - name: Check out repository code
@@ -283,7 +283,7 @@ jobs:
 
   # Tests
   test-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [gather-artifacts]
     strategy:
       matrix:
@@ -350,7 +350,7 @@ jobs:
           python -c "import tbapi; print(tbapi.version())"
 
   test-macos-smoke:
-    runs-on: macos-latest
+    runs-on: macos-12
     needs: [gather-artifacts]
     strategy:
       matrix:

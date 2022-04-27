@@ -7,7 +7,7 @@ on:
 jobs:
   prepare:
     if: ${{ !contains(github.event.head_commit.message, '[skip-ci]') }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -31,7 +31,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-20.04, macos-12]
         include:
           - os: macos-latest
             env_os: MACOS
@@ -70,7 +70,7 @@ jobs:
 
   # build tbapi python
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [build-dxapi]
     strategy:
       matrix:
@@ -190,7 +190,7 @@ jobs:
             ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
 
   build-macos:
-    runs-on: macos-latest
+    runs-on: macos-12
     needs: [build-dxapi]
     strategy:
       matrix:
@@ -272,7 +272,7 @@ jobs:
 
   # Gather artifacts
   gather-artifacts:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [build-linux, build-macos, build-windows]
     steps:
       - name: Check out repository code
@@ -324,7 +324,7 @@ jobs:
 
   # Tests
   test-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [gather-artifacts]
     strategy:
       matrix:
@@ -391,7 +391,7 @@ jobs:
           python -c "import tbapi; print(tbapi.version())"
 
   test-macos-smoke:
-    runs-on: macos-latest
+    runs-on: macos-12
     needs: [gather-artifacts]
     strategy:
       matrix:
@@ -428,7 +428,7 @@ jobs:
 
   # Release
   release:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [gather-artifacts, test-linux, test-windows-smoke, test-macos-smoke]
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
@@ -484,7 +484,7 @@ jobs:
 
   publish-github:
     needs: [release]
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -506,7 +506,7 @@ jobs:
 
   publish-pip:
     needs: [release]
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -531,7 +531,7 @@ jobs:
   cleanup-release:
     if: ${{ always() && !contains(github.event.head_commit.message, '[skip-ci]') }}
     needs: [publish-github, publish-pip]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
