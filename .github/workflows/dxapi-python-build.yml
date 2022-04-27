@@ -10,7 +10,6 @@ on:
     types: [opened, synchronize]
     branches:
       - "*"
-      - "!release-*"
     
 jobs:
   # build dxapi
@@ -18,9 +17,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-20.04, macos-11]
         include:
-          - os: macos-latest
+          - os: macos-11
             env_os: MACOS
     steps:
       - name: Check out repository code
@@ -57,7 +56,7 @@ jobs:
 
   # build tbapi python
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [build-dxapi]
     strategy:
       matrix:
@@ -81,7 +80,7 @@ jobs:
       - name: Download dxapi-linux artifacts
         uses: actions/download-artifact@v2
         with:
-          name: dxapi-ubuntu-latest
+          name: dxapi-ubuntu-20.04
           path: dxapi/bin
       - name: install dev python 3.8, 3.9
         if: ${{ matrix.py == '3.8' || matrix.py == '3.9' }}
@@ -165,7 +164,7 @@ jobs:
           ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
 
   build-macos:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [build-dxapi]
     strategy:
       matrix:
@@ -199,14 +198,14 @@ jobs:
       - name: Download dxapi-macos artifacts
         uses: actions/download-artifact@v2
         with:
-          name: dxapi-macos-latest
+          name: dxapi-macos-11
           path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.py_v }}
       - name: Install SWIG
         run: |
-          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+          cd swigwin
           tar -xzvf swig-3.0.12.tar.gz
           cd swig-3.0.12
           ./configure
@@ -241,7 +240,7 @@ jobs:
 
   # Gather artifacts
   gather-artifacts:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [build-linux, build-macos, build-windows]
     steps:
       - name: Check out repository code
@@ -282,7 +281,7 @@ jobs:
 
   # Tests
   test-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [gather-artifacts]
     strategy:
       matrix:
@@ -349,7 +348,7 @@ jobs:
           python -c "import tbapi; print(tbapi.version())"
 
   test-macos-smoke:
-    runs-on: macos-latest
+    runs-on: macos-11
     needs: [gather-artifacts]
     strategy:
       matrix:
