@@ -237,7 +237,7 @@ jobs:
           python-version: ${{ matrix.py_v }}
       - name: Install SWIG
         run: |
-          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+          cd swigwin
           tar -xzvf swig-3.0.12.tar.gz
           cd swig-3.0.12
           ./configure
@@ -468,7 +468,7 @@ jobs:
           echo ::set-output name=tag::$VERSION
 
           # create zip package
-          unzip -qq timebase-client-$versionRelease.zip -d tbapi
+          zip -qq timebase-client-$versionRelease.zip -d tbapi
       - name: Wheel artifacts
         uses: actions/upload-artifact@v2
         with:
