@@ -480,7 +480,7 @@ jobs:
         with:
           name: tbapi-zip
           path: |
-            ./timebase-client-$versionRelease.zip
+            ./timebase-client-*.zip
 
   publish-github:
     needs: [release]
