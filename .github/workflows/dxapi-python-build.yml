@@ -21,7 +21,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04, macos-12]
         include:
-          - os: macos-latest
+          - os: macos-12
             env_os: MACOS
     steps:
       - name: Check out repository code
@@ -207,7 +207,7 @@ jobs:
           python-version: ${{ matrix.py_v }}
       - name: Install SWIG
         run: |
-          curl -OL https://sourceforge.net/projects/swig/files/swig/swig-3.0.12/swig-3.0.12.tar.gz
+          cd swigwin
           tar -xzvf swig-3.0.12.tar.gz
           cd swig-3.0.12
           ./configure

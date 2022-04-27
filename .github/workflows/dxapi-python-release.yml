@@ -33,7 +33,7 @@ jobs:
       matrix:
         os: [ubuntu-20.04, macos-12]
         include:
-          - os: macos-latest
+          - os: macos-12
             env_os: MACOS
     steps:
       - name: Check out repository code
