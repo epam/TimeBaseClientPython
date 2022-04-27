@@ -29,11 +29,12 @@ jobs:
   # build dxapi
   build-dxapi:
     runs-on: ${{ matrix.os }}
+    needs: [prepare]
     strategy:
       matrix:
-        os: [ubuntu-20.04, macos-12]
+        os: [ubuntu-20.04, macos-11]
         include:
-          - os: macos-12
+          - os: macos-11
             env_os: MACOS
     steps:
       - name: Check out repository code
@@ -53,6 +54,7 @@ jobs:
 
   build-windows-dxapi:
     runs-on: windows-2019
+    needs: [prepare]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -100,7 +102,7 @@ jobs:
       - name: Download dxapi-linux artifacts
         uses: actions/download-artifact@v2
         with:
-          name: dxapi-ubuntu-latest
+          name: dxapi-ubuntu-20.04
           path: dxapi/bin
       - name: install dev python 3.8, 3.9
         if: ${{ matrix.py == '3.8' || matrix.py == '3.9' }}
@@ -190,7 +192,7 @@ jobs:
             ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
 
   build-macos:
-    runs-on: macos-12
+    runs-on: macos-11
     needs: [build-dxapi]
     strategy:
       matrix:
@@ -230,7 +232,7 @@ jobs:
       - name: Download dxapi-macos artifacts
         uses: actions/download-artifact@v2
         with:
-          name: dxapi-macos-latest
+          name: dxapi-macos-11
           path: dxapi/bin
       - uses: actions/setup-python@v2
         with:
@@ -391,7 +393,7 @@ jobs:
           python -c "import tbapi; print(tbapi.version())"
 
   test-macos-smoke:
-    runs-on: macos-12
+    runs-on: macos-11
     needs: [gather-artifacts]
     strategy:
       matrix:
