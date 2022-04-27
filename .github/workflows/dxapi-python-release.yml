@@ -468,7 +468,7 @@ jobs:
           echo ::set-output name=tag::$VERSION
 
           # create zip package
-          zip -qq timebase-client-$versionRelease.zip -d tbapi
+          zip -r timebase-client-$versionRelease.zip ./tbapi
       - name: Wheel artifacts
         uses: actions/upload-artifact@v2
         with:
