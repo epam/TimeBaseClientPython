@@ -6,12 +6,10 @@ on:
     branches:
       - "*"
       - "!release-*"
-      - "!tbapi"
   pull_request:
     types: [opened, synchronize]
     branches:
       - "*"
-      - "!tbapi"
     
 jobs:
   # build dxapi
