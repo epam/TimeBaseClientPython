@@ -44,26 +44,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: 'recursive'
-    - name: Setup java
-      uses: actions/setup-java@v1
-      with:
-        java-version: '11'
-    - uses: robinraju/release-downloader@v1.3
-      with:
-        repository: "finos/TimeBase-CE"
-        tag: "6.1.7"
-        fileName: "timebase-windows-installer-20220506.jar"
-        out-file-path: "tests/install"
-    - name: Start timebase
-      run: |
-        cd tests/install
-        java -jar timebase-windows-installer-20220506.jar auto-install.xml
-        ls
-        cd Timebase
-        ls
-        cd bin
-        ls
-        Start-Process -FilePath "./tdbserver.cmd" -ArgumentList "-home ."
     - name: Use MSBuild
       uses: microsoft/setup-msbuild@v1.1
     - name: Build Solution
@@ -353,6 +333,23 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
+      - name: Setup java for TimeBase installer
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - name: Download installer
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: "finos/TimeBase-CE"
+          tag: "6.1.7"
+          fileName: "timebase-windows-installer-20220506.jar"
+          out-file-path: "tests/install"
+      - name: Install and start TimeBase
+        run: |
+          cd tests/install
+          java -jar timebase-windows-installer-20220506.jar auto-install.xml
+          cd Timebase/bin
+          Start-Process -FilePath "./tdbserver.cmd" -ArgumentList "-home ."
       - name: Download tbapi-python artifacts
         uses: actions/download-artifact@v2
         with:
