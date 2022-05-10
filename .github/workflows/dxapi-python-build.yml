@@ -26,23 +26,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-      - name: Setup java for TimeBase installer
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-      - name: Download installer
-        uses: robinraju/release-downloader@v1.3
-        with:
-          repository: "finos/TimeBase-CE"
-          tag: "6.1.7"
-          fileName: "timebase-linux-installer-20220506.jar"
-          out-file-path: "tests/install"
-      - name: Install and start TimeBase
-        run: |
-          cd tests/install
-          java -jar timebase-linux-installer-20220506.jar auto-install-macos.xml
-          cd Timebase/bin
-          screen -dm ./tdbserver.sh -home . -port 8154
       - name: Build Dxapi
         run: make -C ./dxapi/.
         env:
@@ -444,3 +427,10 @@ jobs:
           chmod -R 777 ./tests
           cd ./tests
           python -c "import tbapi; print(tbapi.version())"
+          python TestAll.py
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports-tbapi-python-macos
+          path: |
+            ./tests/reports
