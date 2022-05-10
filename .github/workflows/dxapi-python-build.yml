@@ -58,8 +58,12 @@ jobs:
       run: |
         cd tests/install
         java -jar timebase-windows-installer-20220506.jar auto-install.xml
-        cd Timebase/bin
-        tdbserver.cmd -home .
+        ls
+        cd Timebase
+        ls
+        cd bin
+        ls
+        ./tdbserver.cmd -home .
     - name: Use MSBuild
       uses: microsoft/setup-msbuild@v1.1
     - name: Build Solution
