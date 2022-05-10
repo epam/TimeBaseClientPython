@@ -363,6 +363,10 @@ jobs:
           chmod -R 777 ./tests
           cd ./tests
           python -c "import tbapi; print(tbapi.version())"
+          python TestAll.py
+        env:
+          TIMEBASE_HOST: localhost
+          TIMEBASE_PORT: 8011
 
 #  test-macos-smoke:
 #    runs-on: macos-11
