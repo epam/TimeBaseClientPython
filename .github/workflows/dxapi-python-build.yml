@@ -13,29 +13,29 @@ on:
     
 jobs:
   # build dxapi
-  build-dxapi:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, macos-11]
-        include:
-          - os: macos-11
-            env_os: MACOS
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Build Dxapi
-        run: make -C ./dxapi/.
-        env:
-          CC: clang
-          OS: ${{ matrix.env_os }}
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: dxapi-${{ matrix.os }}
-          path: ./dxapi/bin/libdxapi-x64.a
+#  build-dxapi:
+#    runs-on: ${{ matrix.os }}
+#    strategy:
+#      matrix:
+#        os: [ubuntu-20.04, macos-11]
+#        include:
+#          - os: macos-11
+#            env_os: MACOS
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v2
+#        with:
+#          submodules: 'recursive'
+#      - name: Build Dxapi
+#        run: make -C ./dxapi/.
+#        env:
+#          CC: clang
+#          OS: ${{ matrix.env_os }}
+#      - name: Archive artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: dxapi-${{ matrix.os }}
+#          path: ./dxapi/bin/libdxapi-x64.a
 
   build-windows-dxapi:
     runs-on: windows-2019
@@ -44,6 +44,11 @@ jobs:
       uses: actions/checkout@v2
       with:
         submodules: 'recursive'
+    - uses: robinraju/release-downloader@v1.3
+      with:
+        repository: "finos/TimeBase-CE"
+        tag: "6.1.7"
+        fileName: "timebase-windows-installer-20220506.jar"
     - name: Use MSBuild
       uses: microsoft/setup-msbuild@v1.1
     - name: Build Solution
@@ -55,61 +60,61 @@ jobs:
         path: ./dxapi/bin/dxapi-x64.lib
 
   # build tbapi python
-  build-linux:
-    runs-on: ubuntu-20.04
-    needs: [build-dxapi]
-    strategy:
-      matrix:
-        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
-        include:
-          - py: '3.6'
-            py_env: '36'
-          - py: '3.7'
-            py_env: '37'
-          - py: '3.8'
-            py_env: '38'
-          - py: '3.9'
-            py_env: '39'
-          - py: '3.10'
-            py_env: '310'
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download dxapi-linux artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-ubuntu-20.04
-          path: dxapi/bin
-      - name: install dev python 3.8, 3.9
-        if: ${{ matrix.py == '3.8' || matrix.py == '3.9' }}
-        run: |
-          sudo apt-get update
-          sudo apt install -y python${{ matrix.py }}-dev
-      - name: install dev python 3.6, 3.7, 3.10
-        if: ${{ matrix.py == '3.6' || matrix.py == '3.7' || matrix.py == '3.10' }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -yq software-properties-common
-          sudo add-apt-repository ppa:deadsnakes/ppa
-          sudo apt-get update
-          sudo apt-get install python${{ matrix.py }}-dev
-      - name: Build Tbapi python
-        run: |
-          make -C .
-          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
-        env:
-          CC: clang
-          PYTHON_VERSION: ${{ matrix.py_env }}
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: tbapi-python-linux
-          path: |
-            ./bin/release/__init__.py
-            ./bin/release/linux/x64/py${{ matrix.py_env }}/_tbapi.so
-            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
+#  build-linux:
+#    runs-on: ubuntu-20.04
+#    needs: [build-dxapi]
+#    strategy:
+#      matrix:
+#        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+#        include:
+#          - py: '3.6'
+#            py_env: '36'
+#          - py: '3.7'
+#            py_env: '37'
+#          - py: '3.8'
+#            py_env: '38'
+#          - py: '3.9'
+#            py_env: '39'
+#          - py: '3.10'
+#            py_env: '310'
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v2
+#        with:
+#          submodules: 'recursive'
+#      - name: Download dxapi-linux artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: dxapi-ubuntu-20.04
+#          path: dxapi/bin
+#      - name: install dev python 3.8, 3.9
+#        if: ${{ matrix.py == '3.8' || matrix.py == '3.9' }}
+#        run: |
+#          sudo apt-get update
+#          sudo apt install -y python${{ matrix.py }}-dev
+#      - name: install dev python 3.6, 3.7, 3.10
+#        if: ${{ matrix.py == '3.6' || matrix.py == '3.7' || matrix.py == '3.10' }}
+#        run: |
+#          sudo apt-get update
+#          sudo apt-get install -yq software-properties-common
+#          sudo add-apt-repository ppa:deadsnakes/ppa
+#          sudo apt-get update
+#          sudo apt-get install python${{ matrix.py }}-dev
+#      - name: Build Tbapi python
+#        run: |
+#          make -C .
+#          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
+#        env:
+#          CC: clang
+#          PYTHON_VERSION: ${{ matrix.py_env }}
+#      - name: Archive artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: tbapi-python-linux
+#          path: |
+#            ./bin/release/__init__.py
+#            ./bin/release/linux/x64/py${{ matrix.py_env }}/_tbapi.so
+#            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
 
   build-windows:
     runs-on: windows-2019
@@ -163,103 +168,103 @@ jobs:
           ./bin/release/windows/x64/py${{ matrix.py_env }}/_tbapi.pyd
           ./bin/release/windows/x64/py${{ matrix.py_env }}/DecimalNative.dll
 
-  build-macos:
-    runs-on: macos-11
-    needs: [build-dxapi]
-    strategy:
-      matrix:
-        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
-        include:
-          - py: '3.6'
-            py_env: '36'
-            py_v: '3.6.15'
-            py_lib: 'python3.6m'
-          - py: '3.7'
-            py_env: '37'
-            py_v: '3.7.12'
-            py_lib: 'python3.7m'
-          - py: '3.8'
-            py_env: '38'
-            py_v: '3.8.12'
-            py_lib: 'python3.8'
-          - py: '3.9'
-            py_env: '39'
-            py_v: '3.9.10'
-            py_lib: 'python3.9'
-          - py: '3.10'
-            py_env: '310'
-            py_v: '3.10.2'
-            py_lib: 'python3.10'
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download dxapi-macos artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: dxapi-macos-11
-          path: dxapi/bin
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.py_v }}
-      - name: Install SWIG
-        run: |
-          cd swigwin
-          tar -xzvf swig-3.0.12.tar.gz
-          cd swig-3.0.12
-          ./configure
-          make
-          make install
-      - name: Build tbapi python
-        run: |
-          make -C .
-          cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
-          otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
-          install_name_tool -change /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib/lib${{ matrix.py_lib }}.dylib @rpath/lib${{ matrix.py_lib }}.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
-          otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
-          install_name_tool -add_rpath /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
-          install_name_tool -add_rpath /usr/local/opt/python@${{ matrix.py }}/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
-          install_name_tool -add_rpath /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
-          otool -l ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
-        env:
-          CC: clang
-          OS: MACOS
-          PYTHON_VERSION: ${{ matrix.py_env }}
-          PYTHON_MACOS_HEADERS_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/include/${{ matrix.py_lib }}
-          PYTHON_MACOS_LIB_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib
-          PYTHON_MACOS_LIB: ${{ matrix.py_lib }}
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: tbapi-python-macos
-          path: |
-            ./bin/release/__init__.py
-            ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
-            ./bin/release/darwin/x64/py${{ matrix.py_env }}/libDecimalNative.dylib
+#  build-macos:
+#    runs-on: macos-11
+#    needs: [build-dxapi]
+#    strategy:
+#      matrix:
+#        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+#        include:
+#          - py: '3.6'
+#            py_env: '36'
+#            py_v: '3.6.15'
+#            py_lib: 'python3.6m'
+#          - py: '3.7'
+#            py_env: '37'
+#            py_v: '3.7.12'
+#            py_lib: 'python3.7m'
+#          - py: '3.8'
+#            py_env: '38'
+#            py_v: '3.8.12'
+#            py_lib: 'python3.8'
+#          - py: '3.9'
+#            py_env: '39'
+#            py_v: '3.9.10'
+#            py_lib: 'python3.9'
+#          - py: '3.10'
+#            py_env: '310'
+#            py_v: '3.10.2'
+#            py_lib: 'python3.10'
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v2
+#        with:
+#          submodules: 'recursive'
+#      - name: Download dxapi-macos artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: dxapi-macos-11
+#          path: dxapi/bin
+#      - uses: actions/setup-python@v2
+#        with:
+#          python-version: ${{ matrix.py_v }}
+#      - name: Install SWIG
+#        run: |
+#          cd swigwin
+#          tar -xzvf swig-3.0.12.tar.gz
+#          cd swig-3.0.12
+#          ./configure
+#          make
+#          make install
+#      - name: Build tbapi python
+#        run: |
+#          make -C .
+#          cp ./dfp/lib/osx/64/libDecimalNative.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/
+#          otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+#          install_name_tool -change /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib/lib${{ matrix.py_lib }}.dylib @rpath/lib${{ matrix.py_lib }}.dylib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+#          otool -L ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+#          install_name_tool -add_rpath /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+#          install_name_tool -add_rpath /usr/local/opt/python@${{ matrix.py }}/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+#          install_name_tool -add_rpath /Library/Frameworks/Python.framework/Versions/${{ matrix.py }}/lib ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+#          otool -l ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+#        env:
+#          CC: clang
+#          OS: MACOS
+#          PYTHON_VERSION: ${{ matrix.py_env }}
+#          PYTHON_MACOS_HEADERS_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/include/${{ matrix.py_lib }}
+#          PYTHON_MACOS_LIB_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib
+#          PYTHON_MACOS_LIB: ${{ matrix.py_lib }}
+#      - name: Archive artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: tbapi-python-macos
+#          path: |
+#            ./bin/release/__init__.py
+#            ./bin/release/darwin/x64/py${{ matrix.py_env }}/_tbapi.so
+#            ./bin/release/darwin/x64/py${{ matrix.py_env }}/libDecimalNative.dylib
 
   # Gather artifacts
   gather-artifacts:
     runs-on: ubuntu-20.04
-    needs: [build-linux, build-macos, build-windows]
+    needs: [build-windows] # [build-linux, build-macos, build-windows]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: Download tbapi-python-linux artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: tbapi-python-linux
-          path: tbapi
+#      - name: Download tbapi-python-linux artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: tbapi-python-linux
+#          path: tbapi
       - name: Download tbapi-python-windows artifacts
         uses: actions/download-artifact@v2
         with:
           name: tbapi-python-windows
           path: tbapi
-      - name: Download tbapi-python-windows artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: tbapi-python-macos
-          path: tbapi
+#      - name: Download tbapi-python-macos artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: tbapi-python-macos
+#          path: tbapi
       - uses: actions/setup-python@v2
         with:
           python-version: "3.10.2"
@@ -280,47 +285,47 @@ jobs:
             ./tbapi
 
   # Tests
-  test-linux:
-    runs-on: ubuntu-20.04
-    needs: [gather-artifacts]
-    strategy:
-      matrix:
-        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
-    services:
-      timebase:
-        image: finos/timebase-ce-server:6.1
-        env:
-          JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
-        ports:
-          - 8011:8011
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: tbapi-python
-          path: tests/tbapi
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '${{ matrix.py }}'
-      - name: Run tests
-        run: |
-          chmod -R 777 ./tests
-          cd ./tests
-          python -c "import tbapi; print(tbapi.version())"
-          python TestAll.py
-        env:
-          TIMEBASE_HOST: localhost
-          TIMEBASE_PORT: 8011
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: test-reports-tbapi-python-linux
-          path: |
-            ./tests/reports
+#  test-linux:
+#    runs-on: ubuntu-20.04
+#    needs: [gather-artifacts]
+#    strategy:
+#      matrix:
+#        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+#    services:
+#      timebase:
+#        image: finos/timebase-ce-server:6.1
+#        env:
+#          JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
+#        ports:
+#          - 8011:8011
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v2
+#        with:
+#          submodules: 'recursive'
+#      - name: Download tbapi-python artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: tbapi-python
+#          path: tests/tbapi
+#      - uses: actions/setup-python@v2
+#        with:
+#          python-version: '${{ matrix.py }}'
+#      - name: Run tests
+#        run: |
+#          chmod -R 777 ./tests
+#          cd ./tests
+#          python -c "import tbapi; print(tbapi.version())"
+#          python TestAll.py
+#        env:
+#          TIMEBASE_HOST: localhost
+#          TIMEBASE_PORT: 8011
+#      - name: Archive artifacts
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: test-reports-tbapi-python-linux
+#          path: |
+#            ./tests/reports
 
   test-windows-smoke:
     runs-on: windows-2019
@@ -347,38 +352,38 @@ jobs:
           cd ./tests
           python -c "import tbapi; print(tbapi.version())"
 
-  test-macos-smoke:
-    runs-on: macos-11
-    needs: [gather-artifacts]
-    strategy:
-      matrix:
-        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
-        include:
-          - py: '3.6'
-            py_v: '3.6.15'
-          - py: '3.7'
-            py_v: '3.7.12'
-          - py: '3.8'
-            py_v: '3.8.12'
-          - py: '3.9'
-            py_v: '3.9.10'
-          - py: '3.10'
-            py_v: '3.10.2'
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: tbapi-python
-          path: tests/tbapi
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '${{ matrix.py_v }}'
-      - name: Run tests
-        run: |
-          chmod -R 777 ./tests
-          cd ./tests
-          python -c "import tbapi; print(tbapi.version())"
+#  test-macos-smoke:
+#    runs-on: macos-11
+#    needs: [gather-artifacts]
+#    strategy:
+#      matrix:
+#        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+#        include:
+#          - py: '3.6'
+#            py_v: '3.6.15'
+#          - py: '3.7'
+#            py_v: '3.7.12'
+#          - py: '3.8'
+#            py_v: '3.8.12'
+#          - py: '3.9'
+#            py_v: '3.9.10'
+#          - py: '3.10'
+#            py_v: '3.10.2'
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v2
+#        with:
+#          submodules: 'recursive'
+#      - name: Download tbapi-python artifacts
+#        uses: actions/download-artifact@v2
+#        with:
+#          name: tbapi-python
+#          path: tests/tbapi
+#      - uses: actions/setup-python@v2
+#        with:
+#          python-version: '${{ matrix.py_v }}'
+#      - name: Run tests
+#        run: |
+#          chmod -R 777 ./tests
+#          cd ./tests
+#          python -c "import tbapi; print(tbapi.version())"
