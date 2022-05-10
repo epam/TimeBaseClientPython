@@ -431,7 +431,7 @@ jobs:
           cd tests/install
           java -jar timebase-linux-installer-20220506.jar auto-install-macos.xml
           cd Timebase/bin
-          screen -dm ./tdbserver.sh -home . -port 8154
+          screen -dm ./tdbserver.sh -home . -port 8011
       - name: Download tbapi-python artifacts
         uses: actions/download-artifact@v2
         with:
