@@ -63,7 +63,7 @@ jobs:
         ls
         cd bin
         ls
-        ./tdbserver.cmd -home .
+        Start-Process -FilePath "./tdbserver.cmd" -ArgumentList "-home ."
     - name: Use MSBuild
       uses: microsoft/setup-msbuild@v1.1
     - name: Build Solution
