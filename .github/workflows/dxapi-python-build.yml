@@ -434,9 +434,9 @@ jobs:
           path: |
             ./tests/reports
 
-  test-macos-smoke:
+  test-macos:
     runs-on: macos-11
-    needs: [gather-artifacts, download-installers]
+    needs: [gather-artifacts, install-windows-timebase]
     strategy:
       fail-fast: false
       matrix:
