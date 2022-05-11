@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-11] #todo [ubuntu-20.04, macos-11]
+        os: [ubuntu-20.04, macos-11]
         include:
           - os: macos-11
             env_os: MACOS
@@ -55,61 +55,61 @@ jobs:
         path: ./dxapi/bin/dxapi-x64.lib
 
   # build tbapi python
-#  build-linux:
-#    runs-on: ubuntu-20.04
-#    needs: [build-dxapi]
-#    strategy:
-#      matrix:
-#        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
-#        include:
-#          - py: '3.6'
-#            py_env: '36'
-#          - py: '3.7'
-#            py_env: '37'
-#          - py: '3.8'
-#            py_env: '38'
-#          - py: '3.9'
-#            py_env: '39'
-#          - py: '3.10'
-#            py_env: '310'
-#    steps:
-#      - name: Check out repository code
-#        uses: actions/checkout@v2
-#        with:
-#          submodules: 'recursive'
-#      - name: Download dxapi-linux artifacts
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: dxapi-ubuntu-20.04
-#          path: dxapi/bin
-#      - name: install dev python 3.8, 3.9
-#        if: ${{ matrix.py == '3.8' || matrix.py == '3.9' }}
-#        run: |
-#          sudo apt-get update
-#          sudo apt install -y python${{ matrix.py }}-dev
-#      - name: install dev python 3.6, 3.7, 3.10
-#        if: ${{ matrix.py == '3.6' || matrix.py == '3.7' || matrix.py == '3.10' }}
-#        run: |
-#          sudo apt-get update
-#          sudo apt-get install -yq software-properties-common
-#          sudo add-apt-repository ppa:deadsnakes/ppa
-#          sudo apt-get update
-#          sudo apt-get install python${{ matrix.py }}-dev
-#      - name: Build Tbapi python
-#        run: |
-#          make -C .
-#          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
-#        env:
-#          CC: clang
-#          PYTHON_VERSION: ${{ matrix.py_env }}
-#      - name: Archive artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: tbapi-python-linux
-#          path: |
-#            ./bin/release/__init__.py
-#            ./bin/release/linux/x64/py${{ matrix.py_env }}/_tbapi.so
-#            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
+  build-linux:
+    runs-on: ubuntu-20.04
+    needs: [build-dxapi]
+    strategy:
+      matrix:
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+        include:
+          - py: '3.6'
+            py_env: '36'
+          - py: '3.7'
+            py_env: '37'
+          - py: '3.8'
+            py_env: '38'
+          - py: '3.9'
+            py_env: '39'
+          - py: '3.10'
+            py_env: '310'
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download dxapi-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: dxapi-ubuntu-20.04
+          path: dxapi/bin
+      - name: install dev python 3.8, 3.9
+        if: ${{ matrix.py == '3.8' || matrix.py == '3.9' }}
+        run: |
+          sudo apt-get update
+          sudo apt install -y python${{ matrix.py }}-dev
+      - name: install dev python 3.6, 3.7, 3.10
+        if: ${{ matrix.py == '3.6' || matrix.py == '3.7' || matrix.py == '3.10' }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -yq software-properties-common
+          sudo add-apt-repository ppa:deadsnakes/ppa
+          sudo apt-get update
+          sudo apt-get install python${{ matrix.py }}-dev
+      - name: Build Tbapi python
+        run: |
+          make -C .
+          cp ./dfp/lib/linux/64/libDecimalNative.so ./bin/release/linux/x64/py${{ matrix.py_env }}/
+        env:
+          CC: clang
+          PYTHON_VERSION: ${{ matrix.py_env }}
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: tbapi-python-linux
+          path: |
+            ./bin/release/__init__.py
+            ./bin/release/linux/x64/py${{ matrix.py_env }}/_tbapi.so
+            ./bin/release/linux/x64/py${{ matrix.py_env }}/libDecimalNative.so
 
   build-windows:
     runs-on: windows-2019
@@ -241,15 +241,15 @@ jobs:
   # Gather artifacts
   gather-artifacts:
     runs-on: ubuntu-20.04
-    needs: [build-macos, build-windows] #todo [build-linux, build-macos, build-windows]
+    needs: [build-linux, build-macos, build-windows]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-#      - name: Download tbapi-python-linux artifacts
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: tbapi-python-linux
-#          path: tbapi
+      - name: Download tbapi-python-linux artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: tbapi-python-linux
+          path: tbapi
       - name: Download tbapi-python-windows artifacts
         uses: actions/download-artifact@v2
         with:
@@ -313,47 +313,47 @@ jobs:
             ./timebase-windows-installer-20220506.jar
 
   # Tests
-#  test-linux:
-#    runs-on: ubuntu-20.04
-#    needs: [gather-artifacts]
-#    strategy:
-#      matrix:
-#        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
-#    services:
-#      timebase:
-#        image: finos/timebase-ce-server:6.1
-#        env:
-#          JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
-#        ports:
-#          - 8011:8011
-#    steps:
-#      - name: Check out repository code
-#        uses: actions/checkout@v2
-#        with:
-#          submodules: 'recursive'
-#      - name: Download tbapi-python artifacts
-#        uses: actions/download-artifact@v2
-#        with:
-#          name: tbapi-python
-#          path: tests/tbapi
-#      - uses: actions/setup-python@v2
-#        with:
-#          python-version: '${{ matrix.py }}'
-#      - name: Run tests
-#        run: |
-#          chmod -R 777 ./tests
-#          cd ./tests
-#          python -c "import tbapi; print(tbapi.version())"
-#          python TestAll.py
-#        env:
-#          TIMEBASE_HOST: localhost
-#          TIMEBASE_PORT: 8011
-#      - name: Archive artifacts
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: test-reports-tbapi-python-linux-${{ matrix.py }}
-#          path: |
-#            ./tests/reports
+  test-linux:
+    runs-on: ubuntu-20.04
+    needs: [gather-artifacts]
+    strategy:
+      matrix:
+        py: ['3.6', '3.7', '3.8', '3.9', '3.10']
+    services:
+      timebase:
+        image: finos/timebase-ce-server:6.1
+        env:
+          JAVA_OPTS: "-DQuantServer.enableRemoteMonitoring=true -DTimeBase.version=5.0"
+        ports:
+          - 8011:8011
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download tbapi-python artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: tbapi-python
+          path: tests/tbapi
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '${{ matrix.py }}'
+      - name: Run tests
+        run: |
+          chmod -R 777 ./tests
+          cd ./tests
+          python -c "import tbapi; print(tbapi.version())"
+          python TestAll.py
+        env:
+          TIMEBASE_HOST: localhost
+          TIMEBASE_PORT: 8011
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports-tbapi-python-linux-${{ matrix.py }}
+          path: |
+            ./tests/reports
 
   test-windows:
     runs-on: windows-2019
