@@ -287,6 +287,7 @@ jobs:
 
   install-windows-timebase:
     runs-on: windows-2019
+    needs: [build-windows]
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -315,7 +316,8 @@ jobs:
             ./tests/install/Timebase
 
   install-linux-timebase:
-    runs-on: windows-2019
+    runs-on: ubuntu-20.04
+    needs: [build-macos] # linux installer needs for macos tests
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
