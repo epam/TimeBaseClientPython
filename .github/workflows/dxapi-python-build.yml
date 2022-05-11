@@ -10,7 +10,11 @@ on:
     types: [opened, synchronize]
     branches:
       - "*"
-    
+
+env:
+  TIMEBASE_INSTALLER_TAG: 6.1.7
+  TIMEBASE_INSTALLER_VERSION: 20220506
+
 jobs:
   # build dxapi
   build-dxapi:
@@ -291,34 +295,26 @@ jobs:
         uses: robinraju/release-downloader@v1.3
         with:
           repository: "finos/TimeBase-CE"
-          tag: "6.1.7"
-          fileName: "timebase-linux-installer-20220506.jar"
+          tag: $TIMEBASE_INSTALLER_TAG
+          fileName: "timebase-linux-installer-$TIMEBASE_INSTALLER_VERSION.jar"
       - name: Download windows installer
         uses: robinraju/release-downloader@v1.3
         with:
           repository: "finos/TimeBase-CE"
-          tag: "6.1.7"
-          fileName: "timebase-windows-installer-20220506.jar"
-      - name: Setup java for TimeBase installer
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-      - name: Install and start TimeBase
-        run: |
-          cd tests/install
-          java -jar timebase-linux-installer-20220506.jar auto-install-macos.xml
+          tag: $TIMEBASE_INSTALLER_TAG
+          fileName: "timebase-windows-installer-$TIMEBASE_INSTALLER_VERSION.jar"
       - name: Archive artifacts installer (temp task)
         uses: actions/upload-artifact@v2
         with:
           name: timebase-linux-installer
           path: |
-            ./timebase-linux-installer-20220506.jar
+            ./timebase-linux-installer-$TIMEBASE_INSTALLER_VERSION.jar
       - name: Archive artifacts installer
         uses: actions/upload-artifact@v2
         with:
           name: timebase-windows-installer
           path: |
-            ./timebase-windows-installer-20220506.jar
+            ./timebase-windows-installer-$TIMEBASE_INSTALLER_VERSION.jar
 
   # Tests
 #  test-linux:
@@ -386,7 +382,7 @@ jobs:
       - name: Install and start TimeBase
         run: |
           cd tests/install
-          java -jar timebase-windows-installer-20220506.jar auto-install-windows.xml
+          java -jar timebase-windows-installer-$TIMEBASE_INSTALLER_VERSION.jar auto-install-windows.xml
           cd Timebase/bin
           Start-Process -FilePath "./tdbserver.cmd" -ArgumentList "-home ."
           Start-Sleep 5
@@ -449,7 +445,7 @@ jobs:
       - name: Install and start TimeBase
         run: |
           cd tests/install
-          java -jar timebase-linux-installer-20220506.jar auto-install-macos.xml
+          java -jar timebase-linux-installer-$TIMEBASE_INSTALLER_VERSION.jar auto-install-macos.xml
           cd Timebase/bin
           screen -dm ./tdbserver.sh -home . -port 8011
       - name: Download tbapi-python artifacts
