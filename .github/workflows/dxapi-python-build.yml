@@ -329,6 +329,7 @@ jobs:
           repository: "finos/TimeBase-CE"
           tag: "6.1.7"
           fileName: "timebase-linux-installer-20220506.jar"
+          out-file-path: "tests/install"
       - name: Setup java for TimeBase installer
         uses: actions/setup-java@v1
         with:
