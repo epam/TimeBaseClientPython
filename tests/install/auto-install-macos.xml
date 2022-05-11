@@ -3,7 +3,7 @@
 <deltix.izpack.panels.properties.InitPanel id="welcome"/>
 <deltix.izpack.panels.license.HTMLLicencePanel id="license"/>
 <deltix.izpack.panels.target.CheckedTargetPanel id="install_dir">
-    <installpath>/Users/runner/work/TimeBaseClientPython/TimeBaseClientPython/tests/install/Timebase</installpath>
+    <installpath>/home/runner/work/TimeBaseClientPython/TimeBaseClientPython/tests/install/Timebase</installpath>
 </deltix.izpack.panels.target.CheckedTargetPanel>
 <com.izforge.izpack.panels.packs.PacksPanel id="packsSelection">
     <pack index="0" name="Timebase" selected="true"/>
