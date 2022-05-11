@@ -291,6 +291,35 @@ jobs:
           path: |
             ./timebase-linux-installer-20220506.jar
 
+  download-installers:
+    runs-on: ubuntu-20.04
+    needs: [ build-macos, build-windows ] #todo [build-linux, build-macos, build-windows]
+    steps:
+      - name: Download linux installer
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: "finos/TimeBase-CE"
+          tag: "6.1.7"
+          fileName: "timebase-linux-installer-20220506.jar"
+      - name: Download windows installer
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: "finos/TimeBase-CE"
+          tag: "6.1.7"
+          fileName: "timebase-windows-installer-20220506.jar"
+      - name: Archive artifacts installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: linux-installer
+          path: |
+            ./timebase-linux-installer-20220506.jar
+      - name: Archive artifacts installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-installer
+          path: |
+            ./timebase-windows-installer-20220506.jar
+
   # Tests
 #  test-linux:
 #    runs-on: ubuntu-20.04
@@ -349,13 +378,11 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - name: Download installer
-        uses: robinraju/release-downloader@v1.3
+      - name: Download windows-installer artifacts
+        uses: actions/download-artifact@v2
         with:
-          repository: "finos/TimeBase-CE"
-          tag: "6.1.7"
-          fileName: "timebase-windows-installer-20220506.jar"
-          out-file-path: "tests/install"
+          name: linux-installer
+          path: tests/install
       - name: Install and start TimeBase
         run: |
           cd tests/install
@@ -414,13 +441,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11'
-#      - name: Download installer
-#        uses: robinraju/release-downloader@v1.3
-#        with:
-#          repository: "finos/TimeBase-CE"
-#          tag: "6.1.7"
-#          fileName: "timebase-linux-installer-20220506.jar"
-#          out-file-path: "tests/install"
       - name: Download linux-installer artifacts
         uses: actions/download-artifact@v2
         with:
