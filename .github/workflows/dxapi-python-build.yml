@@ -10,7 +10,7 @@ on:
     types: [opened, synchronize]
     branches:
       - "*"
-    
+
 jobs:
   # build dxapi
   build-dxapi:
@@ -255,7 +255,7 @@ jobs:
         with:
           name: tbapi-python-windows
           path: tbapi
-      - name: Download tbapi-python-windows artifacts
+      - name: Download tbapi-python-macos artifacts
         uses: actions/download-artifact@v2
         with:
           name: tbapi-python-macos
@@ -278,6 +278,39 @@ jobs:
           name: tbapi-python
           path: |
             ./tbapi
+
+  download-timebase-installer:
+    runs-on: ubuntu-20.04
+    needs: [build-macos, build-windows] # linux installer needs for macos tests
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - name: Download linux installer
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: "finos/TimeBase-CE"
+          tag: "6.1.7"
+          fileName: "timebase-linux-installer-20220506.jar"
+      - name: Download windows installer
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: "finos/TimeBase-CE"
+          tag: "6.1.7"
+          fileName: "timebase-windows-installer-20220506.jar"
+      - name: Archive artifacts installer (temp task)
+        uses: actions/upload-artifact@v2
+        with:
+          name: timebase-linux-installer
+          path: |
+            ./timebase-linux-installer-20220506.jar
+      - name: Archive artifacts installer
+        uses: actions/upload-artifact@v2
+        with:
+          name: timebase-windows-installer
+          path: |
+            ./timebase-windows-installer-20220506.jar
 
   # Tests
   test-linux:
@@ -318,13 +351,13 @@ jobs:
       - name: Archive artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: test-reports-tbapi-python-linux
+          name: test-reports-tbapi-python-linux-${{ matrix.py }}
           path: |
             ./tests/reports
 
-  test-windows-smoke:
+  test-windows:
     runs-on: windows-2019
-    needs: [gather-artifacts]
+    needs: [gather-artifacts, download-timebase-installer]
     strategy:
       matrix:
         py: ['3.6', '3.7', '3.8', '3.9', '3.10']
@@ -333,6 +366,22 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
+      - name: Setup java for TimeBase installer
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - name: Download windows-installer artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: timebase-windows-installer
+          path: tests/install
+      - name: Install and start TimeBase
+        run: |
+          cd tests/install
+          java -jar timebase-windows-installer-20220506.jar auto-install-windows.xml
+          cd Timebase/bin
+          Start-Process -FilePath "./tdbserver.cmd" -ArgumentList "-home ."
+          Start-Sleep 5
       - name: Download tbapi-python artifacts
         uses: actions/download-artifact@v2
         with:
@@ -346,11 +395,22 @@ jobs:
           chmod -R 777 ./tests
           cd ./tests
           python -c "import tbapi; print(tbapi.version())"
+          python TestAll.py
+        env:
+          TIMEBASE_HOST: localhost
+          TIMEBASE_PORT: 8011
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports-tbapi-python-windows-${{ matrix.py }}
+          path: |
+            ./tests/reports
 
-  test-macos-smoke:
+  test-macos:
     runs-on: macos-11
-    needs: [gather-artifacts]
+    needs: [gather-artifacts, download-timebase-installer]
     strategy:
+      fail-fast: false
       matrix:
         py: ['3.6', '3.7', '3.8', '3.9', '3.10']
         include:
@@ -369,6 +429,21 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: 'recursive'
+      - name: Setup java for TimeBase installer
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - name: Download linux-installer artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: timebase-linux-installer
+          path: tests/install
+      - name: Install and start TimeBase
+        run: |
+          cd tests/install
+          java -jar timebase-linux-installer-20220506.jar auto-install-macos.xml
+          cd Timebase/bin
+          screen -dm ./tdbserver.sh -home . -port 8011
       - name: Download tbapi-python artifacts
         uses: actions/download-artifact@v2
         with:
@@ -382,3 +457,10 @@ jobs:
           chmod -R 777 ./tests
           cd ./tests
           python -c "import tbapi; print(tbapi.version())"
+          python TestAll.py
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports-tbapi-python-macos-${{ matrix.py }}
+          path: |
+            ./tests/reports
