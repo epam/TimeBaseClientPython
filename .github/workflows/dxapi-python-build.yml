@@ -278,46 +278,10 @@ jobs:
           name: tbapi-python
           path: |
             ./tbapi
-      - name: Archive artifacts installer (temp task)
-        uses: actions/upload-artifact@v2
-        with:
-          name: linux-installer
-          path: |
-            ./timebase-linux-installer-20220506.jar
 
-  install-windows-timebase:
-    runs-on: windows-2019
-    needs: [build-windows]
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v2
-        with:
-          submodules: 'recursive'
-      - name: Download windows installer
-        uses: robinraju/release-downloader@v1.3
-        with:
-          repository: "finos/TimeBase-CE"
-          tag: "6.1.7"
-          fileName: "timebase-windows-installer-20220506.jar"
-          out-file-path: "tests/install"
-      - name: Setup java for TimeBase installer
-        uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-      - name: Install and start TimeBase
-        run: |
-          cd tests/install
-          java -jar timebase-windows-installer-20220506.jar auto-install-windows.xml
-      - name: Archive artifacts installer
-        uses: actions/upload-artifact@v2
-        with:
-          name: windows-timebase
-          path: |
-            ./tests/install/Timebase
-
-  install-linux-timebase:
+  download-timebase-installer:
     runs-on: ubuntu-20.04
-    needs: [build-macos] # linux installer needs for macos tests
+    needs: [build-macos, build-windows] # linux installer needs for macos tests
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
@@ -329,7 +293,12 @@ jobs:
           repository: "finos/TimeBase-CE"
           tag: "6.1.7"
           fileName: "timebase-linux-installer-20220506.jar"
-          out-file-path: "tests/install"
+      - name: Download windows installer
+        uses: robinraju/release-downloader@v1.3
+        with:
+          repository: "finos/TimeBase-CE"
+          tag: "6.1.7"
+          fileName: "timebase-windows-installer-20220506.jar"
       - name: Setup java for TimeBase installer
         uses: actions/setup-java@v1
         with:
@@ -338,12 +307,18 @@ jobs:
         run: |
           cd tests/install
           java -jar timebase-linux-installer-20220506.jar auto-install-macos.xml
+      - name: Archive artifacts installer (temp task)
+        uses: actions/upload-artifact@v2
+        with:
+          name: timebase-linux-installer
+          path: |
+            ./timebase-linux-installer-20220506.jar
       - name: Archive artifacts installer
         uses: actions/upload-artifact@v2
         with:
-          name: linux-timebase
+          name: timebase-windows-installer
           path: |
-            ./tests/install/Timebase
+            ./timebase-windows-installer-20220506.jar
 
   # Tests
 #  test-linux:
@@ -390,7 +365,7 @@ jobs:
 
   test-windows:
     runs-on: windows-2019
-    needs: [gather-artifacts, install-windows-timebase]
+    needs: [gather-artifacts, download-timebase-installer]
     strategy:
       matrix:
         py: ['3.6', '3.7', '3.8', '3.9', '3.10']
@@ -406,11 +381,13 @@ jobs:
       - name: Download windows-installer artifacts
         uses: actions/download-artifact@v2
         with:
-          name: windows-timebase
-          path: tests/install/Timebase
+          name: timebase-windows-installer
+          path: tests/install
       - name: Install and start TimeBase
         run: |
-          cd tests/install/Timebase/bin
+          cd tests/install
+          java -jar timebase-windows-installer-20220506.jar auto-install-windows.xml
+          cd Timebase/bin
           Start-Process -FilePath "./tdbserver.cmd" -ArgumentList "-home ."
           Start-Sleep 5
       - name: Download tbapi-python artifacts
@@ -439,7 +416,7 @@ jobs:
 
   test-macos:
     runs-on: macos-11
-    needs: [gather-artifacts, install-linux-timebase]
+    needs: [gather-artifacts, download-timebase-installer]
     strategy:
       fail-fast: false
       matrix:
@@ -467,11 +444,13 @@ jobs:
       - name: Download linux-installer artifacts
         uses: actions/download-artifact@v2
         with:
-          name: linux-timebase
-          path: tests/install/Timebase
+          name: timebase-linux-installer
+          path: tests/install
       - name: Install and start TimeBase
         run: |
-          cd tests/install/Timebase/bin
+          cd tests/install
+          java -jar timebase-linux-installer-20220506.jar auto-install-macos.xml
+          cd Timebase/bin
           screen -dm ./tdbserver.sh -home . -port 8011
       - name: Download tbapi-python artifacts
         uses: actions/download-artifact@v2
