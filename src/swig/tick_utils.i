@@ -12,7 +12,7 @@ def stream_to_dict(db, stream, fields=None, ts_from=0, ts_to=JAVA_LONG_MAX_VALUE
     options.to = ts_to
     messages = []
     table = defaultdict(list)
-    with open_TickCursor(stream, ts_from, options) as cursor:
+    with stream.trySelect(ts_from, options, None, None) as cursor:
         counter = 0
         while cursor.next():
             message = vars(cursor.getMessage())
