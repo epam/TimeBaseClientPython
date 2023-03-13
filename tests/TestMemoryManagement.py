@@ -124,16 +124,16 @@ class L2EmptyGenerator(generators.BaseGenerator):
 
         self.message.actions = []
         for i in range(self.actionsCount):
-            self.message.actions.append(self.newAction())
+            self.message.actions.append(self.newAction(i))
 
         return True
 
-    def newAction(self):
+    def newAction(self, i):
         action = tbapi.InstrumentMessage()
         action.typeName = None
-        action.level = None
+        action.level = i
         action.isAsk = True
-        action.action = None
+        action.action = 'INSERT'
         action.price = None
         action.size = None
         action.numOfOrders = None

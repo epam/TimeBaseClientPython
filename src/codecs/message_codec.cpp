@@ -86,91 +86,112 @@ FieldCodecPtr MessageCodec::createFieldCodec(
 {
     std::string temptype = data_type.encodingName.empty() ? data_type.typeName : data_type.encodingName;
     std::transform(temptype.begin(), temptype.end(), temptype.begin(), ::tolower);
+    std::remove_if(temptype.begin(), temptype.end(), ::isspace);
     const char *cmpr = temptype.c_str();
 
     if (strcmp("datetime", cmpr) == 0) {
-        return FieldCodecPtr(new TimestampFieldCodec(field_name.c_str()));
+        return FieldCodecPtr(new TimestampFieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (!temptype.compare(0, strlen("decimal64"), "decimal64")) {
-        return FieldCodecPtr(new Decimal64FieldCodec(field_name.c_str()));
+        return FieldCodecPtr(new Decimal64FieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (!temptype.compare(0, strlen("decimal"), "decimal")) {
         return FieldCodecPtr(new FloatFieldCodec(field_name.c_str(),
             findRelativeTo<FloatFieldCodec *>(relative_to),
-            63));
+            63, data_type.isNullable));
     }
     else if (strcmp("ieee32", cmpr) == 0) {
         return FieldCodecPtr(new FloatFieldCodec(field_name.c_str(),
             findRelativeTo<FloatFieldCodec *>(relative_to),
-            32));
+            32, data_type.isNullable));
     }
     else if (strcmp("ieee64", cmpr) == 0) {
         return FieldCodecPtr(new FloatFieldCodec(field_name.c_str(),
             findRelativeTo<FloatFieldCodec *>(relative_to),
-            64));
+            64, data_type.isNullable));
+    } else if (temptype.rfind("binary(", 0) == 0) {
+        return FieldCodecPtr(new FloatFieldCodec(field_name.c_str(),
+            findRelativeTo<FloatFieldCodec *>(relative_to),
+            atoi(temptype.substr(strlen("binary(")).c_str()), data_type.isNullable)
+        );
     }
     else if (strcmp("int8", cmpr) == 0) {
         return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
             findRelativeTo<IntegerFieldCodec *>(relative_to),
-            8));
+            8, data_type.isNullable));
     }
     else if (strcmp("int16", cmpr) == 0) {
         return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
             findRelativeTo<IntegerFieldCodec *>(relative_to),
-            16));
+            16, data_type.isNullable));
     }
     else if (strcmp("int32", cmpr) == 0) {
         return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
             findRelativeTo<IntegerFieldCodec *>(relative_to),
-            32));
+            32, data_type.isNullable));
     }
     else if (strcmp("int48", cmpr) == 0) {
         return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
             findRelativeTo<IntegerFieldCodec *>(relative_to),
-            48));
+            48, data_type.isNullable));
     }
     else if (strcmp("int64", cmpr) == 0) {
         return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
             findRelativeTo<IntegerFieldCodec *>(relative_to),
-            64));
+            64, data_type.isNullable));
+    } 
+    else if (temptype.rfind("signed(", 0) == 0) {
+        return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
+            findRelativeTo<IntegerFieldCodec *>(relative_to),
+            atoi(temptype.substr(strlen("signed(")).c_str()), data_type.isNullable)
+        );
     }
     else if (strcmp("puint30", cmpr) == 0) {
         return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
             findRelativeTo<IntegerFieldCodec *>(relative_to),
-            30));
+            30, data_type.isNullable));
     }
     else if (strcmp("puint61", cmpr) == 0) {
         return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
             findRelativeTo<IntegerFieldCodec *>(relative_to),
-            61));
+            61, data_type.isNullable));
+    } 
+    else if (temptype.rfind("unsigned(", 0) == 0) {
+        return FieldCodecPtr(new IntegerFieldCodec(field_name.c_str(),
+            findRelativeTo<IntegerFieldCodec *>(relative_to),
+            atoi(temptype.substr(strlen("unsigned(")).c_str()), data_type.isNullable)
+        );
     }
     else if (strcmp("pinterval", cmpr) == 0) {
-        return FieldCodecPtr(new IntervalFieldCodec(field_name.c_str()));
+        return FieldCodecPtr(new IntervalFieldCodec(field_name.c_str(), data_type.isNullable));
+    } 
+    else if (strcmp("interval", cmpr) == 0) {
+        return FieldCodecPtr(new IntervalFieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (strcmp("timeofday", cmpr) == 0) {
-        return FieldCodecPtr(new TimeOfDayFieldCodec(field_name.c_str()));
+        return FieldCodecPtr(new TimeOfDayFieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (strcmp("binary", cmpr) == 0) {
-        return FieldCodecPtr(new BinaryFieldCodec(field_name.c_str()));
+        return FieldCodecPtr(new BinaryFieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (strcmp("boolean", cmpr) == 0) {
         return FieldCodecPtr(new BooleanFieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (strcmp("char", cmpr) == 0) {
-        return FieldCodecPtr(new CharFieldCodec(field_name.c_str()));
+        return FieldCodecPtr(new CharFieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (strcmp("utf8", cmpr) == 0) {
-        return FieldCodecPtr(new Utf8FieldCodec(field_name.c_str()));
+        return FieldCodecPtr(new Utf8FieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (strcmp("ascii", cmpr) == 0) {
-        return FieldCodecPtr(new AsciiFieldCodec(field_name.c_str()));
+        return FieldCodecPtr(new AsciiFieldCodec(field_name.c_str(), data_type.isNullable));
     }
     else if (strcmp("enum", cmpr) == 0) {
         int32_t index = findDescriptorByGuid(descriptors, data_type.descriptorGuid);
         if (index == INT32_MIN)
             THROW_EXCEPTION("Unknown enum type: %s.", data_type.descriptorGuid.c_str());
 
-        return FieldCodecPtr(new EnumFieldCodec(field_name.c_str(), descriptors[index]));
+        return FieldCodecPtr(new EnumFieldCodec(field_name.c_str(), descriptors[index], data_type.isNullable));
     }
     else if (strcmp("array", cmpr) == 0) {
         if (data_type.elementType == nullptr)
@@ -183,7 +204,7 @@ FieldCodecPtr MessageCodec::createFieldCodec(
             createFieldCodec(*data_type.elementType, new_field_name, new_relative_to, descriptors)
         );
 
-        return FieldCodecPtr(new ArrayFieldCodec(field_name.c_str(), element_codec));
+        return FieldCodecPtr(new ArrayFieldCodec(field_name.c_str(), element_codec, data_type.isNullable));
     }
     else if (strcmp("object", cmpr) == 0) {
         std::vector<MessageCodecPtr> codecs;
@@ -198,14 +219,15 @@ FieldCodecPtr MessageCodec::createFieldCodec(
         }
 
         return FieldCodecPtr(
-            new ObjectFieldCodec(field_name.c_str(), tbapi_module_, types, codecs)
+            new ObjectFieldCodec(field_name.c_str(), tbapi_module_, types, codecs, data_type.isNullable)
         );
     }
     else if (!temptype.compare(0, strlen("alphanumeric("), "alphanumeric(")) {
             return FieldCodecPtr(
                 new AlphanumericFieldCodec(
                     field_name.c_str(), 
-                    atoi(temptype.substr(strlen("alphanumeric(")).c_str())
+                    atoi(temptype.substr(strlen("alphanumeric(")).c_str()), 
+                    data_type.isNullable
                 )
             );
     };

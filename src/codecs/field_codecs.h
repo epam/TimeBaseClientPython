@@ -46,6 +46,11 @@ protected:
         key_ = PyUnicode_FromString(field_name);
     };
 
+    FieldCodec(const char *field_name, bool is_nullable) 
+        : field_name_(field_name), is_nullable_(is_nullable) {
+        key_ = PyUnicode_FromString(field_name);
+    };
+
     virtual ~FieldCodec() {
         Py_XDECREF(key_);
         Py_XDECREF(TYPE_NAME_PROPERTY1);
@@ -68,6 +73,8 @@ protected:
     std::string field_name_;
     PyObject *  TYPE_NAME_PROPERTY1 = PyUnicode_FromString("typeName");
 
+    bool is_nullable_ = true;
+
 private:
     DISALLOW_COPY_AND_ASSIGN(FieldCodec);
 };
@@ -78,6 +85,10 @@ protected:
     FieldValueCodec(const char *field_name, FieldValueCodec<T> *relative_to)
         : FieldCodec(field_name), relative_to_(relative_to)
     { };
+
+    FieldValueCodec(const char *field_name, FieldValueCodec<T> *relative_to, bool is_nullable)
+        : FieldCodec(field_name, is_nullable), relative_to_(relative_to) {
+    };
 
 public:
     virtual void appendRelative(T &value) {
@@ -107,7 +118,8 @@ protected:
 
 class AlphanumericFieldCodec : public FieldCodec {
 public:
-    AlphanumericFieldCodec(const char* field_name, int field_size) : FieldCodec(field_name), field_size_(field_size) { };
+    AlphanumericFieldCodec(const char* field_name, int field_size, bool is_nullable) : 
+        FieldCodec(field_name, is_nullable), field_size_(field_size) { };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         bool hasField = reader.readAlphanumeric(buffer_, field_size_);
@@ -125,6 +137,10 @@ public:
         if (exists) {
             writer.writeAlphanumeric(field_size_, buffer_);
         } else {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeAlphanumericNull(field_size_);
         }
     }
@@ -136,7 +152,7 @@ protected:
 
 class TimestampFieldCodec : public FieldCodec {
 public:
-    TimestampFieldCodec(const char* field_name) : FieldCodec(field_name) { };
+    TimestampFieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) { };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         int64_t value = reader.readTimestamp();
@@ -154,8 +170,16 @@ public:
             THROW_EXCEPTION("Wrong type of field '%s'. Required: INTEGER.", field_name_.c_str());
 
         if (exists) {
+            if (!is_nullable_ && value == DxApi::TIMESTAMP_NULL) {
+                THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), value);
+            }
+
             writer.writeTimestamp(value);
         } else {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeTimestamp(DxApi::TIMESTAMP_NULL);
         }
     }
@@ -163,8 +187,8 @@ public:
 
 class IntegerFieldCodec : public FieldValueCodec<int64_t> {
 public:
-    IntegerFieldCodec(const char* field_name, FieldValueCodec<int64_t> *relative_to, int field_size) 
-        : FieldValueCodec(field_name, relative_to), field_size_(field_size) { };
+    IntegerFieldCodec(const char* field_name, FieldValueCodec<int64_t> *relative_to, int field_size, bool is_nullable) 
+        : FieldValueCodec(field_name, relative_to, is_nullable), field_size_(field_size) { };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         switch (field_size_) {
@@ -263,6 +287,10 @@ public:
         if (type_mismatch)
             THROW_EXCEPTION("Wrong type of field '%s'. Required: INTEGER.", field_name_.c_str());
         if (!exists) {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             is_null_ = true;
             switch (field_size_) {
             case 8: {
@@ -302,30 +330,63 @@ public:
             switch (field_size_)
             {
             case 8: {
-                writer.writeInt8((int8_t)value_);
+                int8_t writeValue = (int8_t)value_;
+                if (!is_nullable_ && writeValue == DxApi::Constants::INT8_NULL) {
+                    THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), writeValue);
+                }
+
+                writer.writeInt8(writeValue);
             }
             break;
             case 16: {
-                writer.writeInt16((int16_t)value_);
+                int16_t writeValue = (int16_t)value_;
+                if (!is_nullable_ && writeValue == DxApi::Constants::INT16_NULL) {
+                    THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), writeValue);
+                }
+
+                writer.writeInt16(writeValue);
             }
             break;
             case 30: {
-                writer.writePUInt30((uint32_t)value_);
+                uint32_t writeValue = (uint32_t)value_;
+                if (!is_nullable_ && writeValue == DxApi::Constants::UINT30_NULL) {
+                    THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), writeValue);
+                }
+
+                writer.writePUInt30(writeValue);
             }
             break;
             case 32: {
-                writer.writeInt32((int32_t)value_);
+                uint32_t writeValue = (uint32_t)value_;
+                if (!is_nullable_ && writeValue == DxApi::Constants::INT32_NULL) {
+                    THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), writeValue);
+                }
+
+                writer.writeInt32(writeValue);
             }
             break;
             case 48: {
+                if (!is_nullable_ && value_ == DxApi::INT48_NULL) {
+                    THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), value_);
+                }
+
                 writer.writeInt48(value_);
             }
             break;
             case 61: {
+                uint64_t writeValue = (uint64_t)value_;
+                if (!is_nullable_ && writeValue == DxApi::UINT61_NULL) {
+                    THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), writeValue);
+                }
+
                 writer.writePUInt61((uint64_t)value_);
             }
             break;
             case 64: {
+                if (!is_nullable_ && value_ == DxApi::INT64_NULL) {
+                    THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), value_);
+                }
+
                 writer.writeInt64(value_);
             }
             break;
@@ -342,7 +403,7 @@ private:
 
 class Decimal64FieldCodec : public FieldCodec {
 public:
-    Decimal64FieldCodec(const char* field_name) : FieldCodec(field_name) { };
+    Decimal64FieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) { };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         int64_t result = reader.readInt64();
@@ -363,6 +424,10 @@ public:
         if (exists) {
             writer.writeInt64(encodeDecimal64(value));
         } else {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeInt64(DxApi::INT64_NULL);
         }
     }
@@ -378,8 +443,8 @@ public:
 
 class FloatFieldCodec : public FieldValueCodec<double> {
 public:
-    FloatFieldCodec(const char* field_name, FieldValueCodec *relative_to, int field_size) 
-        : FieldValueCodec(field_name, relative_to), field_size_(field_size) {
+    FloatFieldCodec(const char* field_name, FieldValueCodec *relative_to, int field_size, bool is_nullable) 
+        : FieldValueCodec(field_name, relative_to, is_nullable), field_size_(field_size) {
     };
     
     inline PyObject * decode(DxApi::DataReader &reader) {
@@ -433,6 +498,10 @@ public:
         if (type_mismatch)
             THROW_EXCEPTION("Wrong type of field '%s'. Required: FLOAT.", field_name_.c_str());
         if (!exists) {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             is_null_ = true;
             switch (field_size_) {
             case 32: {
@@ -479,7 +548,7 @@ protected:
 
 class IntervalFieldCodec : public FieldCodec {
 public:
-    IntervalFieldCodec(const char* field_name) : FieldCodec(field_name) {};
+    IntervalFieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) {};
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         int32_t result = reader.readInterval();
@@ -496,8 +565,16 @@ public:
         if (type_mismatch)
             THROW_EXCEPTION("Wrong type of field '%s'. Required: INTEGER.", field_name_.c_str());
         if (exists) {
+            if (!is_nullable_ && value == DxApi::Constants::INTERVAL_NULL) {
+                THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), value);
+            }
+
             writer.writeInterval(value);
         } else {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeInterval(DxApi::Constants::INTERVAL_NULL);
         }
     }
@@ -505,7 +582,7 @@ public:
 
 class TimeOfDayFieldCodec : public FieldCodec {
 public:
-    TimeOfDayFieldCodec(const char* field_name) : FieldCodec(field_name) {};
+    TimeOfDayFieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) {};
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         int32_t result = reader.readTimeOfDay();
@@ -523,16 +600,24 @@ public:
         if (type_mismatch)
             THROW_EXCEPTION("Wrong type of field '%s'. Required: INTEGER.", field_name_.c_str());
         if (exists) {
-            writer.writeInterval(value);
+            if (!is_nullable_ && value == DxApi::Constants::TIMEOFDAY_NULL) {
+                THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), value);
+            }
+
+            writer.writeTimeOfDay(value);
         } else {
-            writer.writeInterval(DxApi::Constants::TIMEOFDAY_NULL);
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
+            writer.writeTimeOfDay(DxApi::Constants::TIMEOFDAY_NULL);
         }
     }
 };
 
 class BinaryFieldCodec : public FieldCodec {
 public:
-    BinaryFieldCodec(const char* field_name) : FieldCodec(field_name) {};
+    BinaryFieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) {};
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         bool not_null = reader.readBinary(buffer_);
@@ -546,23 +631,37 @@ public:
 
     inline void encode(PyObject *field_value, DxApi::DataWriter &writer) {
         if (field_value == Py_None || field_value == NULL) {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeBinaryArrayNull();
             return;
         }
         if (PyBytes_Check(field_value)) {
             uint8_t *bytes = (uint8_t *) PyBytes_AsString(field_value);
             size_t size = PyBytes_Size(field_value);
-            if (bytes == NULL)
+            if (bytes == NULL) {
+                if (!is_nullable_) {
+                    THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+                }
+
                 writer.writeBinaryArrayNull();
-            else
+            } else {
                 writer.writeBinaryArray(bytes, size);
+            }
         }
         else if (PyByteArray_Check(field_value)) {
             uint8_t *bytes = (uint8_t *) PyByteArray_AsString(field_value);
-            if (bytes == NULL)
+            if (bytes == NULL) {
+                if (!is_nullable_) {
+                    THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+                }
+
                 writer.writeBinaryArrayNull();
-            else
+            } else {
                 writer.writeBinaryArray(bytes, PyByteArray_Size(field_value));
+            }
         }
         else {
             THROW_EXCEPTION("Wrong type of '%s' field. Required: BYTES.", field_name_.c_str());
@@ -575,10 +674,10 @@ private:
 
 class BooleanFieldCodec : public FieldCodec {
 public:
-    BooleanFieldCodec(const char* field_name, bool nullable) : FieldCodec(field_name), nullable(nullable) {};
+    BooleanFieldCodec(const char* field_name, bool nullable) : FieldCodec(field_name, nullable) {};
 
     inline PyObject * decode(DxApi::DataReader &reader) {
-        if (nullable) {
+        if (is_nullable_) {
             uint8_t result = reader.readNullableBooleanInt8();
             if (result == DxApi::Constants::BOOL_TRUE) {
                 Py_RETURN_TRUE;
@@ -601,6 +700,10 @@ public:
         if (exists) {
             writer.writeBoolean(ret_value);
         } else {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeNullableBoolean(false, true);
         }
     }
@@ -611,7 +714,7 @@ protected:
 
 class CharFieldCodec : public FieldCodec {
 public:
-    CharFieldCodec(const char* field_name) : FieldCodec(field_name) { };
+    CharFieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) { };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         const wchar_t ch = reader.readWChar();
@@ -641,8 +744,16 @@ public:
                 }
                 else str[str.size() - 1] = 0;
 
+                if (!is_nullable_ && str[0] == DxApi::Constants::CHAR_NULL) {
+                    THROW_EXCEPTION("Field '%s' is not nullable. Value '%d' is invalid.", field_name_.c_str(), str[0]);
+                }
+
                 writer.writeWChar(str[0]);
             } else {
+                if (!is_nullable_) {
+                    THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+                }
+
                 writer.writeWChar(DxApi::Constants::CHAR_NULL);
             }
         }
@@ -651,7 +762,7 @@ public:
 
 class Utf8FieldCodec : public FieldCodec {
 public:
-    Utf8FieldCodec(const char* field_name) : FieldCodec(field_name) { };
+    Utf8FieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) { };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         bool hasField = reader.readUTF8(buffer);
@@ -664,6 +775,10 @@ public:
 
     inline void encode(PyObject *field_value, DxApi::DataWriter &writer) {
         if (Py_None == field_value || field_value == NULL) {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeUTF8((const char *) NULL, 0);
         } else {
             if (PyUnicode_Check(field_value)) {
@@ -674,15 +789,19 @@ public:
                     (PyUnicodeObject *)
 #endif
                     field_value, &str[0], (Py_ssize_t)str.size());
-                if (len > -1)
-                {
+                if (len > -1) {
                     assert(len < (int)str.size());
-                    str[len] = 0;
-                } else 
-                    str[str.size() - 1] = 0;
+                } else {
+                    len = str.size() - 1;
+                }
+                str[len] = 0;
 
-                writer.writeUTF8(str);
+                writer.writeUTF8(str.c_str(), len);
             } else {
+                if (!is_nullable_) {
+                    THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+                }
+
                 writer.writeUTF8((const char *)NULL, 0);
             }
         }
@@ -694,7 +813,7 @@ private:
 
 class AsciiFieldCodec : public FieldCodec {
 public:
-    AsciiFieldCodec(const char* field_name) : FieldCodec(field_name) { };
+    AsciiFieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) { };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         bool hasField = reader.readAscii(buffer);
@@ -708,6 +827,10 @@ public:
 
     inline void encode(PyObject *field_value, DxApi::DataWriter &writer) {
         if (Py_None == field_value || field_value == NULL) {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeAscii((const char *)NULL, 0);
         }
         else {
@@ -719,17 +842,20 @@ public:
                     (PyUnicodeObject *)
 #endif
                     field_value, &str[0], (Py_ssize_t)str.size());
-                if (len > -1)
-                {
+                if (len > -1) {
                     assert(len < (int)str.size());
-                    str[len] = 0;
+                } else {
+                    len = str.size() - 1;
                 }
-                else
-                    str[str.size() - 1] = 0;
+                str[len] = 0;
 
-                writer.writeAscii(str);
+                writer.writeAscii(str.c_str(), len);
             }
             else {
+                if (!is_nullable_) {
+                    THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+                }
+
                 writer.writeAscii((const char *)NULL, 0);
             }
         }
@@ -741,8 +867,8 @@ private:
 
 class EnumFieldCodec : public FieldCodec {
 public:
-    EnumFieldCodec(const char* field_name, const Schema::TickDbClassDescriptor &descriptor) 
-        : FieldCodec(field_name), descriptor_(descriptor) {
+    EnumFieldCodec(const char* field_name, const Schema::TickDbClassDescriptor &descriptor, bool is_nullable) 
+        : FieldCodec(field_name, is_nullable), descriptor_(descriptor) {
     };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
@@ -829,6 +955,10 @@ public:
                 THROW_EXCEPTION("Unknow type of enum for '%s' field.", field_name_.c_str());
             }
         } else {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             switch (descriptor_.enumType) {
             case Schema::FieldTypeEnum::ENUM8:
                 writer.writeEnum8(DxApi::Constants::ENUM_NULL);
@@ -855,8 +985,8 @@ protected:
 
 class ArrayFieldCodec : public FieldCodec {
 public:
-    ArrayFieldCodec(const char* field_name, FieldCodecPtr element_codec)
-        : FieldCodec(field_name), element_codec_(element_codec) {
+    ArrayFieldCodec(const char* field_name, FieldCodecPtr element_codec, bool is_nullable)
+        : FieldCodec(field_name, is_nullable), element_codec_(element_codec) {
     };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
@@ -876,6 +1006,10 @@ public:
 
     inline void encode(PyObject *field_value, DxApi::DataWriter &writer) {
         if (field_value == NULL) {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeArrayNull();
             return;
         }
@@ -890,6 +1024,10 @@ public:
             writer.writeArrayEnd();
         } else {
             if (field_value == Py_None) {
+                if (!is_nullable_) {
+                    THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+                }
+
                 writer.writeArrayNull();
             } else {
                 THROW_EXCEPTION("Wrong type of field '%s'. Required: ARRAY.", field_name_.c_str());
@@ -905,8 +1043,8 @@ class ObjectFieldCodec : public FieldCodec {
 public:
     ObjectFieldCodec(
         const char* field_name, PythonTbApiModule *tbapi_module,
-        std::vector<std::string> types, std::vector<MessageCodecPtr> codecs)
-        : FieldCodec(field_name), tbapi_module_(tbapi_module), types_(types), codecs_(codecs)
+        std::vector<std::string> types, std::vector<MessageCodecPtr> codecs, bool is_nullable)
+        : FieldCodec(field_name, is_nullable), tbapi_module_(tbapi_module), types_(types), codecs_(codecs)
     {
         for (int i = 0; i < types.size(); ++i) {
             type_name_to_id_[types[i]] = i;
@@ -936,6 +1074,10 @@ public:
 
     inline void encode(PyObject *message, DxApi::DataWriter &writer) {
         if (message == NULL || message == Py_None) {
+            if (!is_nullable_) {
+                THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
+            }
+
             writer.writeObjectNull();
             return;
         }
