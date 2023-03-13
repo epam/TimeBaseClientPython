@@ -205,6 +205,7 @@ jobs:
           python-version: ${{ matrix.py_v }}
       - name: Install SWIG
         run: |
+          brew install pcre
           cd swigwin
           tar -xzvf swig-3.0.12.tar.gz
           cd swig-3.0.12
