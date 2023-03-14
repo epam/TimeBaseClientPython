@@ -209,6 +209,71 @@ class TestLoader(servertest.TBServerTest):
                 loader.close()
             self.deleteStream(key)
 
+    def test_InsertWriteMode(self):
+        key = self.streamKeys[1]
+        try:
+            stream = self.createStream(key, True)
+            self.assertIsNotNone(stream)
+            self.assertEqual(self.streamCount(key), 0)  # check stream is empty
+
+            count = 100
+            options = tbapi.LoadingOptions()
+            options.writeMode = tbapi.WriteMode('INSERT')
+            loader = stream.createLoader(options)
+            try:
+                tradeGenerator = generators.TradeGenerator(0, 1000000, count, ['MSFT'])
+                tradeGenerator.next()
+                msg = tradeGenerator.getMessage()
+
+                msg.timestamp = 0 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 0 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 10 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 10 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 2 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 2 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 4 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 4 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 6 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 6 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 10 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 11 * 1000000
+                loader.send(msg)
+                loader.flush()
+                msg.timestamp = 12 * 1000000
+                loader.send(msg)
+                loader.flush()
+
+                time.sleep(2)
+            finally:
+                if loader != None:
+                    loader.close()
+
+            self.assertEqual(self.streamCount(key), 13)
+        finally:
+            self.deleteStream(key)
+
     # helpers
 
     def streamCount(self, key):

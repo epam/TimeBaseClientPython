@@ -52,11 +52,10 @@ public:
 }
 
 %feature("autodoc", "APPEND: Adds only new data into a stream without truncations.
-REPLACE: Adds data into a stream and removes previous data older that first message time
-    [truncate(first message time + 1)].
 REWRITE: Default. Adds data into a stream and removes previous data by truncating using first message time.
     [truncate(first message time)].
 TRUNCATE: Stream truncated every time when loader writes a messages earlier than last message time.
+INSERT: New data inserts into a stream without truncations.
 
 Example:
     ```
@@ -66,17 +65,17 @@ Example:
 Possible values:
     ```
     APPEND,
-    REPLACE,
     REWRITE,
-    TRUNCATE
+    TRUNCATE,
+    INSERT
     ```");
 class WriteMode {
 public:
     enum Enum {
         APPEND,
-        REPLACE,
         REWRITE,
-        TRUNCATE
+        TRUNCATE,
+        INSERT
     };
 
     %feature("autodoc", "");
