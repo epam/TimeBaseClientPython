@@ -23,7 +23,7 @@ jobs:
             env_os: MACOS
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Build Dxapi
@@ -32,7 +32,7 @@ jobs:
           CC: clang
           OS: ${{ matrix.env_os }}
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dxapi-${{ matrix.os }}
           path: ./dxapi/bin/libdxapi-x64.a
@@ -41,7 +41,7 @@ jobs:
     runs-on: windows-2019
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: 'recursive'
     - name: Use MSBuild
@@ -49,7 +49,7 @@ jobs:
     - name: Build Solution
       run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
     - name: Archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: dxapi-windows
         path: ./dxapi/bin/dxapi-x64.lib
@@ -74,11 +74,11 @@ jobs:
             py_env: '310'
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Download dxapi-linux artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dxapi-ubuntu-20.04
           path: dxapi/bin
@@ -103,7 +103,7 @@ jobs:
           CC: clang
           PYTHON_VERSION: ${{ matrix.py_env }}
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-python-linux
           path: |
@@ -130,15 +130,15 @@ jobs:
             py_env: '310'
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         submodules: 'recursive'
     - name: Download dxapi-windows artifacts
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: dxapi-windows
         path: dxapi/bin
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: '${{ matrix.py }}'
     - name: Use MSBuild
@@ -155,7 +155,7 @@ jobs:
         $Env:PYTHON${{ matrix.py_env }}_HOME
         msbuild ./tbapi-python.sln /p:configuration=Release${{ matrix.py_env }} /p:platform=x64 /t:rebuild
     - name: Archive artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: tbapi-python-windows
         path: |
@@ -192,15 +192,15 @@ jobs:
             py_lib: 'python3.10'
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Download dxapi-macos artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dxapi-macos-11
           path: dxapi/bin
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.py_v }}
       - name: Install SWIG
@@ -231,7 +231,7 @@ jobs:
           PYTHON_MACOS_LIB_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib
           PYTHON_MACOS_LIB: ${{ matrix.py_lib }}
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-python-macos
           path: |
@@ -245,23 +245,23 @@ jobs:
     needs: [build-linux, build-macos, build-windows]
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Download tbapi-python-linux artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python-linux
           path: tbapi
       - name: Download tbapi-python-windows artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python-windows
           path: tbapi
       - name: Download tbapi-python-macos artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python-macos
           path: tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.10.2"
       - name: Copy version file
@@ -274,7 +274,7 @@ jobs:
           export LANG=C.UTF-8
           pydoc-markdown > ./tbapi/tbapi.md
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-python
           path: |
@@ -285,7 +285,7 @@ jobs:
     needs: [build-macos, build-windows] # linux installer needs for macos tests
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Download linux installer
@@ -301,13 +301,13 @@ jobs:
           tag: "6.1.7"
           fileName: "timebase-windows-installer-20220506.jar"
       - name: Archive artifacts installer (temp task)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: timebase-linux-installer
           path: |
             ./timebase-linux-installer-20220506.jar
       - name: Archive artifacts installer
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: timebase-windows-installer
           path: |
@@ -329,15 +329,15 @@ jobs:
           - 8011:8011
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python
           path: tests/tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '${{ matrix.py }}'
       - name: Run tests
@@ -351,7 +351,7 @@ jobs:
           TIMEBASE_PORT: 8011
       - name: Archive artifacts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-reports-tbapi-python-linux-${{ matrix.py }}
           path: |
@@ -365,7 +365,7 @@ jobs:
         py: ['3.6', '3.7', '3.8', '3.9', '3.10']
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Setup java for TimeBase installer
@@ -373,7 +373,7 @@ jobs:
         with:
           java-version: '11'
       - name: Download windows-installer artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: timebase-windows-installer
           path: tests/install
@@ -385,11 +385,11 @@ jobs:
           Start-Process -FilePath "./tdbserver.cmd" -ArgumentList "-home ."
           Start-Sleep 5
       - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python
           path: tests/tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '${{ matrix.py }}'
       - name: Run tests
@@ -403,7 +403,7 @@ jobs:
           TIMEBASE_PORT: 8011
       - name: Archive artifacts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-reports-tbapi-python-windows-${{ matrix.py }}
           path: |
@@ -429,7 +429,7 @@ jobs:
             py_v: '3.10.2'
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Setup java for TimeBase installer
@@ -437,7 +437,7 @@ jobs:
         with:
           java-version: '11'
       - name: Download linux-installer artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: timebase-linux-installer
           path: tests/install
@@ -448,11 +448,11 @@ jobs:
           cd Timebase/bin
           screen -dm ./tdbserver.sh -home . -port 8011
       - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python
           path: tests/tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '${{ matrix.py_v }}'
       - name: Run tests
@@ -463,7 +463,7 @@ jobs:
           python TestAll.py
       - name: Archive artifacts
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-reports-tbapi-python-macos-${{ matrix.py }}
           path: |
