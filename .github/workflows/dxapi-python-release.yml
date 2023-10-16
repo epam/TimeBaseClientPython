@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Prepare branch
         run: |
           git config user.name github-actions
@@ -38,7 +38,7 @@ jobs:
             env_os: MACOS
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Build Dxapi
@@ -47,7 +47,7 @@ jobs:
           CC: clang
           OS: ${{ matrix.env_os }}
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dxapi-${{ matrix.os }}
           path: ./dxapi/bin/libdxapi-x64.a
@@ -57,7 +57,7 @@ jobs:
     needs: [prepare]
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Use MSBuild
@@ -65,7 +65,7 @@ jobs:
       - name: Build Solution
         run: msbuild ./dxapi/dxapi.sln /p:configuration=release /p:platform=x64 /t:rebuild
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dxapi-windows
           path: ./dxapi/bin/dxapi-x64.lib
@@ -90,7 +90,7 @@ jobs:
             py_env: '310'
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Checkout branch
@@ -100,7 +100,7 @@ jobs:
           git fetch
           git checkout -b workflow-$GITHUB_RUN_ID origin/workflow-$GITHUB_RUN_ID~1
       - name: Download dxapi-linux artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dxapi-ubuntu-20.04
           path: dxapi/bin
@@ -125,7 +125,7 @@ jobs:
           CC: clang
           PYTHON_VERSION: ${{ matrix.py_env }}
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-python-linux
           path: |
@@ -152,7 +152,7 @@ jobs:
             py_env: '310'
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Checkout branch
@@ -162,11 +162,11 @@ jobs:
           git fetch
           git checkout -b workflow-$env:GITHUB_RUN_ID origin/workflow-$env:GITHUB_RUN_ID~1
       - name: Download dxapi-windows artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dxapi-windows
           path: dxapi/bin
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '${{ matrix.py }}'
       - name: Use MSBuild
@@ -183,7 +183,7 @@ jobs:
           $Env:PYTHON${{ matrix.py_env }}_HOME
           msbuild ./tbapi-python.sln /p:configuration=Release${{ matrix.py_env }} /p:platform=x64 /t:rebuild
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-python-windows
           path: |
@@ -220,7 +220,7 @@ jobs:
             py_lib: 'python3.10'
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Checkout branch
@@ -230,11 +230,11 @@ jobs:
           git fetch
           git checkout -b workflow-$GITHUB_RUN_ID origin/workflow-$GITHUB_RUN_ID~1
       - name: Download dxapi-macos artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: dxapi-macos-11
           path: dxapi/bin
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.py_v }}
       - name: Install SWIG
@@ -265,7 +265,7 @@ jobs:
           PYTHON_MACOS_LIB_PATH: /Users/runner/hostedtoolcache/Python/${{ matrix.py_v }}/x64/lib
           PYTHON_MACOS_LIB: ${{ matrix.py_lib }}
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-python-macos
           path: |
@@ -279,7 +279,7 @@ jobs:
     needs: [build-linux, build-macos, build-windows]
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Checkout branch
         run: |
           git config user.name github-actions
@@ -287,21 +287,21 @@ jobs:
           git fetch
           git checkout -b workflow-$GITHUB_RUN_ID origin/workflow-$GITHUB_RUN_ID~1
       - name: Download tbapi-python-linux artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python-linux
           path: tbapi
       - name: Download tbapi-python-windows artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python-windows
           path: tbapi
       - name: Download tbapi-python-windows artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python-macos
           path: tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.10.2"
       - name: Prepare test package
@@ -319,7 +319,7 @@ jobs:
           pydoc-markdown > ./tbapi/tbapi.md
           pip3 install wheel
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-python
           path: |
@@ -341,15 +341,15 @@ jobs:
           - 8011:8011
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python
           path: tests/tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '${{ matrix.py }}'
       - name: Run tests
@@ -362,7 +362,7 @@ jobs:
           TIMEBASE_HOST: localhost
           TIMEBASE_PORT: 8011
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test-reports-tbapi-python-linux
           path: |
@@ -376,15 +376,15 @@ jobs:
         py: ['3.6', '3.7', '3.8', '3.9', '3.10']
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python
           path: tests/tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '${{ matrix.py }}'
       - name: Run tests
@@ -412,15 +412,15 @@ jobs:
             py_v: '3.10.2'
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python
           path: tests/tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: '${{ matrix.py_v }}'
       - name: Run tests
@@ -437,7 +437,7 @@ jobs:
       tag: ${{ steps.tag.outputs.tag }}
     steps:
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Checkout branch
         run: |
           git config user.name github-actions
@@ -445,11 +445,11 @@ jobs:
           git fetch
           git checkout -b workflow-$GITHUB_RUN_ID origin/workflow-$GITHUB_RUN_ID~1
       - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-python
           path: tbapi
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.10.2"
       - name: Install zip
@@ -473,13 +473,13 @@ jobs:
           # create zip package
           zip -r timebase_client-$versionRelease.zip ./tbapi
       - name: Wheel artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-wheel
           path: |
             ./dist
       - name: Zip artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: tbapi-zip
           path: |
@@ -490,13 +490,13 @@ jobs:
     runs-on: windows-2019
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Download tbapi-wheel artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-wheel
       - name: Download tbapi-zip artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-zip
       - name: Publish github
@@ -512,9 +512,9 @@ jobs:
     runs-on: windows-2019
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Download tbapi-python artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: tbapi-wheel
       - name: Build PyPi package
@@ -526,7 +526,7 @@ jobs:
           REPOSITORY_USER: ${{ secrets.PYPI_USER }}
           REPOSITORY_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       - name: Archive artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dxapi-pypi-package
           path: ./dist/
@@ -537,7 +537,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Cleanup
         run: |
           git config user.name github-actions

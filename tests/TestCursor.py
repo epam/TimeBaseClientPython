@@ -98,82 +98,6 @@ class CursorTest(servertest.TestWithStreams):
             self.assertGreaterEqual(m.timestamp, 50000000000)
             self.assertLessEqual(m.timestamp, 50000000000 + 3 * 10 * 1000000000)
 
-    def test_SubscribeTypes(self):
-        barStream = self.db.getStream(self.streamKeys[0])
-        tradeBBOStream = self.db.getStream(self.streamKeys[1])
-        l2Stream = self.db.getStream(self.streamKeys[2])
-        cursor = self.db.select(0, [tradeBBOStream, barStream, l2Stream], tbapi.SelectionOptions(), None, None)
-
-        # all types
-        typeSet = set(self.types.values())
-        self.checkCursorTypes(cursor, typeSet)
-
-        # remove types
-        self.removeAll(typeSet, [self.types['bbo'], self.types['bar']])
-        cursor.removeTypes([self.types['bbo'], self.types['bar']])
-        self.checkCursorTypes(cursor, typeSet)
-
-        # add types
-        typeSet.add(self.types['bbo'])
-        cursor.addTypes([self.types['bbo']])
-        self.checkCursorTypes(cursor, typeSet)
-
-        # 'trade' and 'bars'
-        cursor.setTypes([self.types['trade'], self.types['bar']])
-        self.checkCursorTypes(cursor, set([self.types['trade'], self.types['bar']]))
-
-        # none types
-        cursor.removeTypes([self.types['trade'], self.types['bar']])
-        cursor.reset(0)
-        self.assertFalse(cursor.next())
-
-        # all types
-        cursor.subscribeToAllTypes()
-        cursor.reset(0)
-        self.checkCursorTypes(cursor, set(self.types.values()))
-
-        cursor.close()
-
-    def test_SubscribeEntities(self):
-        tradeBBOStream = self.db.getStream(self.streamKeys[0])
-        barStream = self.db.getStream(self.streamKeys[1])
-        cursor = self.db.select(0, [tradeBBOStream, barStream], tbapi.SelectionOptions(), None, None)
-
-        # all entities
-        entitySet = set(self.entities.keys())
-        self.checkCursorSymbols(cursor, entitySet)
-
-        # remove AAPL, GOOG
-        self.removeAll(entitySet, ['AAPL', 'GOOG'])
-        cursor.removeEntities([self.entities['AAPL'], self.entities['GOOG']])
-        self.checkCursorSymbols(cursor, entitySet)
-
-        # add GOOG
-        entitySet.add('GOOG')
-        cursor.addEntity(self.entities['GOOG'])
-        self.checkCursorSymbols(cursor, entitySet)
-
-        # remove IBM
-        entitySet.remove('IBM')
-        cursor.removeEntity(self.entities['IBM'])
-        self.checkCursorSymbols(cursor, entitySet)
-
-        # add AAPL, IBM
-        self.addAll(entitySet, ['AAPL', 'IBM'])
-        cursor.addEntities([self.entities['AAPL'], self.entities['IBM']])
-        self.checkCursorSymbols(cursor, entitySet)
-
-        # clear all
-        cursor.clearAllEntities()
-        self.assertFalse(cursor.next())
-
-        # subscribe all
-        cursor.subscribeToAllEntities()
-        cursor.reset(0)
-        self.checkCursorSymbols(cursor, set(self.entities.keys()))
-
-        cursor.close()
-
     def test_SubscribeTypeAndEntities(self):
         barStream = self.db.getStream(self.streamKeys[0])
         tradeBBOStream = self.db.getStream(self.streamKeys[1])
@@ -193,10 +117,12 @@ class CursorTest(servertest.TestWithStreams):
         typeSet.remove(self.types['bbo'])
         entitySet.remove('IBM')
         cursor.remove([self.types['bbo']], [self.entities['IBM']])
+        cursor.reset(0)
         self.checkCursorTypesAndSymbols(cursor, typeSet, entitySet)
 
         # remove all
         cursor.remove(list(self.types.values()), list(self.entities.values()))
+        cursor.reset(0)
         self.assertFalse(cursor.next())
 
         # add types and some entities

@@ -218,7 +218,7 @@ public:
         break;
         case 30: {
             uint32_t result = reader.readPUInt30();
-            if (result != DxApi::UINT61_NULL) {
+            if (result != DxApi::UINT30_NULL) {
                 value_ = result;
                 is_null_ = false;
                 appendRelative(value_);
@@ -402,12 +402,14 @@ private:
 };
 
 class Decimal64FieldCodec : public FieldCodec {
+    static const int64_t DECIMAL64_NULL = 0xFFFFFFFFFFFFFF80LL; // = -0x80L;
+
 public:
     Decimal64FieldCodec(const char* field_name, bool is_nullable) : FieldCodec(field_name, is_nullable) { };
 
     inline PyObject * decode(DxApi::DataReader &reader) {
         int64_t result = reader.readInt64();
-        if (result != DxApi::INT64_NULL) {
+        if (result != DECIMAL64_NULL) {
             return PyFloat_FromDouble(decodeDecimal64(result));
         } else {
             Py_RETURN_NONE;
@@ -428,7 +430,7 @@ public:
                 THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
             }
 
-            writer.writeInt64(DxApi::INT64_NULL);
+            writer.writeInt64(DECIMAL64_NULL);
         }
     }
 
@@ -779,7 +781,7 @@ public:
                 THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
             }
 
-            writer.writeUTF8((const char *) NULL, 0);
+            writer.writeUTF8((const std::string *) NULL);
         } else {
             if (PyUnicode_Check(field_value)) {
                 std::wstring str;
@@ -802,7 +804,7 @@ public:
                     THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
                 }
 
-                writer.writeUTF8((const char *)NULL, 0);
+                writer.writeUTF8((const std::string *) NULL);
             }
         }
     }
@@ -831,7 +833,7 @@ public:
                 THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
             }
 
-            writer.writeAscii((const char *)NULL, 0);
+            writer.writeAscii((const std::string *)NULL);
         }
         else {
             if (PyUnicode_Check(field_value)) {
@@ -856,7 +858,7 @@ public:
                     THROW_EXCEPTION("Field '%s' is not nullable.", field_name_.c_str());
                 }
 
-                writer.writeAscii((const char *)NULL, 0);
+                writer.writeAscii((const std::string *)NULL);
             }
         }
     }
