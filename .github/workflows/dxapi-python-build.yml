@@ -350,6 +350,7 @@ jobs:
           TIMEBASE_HOST: localhost
           TIMEBASE_PORT: 8011
       - name: Archive artifacts
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: test-reports-tbapi-python-linux-${{ matrix.py }}
@@ -401,6 +402,7 @@ jobs:
           TIMEBASE_HOST: localhost
           TIMEBASE_PORT: 8011
       - name: Archive artifacts
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: test-reports-tbapi-python-windows-${{ matrix.py }}
@@ -460,6 +462,7 @@ jobs:
           python -c "import tbapi; print(tbapi.version())"
           python TestAll.py
       - name: Archive artifacts
+        if: ${{ always() }}
         uses: actions/upload-artifact@v2
         with:
           name: test-reports-tbapi-python-macos-${{ matrix.py }}
