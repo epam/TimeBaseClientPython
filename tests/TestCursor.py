@@ -111,15 +111,18 @@ class CursorTest(servertest.TestWithStreams):
         # remove types
         self.removeAll(typeSet, [self.types['bbo'], self.types['bar']])
         cursor.removeTypes([self.types['bbo'], self.types['bar']])
+        cursor.reset(0)
         self.checkCursorTypes(cursor, typeSet)
 
         # add types
         typeSet.add(self.types['bbo'])
         cursor.addTypes([self.types['bbo']])
+        cursor.reset(0)
         self.checkCursorTypes(cursor, typeSet)
 
         # 'trade' and 'bars'
         cursor.setTypes([self.types['trade'], self.types['bar']])
+        cursor.reset(0)
         self.checkCursorTypes(cursor, set([self.types['trade'], self.types['bar']]))
 
         # none types
@@ -146,25 +149,30 @@ class CursorTest(servertest.TestWithStreams):
         # remove AAPL, GOOG
         self.removeAll(entitySet, ['AAPL', 'GOOG'])
         cursor.removeEntities([self.entities['AAPL'], self.entities['GOOG']])
+        cursor.reset(0)
         self.checkCursorSymbols(cursor, entitySet)
 
         # add GOOG
         entitySet.add('GOOG')
         cursor.addEntity(self.entities['GOOG'])
+        cursor.reset(0)
         self.checkCursorSymbols(cursor, entitySet)
 
         # remove IBM
         entitySet.remove('IBM')
         cursor.removeEntity(self.entities['IBM'])
+        cursor.reset(0)
         self.checkCursorSymbols(cursor, entitySet)
 
         # add AAPL, IBM
         self.addAll(entitySet, ['AAPL', 'IBM'])
         cursor.addEntities([self.entities['AAPL'], self.entities['IBM']])
+        cursor.reset(0)
         self.checkCursorSymbols(cursor, entitySet)
 
         # clear all
         cursor.clearAllEntities()
+        cursor.reset(0)
         self.assertFalse(cursor.next())
 
         # subscribe all
@@ -193,10 +201,12 @@ class CursorTest(servertest.TestWithStreams):
         typeSet.remove(self.types['bbo'])
         entitySet.remove('IBM')
         cursor.remove([self.types['bbo']], [self.entities['IBM']])
+        cursor.reset(0)
         self.checkCursorTypesAndSymbols(cursor, typeSet, entitySet)
 
         # remove all
         cursor.remove(list(self.types.values()), list(self.entities.values()))
+        cursor.reset(0)
         self.assertFalse(cursor.next())
 
         # add types and some entities
