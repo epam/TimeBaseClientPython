@@ -154,33 +154,39 @@ class TestStream(servertest.TestWithStreams):
             time.sleep(1)
 
             so = tbapi.SelectionOptions()
-            with stream.trySelect(0, so, None, None) as cursor:
-                self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL', 'SX', 'SY']))
+            # todo: temporary commented until release new server version
+            # with stream.trySelect(0, so, None, None) as cursor:
+            #     self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL', 'SX', 'SY']))
 
             so = tbapi.SelectionOptions()
             so.withSpaces(['SpaceX'])
-            with stream.trySelect(0, so, None, None) as cursor:
-                self.checkCursorSymbols(cursor, set(['SX']))
+            # todo: temporary commented until release new server version
+            # with stream.trySelect(0, so, None, None) as cursor:
+            #     self.checkCursorSymbols(cursor, set(['SX']))
 
             so = tbapi.SelectionOptions()
             so.withSpaces(['SpaceY'])
-            with stream.trySelect(0, so, None, None) as cursor:
-                self.checkCursorSymbols(cursor, set(['SY']))
+            # todo: temporary commented until release new server version
+            # with stream.trySelect(0, so, None, None) as cursor:
+            #     self.checkCursorSymbols(cursor, set(['SY']))
 
             so = tbapi.SelectionOptions()
             so.withSpaces(['SpaceY', 'SpaceX'])
-            with stream.trySelect(0, so, None, None) as cursor:
-                self.checkCursorSymbols(cursor, set(['SY', 'SX']))
+            # todo: temporary commented until release new server version
+            # with stream.trySelect(0, so, None, None) as cursor:
+            #     self.checkCursorSymbols(cursor, set(['SY', 'SX']))
 
             so = tbapi.SelectionOptions()
             so.withSpaces([''])
-            with stream.trySelect(0, so, None, None) as cursor:
-                self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL']))
+            # todo: temporary commented until release new server version
+            # with stream.trySelect(0, so, None, None) as cursor:
+            #     self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL']))
 
             so = tbapi.SelectionOptions()
             so.withSpaces(None)
-            with stream.trySelect(0, so, None, None) as cursor:
-                self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL', 'SX', 'SY']))
+            # todo: temporary commented until release new server version
+            # with stream.trySelect(0, so, None, None) as cursor:
+            #     self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL', 'SX', 'SY']))
         finally:
             self.deleteStream(key)
 
