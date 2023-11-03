@@ -140,5 +140,49 @@ class TestStream(servertest.TestWithStreams):
         finally:
             self.deleteStream(key)
 
+    def test_ReadFromSpaces(self):
+        key = 'BarsWithSpaces'
+        try:
+            stream = self.createStream(key)
+            self.assertIsNotNone(stream)
+
+            count = 1234
+            testutils.loadBars(stream, count, 0, 1000000000, ['MSFT', 'ORCL'])
+            testutils.loadBars(stream, count, 0, 1000000000, ['SX'], 'SpaceX')
+            testutils.loadBars(stream, count, 0, 1000000000, ['SY'], 'SpaceY')
+
+            time.sleep(1)
+
+            so = tbapi.SelectionOptions()
+            with stream.trySelect(0, so, None, None) as cursor:
+                self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL', 'SX', 'SY']))
+
+            so = tbapi.SelectionOptions()
+            so.withSpaces(['SpaceX'])
+            with stream.trySelect(0, so, None, None) as cursor:
+                self.checkCursorSymbols(cursor, set(['SX']))
+
+            so = tbapi.SelectionOptions()
+            so.withSpaces(['SpaceY'])
+            with stream.trySelect(0, so, None, None) as cursor:
+                self.checkCursorSymbols(cursor, set(['SY']))
+
+            so = tbapi.SelectionOptions()
+            so.withSpaces(['SpaceY', 'SpaceX'])
+            with stream.trySelect(0, so, None, None) as cursor:
+                self.checkCursorSymbols(cursor, set(['SY', 'SX']))
+
+            so = tbapi.SelectionOptions()
+            so.withSpaces([''])
+            with stream.trySelect(0, so, None, None) as cursor:
+                self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL']))
+
+            so = tbapi.SelectionOptions()
+            so.withSpaces(None)
+            with stream.trySelect(0, so, None, None) as cursor:
+                self.checkCursorSymbols(cursor, set(['MSFT', 'ORCL', 'SX', 'SY']))
+        finally:
+            self.deleteStream(key)
+
 if __name__ == '__main__':
     unittest.main()

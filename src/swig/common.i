@@ -144,6 +144,22 @@ public:
     Can potentially reduce max throughput and increase CPU use / network bandwidth usage.");
     bool                minLatency;
 
+    %feature("autodoc", "");
+
+%pythoncode %{
+
+    def withSpaces(self, spaces: 'list[str]') -> None:
+        '''List of spaces to select data from.
+
+        If set to None then data from all spaces is loaded.
+        '''
+        self.__withSpaces(spaces)
+
+%}
+
+    %rename(__withSpaces) withSpaces;
+    void withSpaces(const std::vector<std::string> *spaces);
+
 };
 
 %feature("autodoc", "Options for loading data into a stream.
